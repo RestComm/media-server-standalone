@@ -4,99 +4,16 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>org.restcomm</groupId>
-        <artifactId>media</artifactId>
+        <groupId>org.restcomm.media.server</groupId>
+        <artifactId>media-server-standalone</artifactId>
         <version>7.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.restcomm.media</groupId>
-    <artifactId>core</artifactId>
-    <name>Core</name>
+    <groupId>org.restcomm.media.server.standalone</groupId>
+    <artifactId>configuration</artifactId>
+    <name>Configuration</name>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.restcomm.media</groupId>
-			<artifactId>concurrent</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media</groupId>
-			<artifactId>spi</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media</groupId>
-			<artifactId>components</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media.codecs</groupId>
-			<artifactId>ilbc</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media.codecs</groupId>
-			<artifactId>l16</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media.codecs</groupId>
-			<artifactId>gsm</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media.codecs</groupId>
-			<artifactId>g729</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media.codecs</groupId>
-			<artifactId>g711</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media.codecs.opus</groupId>
-			<artifactId>opus-java</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media</groupId>
-			<artifactId>rtp</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media</groupId>
-			<artifactId>ice</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media</groupId>
-			<artifactId>scheduler</artifactId>
-			<version>${project.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media.controls</groupId>
-			<artifactId>mgcp2</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<!--RESOURCES -->
-		<dependency>
-			<groupId>org.restcomm.media.resources</groupId>
-			<artifactId>recorder</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media.resources</groupId>
-			<artifactId>player</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.restcomm.media.resources</groupId>
-			<artifactId>dtmf</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.bitlet</groupId>
 			<artifactId>weupnp</artifactId>
@@ -120,7 +37,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>restcomm-mediaserver-core-${project.version}</finalName>
+        <finalName>restcomm-mediaserver-configuration-${project.version}</finalName>
     </build>
 
 </project>

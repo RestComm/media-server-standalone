@@ -5,12 +5,12 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>org.restcomm</groupId>
-        <artifactId>media</artifactId>
+        <groupId>org.restcomm.media.server</groupId>
+        <artifactId>media-server-standalone</artifactId>
         <version>7.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.restcomm.media</groupId>
+    <groupId>org.restcomm.media.server.standalone</groupId>
     <artifactId>bootstrap</artifactId>
     <name>Bootstrap</name>
 
@@ -27,72 +27,10 @@
     <dependencies>
         <!-- Modules -->
         <dependency>
-            <groupId>org.restcomm.media</groupId>
-            <artifactId>spi</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.restcomm.media</groupId>
-            <artifactId>core</artifactId>
+            <groupId>org.restcomm.media.server.standalone</groupId>
+            <artifactId>configuration</artifactId>
             <version>${project.parent.version}</version>
             <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.restcomm.media</groupId>
-            <artifactId>rtp</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.restcomm.media.resources</groupId>
-            <artifactId>dtmf</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.restcomm.media.resources</groupId>
-            <artifactId>player</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.restcomm.media.resources</groupId>
-            <artifactId>recorder</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.restcomm.media.asr</groupId>
-            <artifactId>asr-engine</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
-        <!-- codecs -->
-        <dependency>
-            <groupId>org.restcomm.media.codecs</groupId>
-            <artifactId>l16</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.restcomm.media.codecs</groupId>
-            <artifactId>g711</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.restcomm.media.codecs</groupId>
-            <artifactId>gsm</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.restcomm.media.codecs</groupId>
-            <artifactId>g729</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.restcomm.media.codecs</groupId>
-            <artifactId>ilbc</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.restcomm.media.codecs.opus</groupId>
-            <artifactId>opus-java</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <!-- Logging -->

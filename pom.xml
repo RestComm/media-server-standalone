@@ -9,11 +9,11 @@
         <version>4.1.0-14</version>
     </parent>
 
-    <groupId>org.restcomm</groupId>
-    <artifactId>media</artifactId>
+    <groupId>org.restcomm.media.server</groupId>
+    <artifactId>media-server-standalone</artifactId>
     <version>7.0.0-SNAPSHOT</version>
 
-    <name>RestComm Media Server</name>
+    <name>RestComm Media Server Standalone Instance</name>
     <url>https://github.com/RestComm/mediaserver</url>
     <organization>
         <name>TeleStax, Inc.</name>
@@ -29,6 +29,7 @@
             ${release.name.prefix}${parent.version}${release.name.suffix}
         </release.name>
 
+		<media-core.version>7.0.0</media-core.version>
         <version.junit>4.12</version.junit>
         <version.xerces>2.9.1</version.xerces>
         <log4j.version>2.10.0</log4j.version>
@@ -42,28 +43,18 @@
     </properties>
 
     <modules>
-        <module>spi</module>
-        <module>concurrent</module>
-        <module>scheduler</module>
-        <module>codecs</module>
-        <module>component</module>
-        <module>network</module>
-        <module>ice</module>
-        <module>stun</module>
-        <module>rtp</module>
-        <module>pcap</module>
-        <module>sdp</module>
-        <module>resources</module>
-        <module>core</module>
-        <module>client</module>
-        <module>controls</module>
-        <module>asr</module>
-        <module>docs</module>
         <module>bootstrap</module>
-        <module>drivers</module>
+        <module>configuration</module>
+        <module>docs</module>
     </modules>
 
     <dependencies>
+        <dependency>
+            <groupId>org.restcomm.media</groupId>
+            <artifactId>media-core</artifactId>
+            <version>${media-core.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>concurrent</groupId>
             <artifactId>concurrent</artifactId>
@@ -211,23 +202,9 @@
         <profile>
             <id>maven-release</id>
             <modules>
-                <module>spi</module>
-                <module>concurrent</module>
-                <module>scheduler</module>
-                <module>codecs</module>
-                <module>component</module>
-                <module>network</module>
-                <module>ice</module>
-                <module>stun</module>
-                <module>rtp</module>
-                <module>pcap</module>
-                <module>sdp</module>
-                <module>resources</module>
-                <module>core</module>
-                <module>client</module>
-                <module>controls</module>
-                <module>docs</module>
                 <module>bootstrap</module>
+                <module>configuration</module>
+                <module>docs</module>
             </modules>
             <build>
                 <plugins>
@@ -302,9 +279,9 @@
     </profiles>
 
     <scm>
-        <connection>scm:git:git@github.com:RestComm/mediaserver.git</connection>
-        <developerConnection>scm:git:git@github.com:RestComm/mediaserver.git</developerConnection>
-        <url>scm:git:git@github.com:RestComm/mediaserver.git/</url>
+        <connection>scm:git:git@github.com:RestComm/media-server-standalone.git</connection>
+        <developerConnection>scm:git:git@github.com:RestComm/media-server-standalone.git</developerConnection>
+        <url>scm:git:git@github.com:RestComm/media-server-standalone.git/</url>
         <tag>HEAD</tag>
     </scm>
 
