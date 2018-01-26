@@ -126,6 +126,7 @@
         <module>bootstrap</module>
         <module>configuration</module>
         <module>documentation</module>
+        <module>assembly</module>
     </modules>
 
     <profiles>
