@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
 
     <parent>
         <groupId>org.restcomm.media.server</groupId>
@@ -11,33 +11,97 @@
 
     <groupId>org.restcomm.media.server.standalone</groupId>
     <artifactId>configuration</artifactId>
-    <name>Configuration</name>
+    <name>media-server-standalone-configuration</name>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.bitlet</groupId>
-			<artifactId>weupnp</artifactId>
-			<version>0.1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>xalan</groupId>
-			<artifactId>xalan</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-	</dependencies>
+    <properties>
+        <apache.commons.beanutils.version>1.9.1</apache.commons.beanutils.version>
+        <apache.commons.configuration.version>2.0</apache.commons.configuration.version>
+        <weupnp.version>0.1.2</weupnp.version>
+        <xalan.version>2.6.0</xalan.version>
+    </properties>
+
+    <dependencies>
+        <!-- Media Core -->
+        <dependency>
+            <groupId>org.restcomm.media.core</groupId>
+            <artifactId>rtp</artifactId>
+            <version>${restcomm.media.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.restcomm.media.core.codec</groupId>
+            <artifactId>g711</artifactId>
+            <version>${restcomm.media.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.restcomm.media.core.codec</groupId>
+            <artifactId>g729</artifactId>
+            <version>${restcomm.media.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.restcomm.media.core.codec</groupId>
+            <artifactId>gsm</artifactId>
+            <version>${restcomm.media.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.restcomm.media.core.codec</groupId>
+            <artifactId>ilbc</artifactId>
+            <version>${restcomm.media.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.restcomm.media.core.codec</groupId>
+            <artifactId>l16</artifactId>
+            <version>${restcomm.media.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.restcomm.media.core.codec.opus</groupId>
+            <artifactId>opus-java</artifactId>
+            <version>${restcomm.media.core.version}</version>
+        </dependency>
+
+        <!-- Apache Commons Configuration -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-configuration2</artifactId>
+            <version>${apache.commons.configuration.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${apache.commons.beanutils.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bitlet</groupId>
+            <artifactId>weupnp</artifactId>
+            <version>${weupnp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+            <version>${xalan.version}</version>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Media Core -->
+            <dependency>
+                <groupId>org.restcomm.media</groupId>
+                <artifactId>media-core</artifactId>
+                <version>${restcomm.media.core.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
             </plugin>
         </plugins>
-        <finalName>restcomm-mediaserver-configuration-${project.version}</finalName>
+        <finalName>${project.name}-${project.version}</finalName>
     </build>
-
 </project>
