@@ -1,9 +1,5 @@
 <component>
     <files>
-        <file>
-            <source>target/run.jar</source>
-            <destName>bin/run.jar</destName>
-        </file>
 
         <!-- Conf -->
         <file>
