@@ -12,7 +12,7 @@ Read the [Online Documentation](http://documentation.telestax.com/core/media_ser
 
 ## Downloads
 
-Get the [latest release](https://github.com/RestComm/mediaserver/releases/latest). It only takes a few minutes to setup and run.
+Get the [latest release](https://www.restcomm.com/downloads/). It only takes a few minutes to setup and run.
 
 ## Issue Tracking and Roadmap
 
