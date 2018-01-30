@@ -105,7 +105,7 @@ if [ "x$JAVA" = "x" ]; then
 fi
 
 # Setup the classpath
-runjar="$MMS_HOME/bin/run.jar"
+runjar="$MMS_HOME/bin/bootstrap.jar"
 if [ ! -f "$runjar" ]; then
     die "Missing required file: $runjar"
 fi
@@ -200,5 +200,5 @@ echo ""
          -Djava.ext.dirs="$MMS_ENDORSED_DIRS" \
          -Dmbrola.base="$MMS_HOME/mbrola" \
          -classpath "$MMS_CLASSPATH" \
-         org.restcomm.media.bootstrap.Main "$@"
+         org.restcomm.media.server.standalone.bootstrap.Main "$@"
       MMS_STATUS=$?

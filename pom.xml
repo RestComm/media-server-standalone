@@ -42,6 +42,7 @@
         <maven.release.version>2.5.1</maven.release.version>
         <maven.source.version>3.0.1</maven.source.version>
         <maven.javadoc.version>2.8.1</maven.javadoc.version>
+        <maven.assembly.version>3.1.0</maven.assembly.version>
         <maven.gpg.version>1.6</maven.gpg.version>
     </properties>
 

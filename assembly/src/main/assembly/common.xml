@@ -1,5 +1,10 @@
 <component>
     <files>
+        <!-- Bootstrap -->
+        <file>
+            <source>src/main/config/run.sh</source>
+            <destName>bin/run.sh</destName>
+        </file>
 
         <!-- Conf -->
         <file>
