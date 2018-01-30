@@ -1,1 +1,0 @@
-The CRCXCA and CRCXMGW are used for profiling the stack. CRCXCA will simple send CRCX messages and expects back response from MGW.
