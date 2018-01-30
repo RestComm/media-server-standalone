@@ -27,7 +27,7 @@
     <properties>
         <java.version>1.8</java.version>
 
-        <restcomm.media.core.version>8.0.0-PIPELINE-12</restcomm.media.core.version>
+        <restcomm.media.core.version>1.0.0-SNAPSHOT</restcomm.media.core.version>
 
         <log4j.version>2.10.0</log4j.version>
         <log4j.version>2.10.0</log4j.version>

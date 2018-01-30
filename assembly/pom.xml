@@ -37,17 +37,17 @@
 	    <version>${restcomm.media.core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.restcomm.media.core.resources</groupId>
+            <groupId>org.restcomm.media.core.resource</groupId>
             <artifactId>dtmf</artifactId>
             <version>${restcomm.media.core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.restcomm.media.core.resources</groupId>
+            <groupId>org.restcomm.media.core.resource</groupId>
             <artifactId>player</artifactId>
             <version>${restcomm.media.core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.restcomm.media.core.resources</groupId>
+            <groupId>org.restcomm.media.core.resource</groupId>
             <artifactId>recorder</artifactId>
             <version>${restcomm.media.core.version}</version>
         </dependency>
@@ -59,32 +59,32 @@
 
         <!-- codecs -->
         <dependency>
-            <groupId>org.restcomm.media.core.codecs</groupId>
+            <groupId>org.restcomm.media.core.codec</groupId>
             <artifactId>l16</artifactId>
             <version>${restcomm.media.core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.restcomm.media.core.codecs</groupId>
+            <groupId>org.restcomm.media.core.codec</groupId>
             <artifactId>g711</artifactId>
             <version>${restcomm.media.core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.restcomm.media.core.codecs</groupId>
+            <groupId>org.restcomm.media.core.codec</groupId>
             <artifactId>gsm</artifactId>
             <version>${restcomm.media.core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.restcomm.media.core.codecs</groupId>
+            <groupId>org.restcomm.media.core.codec</groupId>
             <artifactId>g729</artifactId>
             <version>${restcomm.media.core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.restcomm.media.core.codecs</groupId>
+            <groupId>org.restcomm.media.core.codec</groupId>
             <artifactId>ilbc</artifactId>
             <version>${restcomm.media.core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.restcomm.media.core.codecs.opus</groupId>
+            <groupId>org.restcomm.media.core.codec.opus</groupId>
             <artifactId>opus-java</artifactId>
             <version>${restcomm.media.core.version}</version>
         </dependency>
