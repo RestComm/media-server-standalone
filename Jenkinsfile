@@ -61,8 +61,8 @@ node("cxs-slave-master") {
    }
 
    stage ("ReleaseVersions") {
-    setMediaCoreVersion()
     setVersions()
+    setMediaCoreVersion()
    }
 
    stage ("Build") {
