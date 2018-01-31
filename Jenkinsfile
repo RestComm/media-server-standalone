@@ -22,6 +22,10 @@ def deployMediaCXS() {
 	}
 }
 
+def zipAndArchive() {
+    zip archive: true, dir: "/media-server-standalone/assembly/target/restcomm-media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}", glob: '', zipFile="restcomm-media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}"
+}
+
 def publishResults() {
     junit testResults: '**/target/surefire-reports/*.xml', testDataPublishers: [[$class: 'StabilityTestDataPublisher']]
     // checkstyle canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '**/checkstyle-result.xml', unHealthy: ''
@@ -71,6 +75,10 @@ node("cxs-slave-master") {
 
    stage ("Deploy") {
     deployMediaCXS()
+   }
+
+   stage ("Archive") {
+    zipAndArchive()
    }
 
    stage("PublishResults") {
