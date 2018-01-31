@@ -7,7 +7,7 @@ def setVersions() {
 }
 
 def setMediaCoreVersion() {
-    sh "mvn versions:update-property -Dproperty=restcomm.media.core.version -DnewVersion=${env.MEDIA_CORE_VERSION}"
+    sh "mvn versions:set-property -Dproperty=restcomm.media.core.version -DnewVersion=${env.MEDIA_CORE_VERSION}"
 }
 
 def buildMedia() {
