@@ -23,7 +23,7 @@ def deployMediaCXS() {
 }
 
 def zipAndArchive() {
-    zip archive: true, dir: "/media-server-standalone/assembly/target/restcomm-media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}", glob: '', zipFile="restcomm-media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}"
+    zip archive: true, dir: "/media-server-standalone/assembly/target/restcomm-media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}", zipFile="restcomm-media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}"
 }
 
 def publishResults() {
