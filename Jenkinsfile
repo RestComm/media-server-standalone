@@ -68,31 +68,31 @@ node("cxs-slave-master") {
     checkout scm
    }
 
-   stage ("ReleaseVersions") {
+   stage ('Versioning') {
     setVersions()
     setMediaCoreVersion()
    }
 
-   stage ("Build") {
+   stage ('Build') {
     buildMedia()
    }
 
-   stage ("Tests") {
+   stage ('Test') {
     runUnitTests()
    }
 
-   stage ("Deploy") {
+   stage('PublishResults') {
+    publishResults()
+   }
+
+   stage ('Deploy') {
     deployMediaCXS()
    }
 
-   stage ("Archive") {
+   stage ('Archive') {
     zipAndArchiveAssembly()
     zipAndArchiveDocsPdf()
     zipAndArchiveDocsHtml()
-   }
-
-   stage("PublishResults") {
-    publishResults()
    }
 
 }
