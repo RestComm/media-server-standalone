@@ -22,8 +22,16 @@ def deployMediaCXS() {
 	}
 }
 
-def zipAndArchive() {
-    zip archive: true, dir: "./assembly/target/restcomm-media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}", zipFile: "restcomm-media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+def zipAndArchiveAssembly() {
+    zip archive: true, dir: "./assembly/target/media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}", zipFile: "media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+}
+
+def zipAndArchiveDocsPdf() {
+    zip archive: true, dir: "./documentation/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-documentation-pdf-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+}
+
+def zipAndArchiveDocsHtml() {
+    zip archive: true, dir: "./documentation/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-documentation-html-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
 }
 
 def publishResults() {
@@ -78,7 +86,9 @@ node("cxs-slave-master") {
    }
 
    stage ("Archive") {
-    zipAndArchive()
+    zipAndArchiveAssembly()
+    zipAndArchiveDocsPdf()
+    zipAndArchiveDocsHtml()
    }
 
    stage("PublishResults") {
