@@ -5,13 +5,13 @@
 
     <parent>
         <groupId>org.restcomm.media.server.standalone</groupId>
-        <artifactId>documentation</artifactId>
+        <artifactId>docs</artifactId>
         <version>8.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.restcomm.media.server.documentation</groupId>
+    <groupId>org.restcomm.media.server.docs</groupId>
     <artifactId>asciidoc</artifactId>
-    <name>media-server-standalone-documentation-asciidoc</name>
+    <name>media-server-standalone-docs-asciidoc</name>
 
     <properties>
         <asciidoctor.maven.plugin.version>1.5.5</asciidoctor.maven.plugin.version>
@@ -76,13 +76,13 @@
                                 <this-application>Media Server</this-application>
                                 <this-platform>Restcomm</this-platform>
                                 <jee-platform>JBoss Application Server</jee-platform>
-                                <this-issue-tracker-url>https://github.com/Restcomm/mediaserver/issues
+                                <this-issue-tracker-url>https://github.com/Restcomm/media-server-standalone/issues
                                 </this-issue-tracker-url>
-                                <this-release-source-code-url>https://github.com/Restcomm/mediaserver
+                                <this-release-source-code-url>https://github.com/Restcomm/media-server-standalone
                                 </this-release-source-code-url>
-                                <this-trunk-source-code-url>https://github.com/Restcomm/mediaserver
+                                <this-trunk-source-code-url>https://github.com/Restcomm/media-server-standalone
                                 </this-trunk-source-code-url>
-                                <this-release-binary-url>https://github.com/Restcomm/mediaserver
+                                <this-release-binary-url>https://github.com/Restcomm/media-server-standalone
                                 </this-release-binary-url>
                             </attributes>
                             <preserveDirectories>true</preserveDirectories>
@@ -112,13 +112,13 @@
                                 <this-application>Media Server</this-application>
                                 <this-platform>Restcomm</this-platform>
                                 <jee-platform>JBoss Application Server</jee-platform>
-                                <this-issue-tracker-url>https://github.com/Restcomm/mediaserver/issues
+                                <this-issue-tracker-url>https://github.com/Restcomm/media-server-standalone/issues
                                 </this-issue-tracker-url>
-                                <this-release-source-code-url>https://github.com/Restcomm/mediaserver
+                                <this-release-source-code-url>https://github.com/Restcomm/media-server-standalone
                                 </this-release-source-code-url>
-                                <this-trunk-source-code-url>https://github.com/Restcomm/mediaserver
+                                <this-trunk-source-code-url>https://github.com/Restcomm/media-server-standalone
                                 </this-trunk-source-code-url>
-                                <this-release-binary-url>https://github.com/Restcomm/mediaserver
+                                <this-release-binary-url>https://github.com/Restcomm/media-server-standalone
                                 </this-release-binary-url>
                             </attributes>
                             <preserveDirectories>true</preserveDirectories>
@@ -147,13 +147,13 @@
                                 <this-application>Media Server</this-application>
                                 <this-platform>Restcomm</this-platform>
                                 <jee-platform>JBoss Application Server</jee-platform>
-                                <this-issue-tracker-url>https://github.com/Restcomm/mediaserver/issues
+                                <this-issue-tracker-url>https://github.com/Restcomm/media-server-standalone/issues
                                 </this-issue-tracker-url>
-                                <this-release-source-code-url>https://github.com/Restcomm/mediaserver
+                                <this-release-source-code-url>https://github.com/Restcomm/media-server-standalone
                                 </this-release-source-code-url>
-                                <this-trunk-source-code-url>https://github.com/Restcomm/mediaserver
+                                <this-trunk-source-code-url>https://github.com/Restcomm/media-server-standalone
                                 </this-trunk-source-code-url>
-                                <this-release-binary-url>https://github.com/Restcomm/mediaserver
+                                <this-release-binary-url>https://github.com/Restcomm/media-server-standalone
                                 </this-release-binary-url>
                             </attributes>
                         </configuration>

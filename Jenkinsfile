@@ -27,11 +27,11 @@ def zipAndArchiveAssembly() {
 }
 
 def zipAndArchiveDocsPdf() {
-    zip archive: true, dir: "./documentation/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-documentation-pdf-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
 }
 
 def zipAndArchiveDocsHtml() {
-    zip archive: true, dir: "./documentation/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-documentation-html-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
 }
 
 def publishResults() {

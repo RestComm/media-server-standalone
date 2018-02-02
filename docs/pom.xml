@@ -10,9 +10,9 @@
     </parent>
 
     <groupId>org.restcomm.media.server.standalone</groupId>
-    <artifactId>documentation</artifactId>
+    <artifactId>docs</artifactId>
     <packaging>pom</packaging>
-    <name>media-server-standalone-documentation</name>
+    <name>media-server-standalone-docs</name>
 
     <properties>
         <docs.application.name>Restcomm Media Server, Standalone Community Edition</docs.application.name>
