@@ -36,7 +36,7 @@ public class ResourcesConfiguration {
     public static final int SPEECH_DETECTOR_SILENCE_LEVEL = 10;
     public static final int PLAYER_CACHE_SIZE = 0;
     public static final boolean PLAYER_CACHE_ENABLED = false;
-    public static final int CONNECTION_TIMEOUT = 2000;
+    public static final int PLAYER_CONNECTION_TIMEOUT = 2000;
 
     private int dtmfDetectorDbi;
     private int dtmfDetectorToneDuration;
@@ -55,7 +55,7 @@ public class ResourcesConfiguration {
         this.dtmfDetectorToneInterval = DTMF_DETECTOR_TONE_INTERVAL;
         this.speechDetectorSilenceLevel = SPEECH_DETECTOR_SILENCE_LEVEL;
         this.playerCacheSize = PLAYER_CACHE_SIZE;
-	this.connectionTimeout = CONNECTION_TIMEOUT;
+	this.connectionTimeout = PLAYER_CONNECTION_TIMEOUT;
     }
 
     public int getDtmfDetectorDbi() {

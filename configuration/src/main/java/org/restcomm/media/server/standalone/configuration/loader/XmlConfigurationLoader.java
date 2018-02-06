@@ -148,7 +148,7 @@ public class XmlConfigurationLoader implements ConfigurationLoader {
         } catch (ConfigurationRuntimeException exception) {
             log.info("No cache was specified for player");
         }
-        dst.setConnectionTimeout(player.getInt("connectionTimeout", ResourcesConfiguration.CONNECTION_TIMEOUT));
+        dst.setConnectionTimeout(player.getInt("connectionTimeout", ResourcesConfiguration.PLAYER_CONNECTION_TIMEOUT));
     }
 
     private static void configureSubsystems(final XMLConfiguration xml, final SubsystemsConfiguration dst) throws javax.naming.ConfigurationException {

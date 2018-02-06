@@ -14,6 +14,17 @@ configAudioCache() {
         $MS_HOME/conf/mediaserver.xml
 }
 
+configAudioPlayer() {
+    readonly connection_timeout=${1-2000}
+
+    echo "Configuring Audio Player [Connection Timeout=$connection_timeout]"
+
+    xmlstarlet ed --inplace --pf \
+        -u "/mediaserver/resources/player/connectionTimeout" -v "$connection_timeout" \
+        $MS_HOME/conf/mediaserver.xml
+
+}
+
 configDtmfDetector() {
     readonly dbi=${1--30}
     readonly duration=${2-80}
@@ -39,5 +50,6 @@ configSpeechDetector() {
 }
 
 configAudioCache $AUDIO_CACHE_ENABLED $AUDIO_CACHE_SIZE
+configAudioPlayer $PLAYER_CONNECTION_TIMEOUT
 configDtmfDetector $DTMF_DETECTOR_DBI $DTMF_DETECTOR_TONE_DURATION $DTMF_DETECTOR_TONE_INTERVAL
 configSpeechDetector $SPEECH_DETECTOR_SILENCE_LEVEL
