@@ -51,6 +51,7 @@
 				<cacheSize>100</cacheSize>
 				<cacheEnabled>true</cacheEnabled>
 			</cache>
+			<connectionTimeout>2000</connectionTimeout>
 		</player>
 		<dtmfDetector dbi="-25" toneDuration="100" toneInterval="400" />
 		<dtmfGenerator toneVolume="-25" toneDuration="100" />

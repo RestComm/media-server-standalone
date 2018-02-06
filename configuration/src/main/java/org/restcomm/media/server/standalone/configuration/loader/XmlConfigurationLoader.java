@@ -139,18 +139,16 @@ public class XmlConfigurationLoader implements ConfigurationLoader {
 
     private static void configurePlayer(HierarchicalConfiguration<ImmutableNode> src, ResourcesConfiguration dst) {
         HierarchicalConfiguration<ImmutableNode> player = src.configurationAt("player");
-        HierarchicalConfiguration<ImmutableNode> cache;
         try {
-            cache = player.configurationAt("cache");
+            HierarchicalConfiguration<ImmutableNode> cache = player.configurationAt("cache");
+            dst.setPlayerCache(
+                    cache.getBoolean("cacheEnabled", ResourcesConfiguration.PLAYER_CACHE_ENABLED),
+                    cache.getInt("cacheSize", ResourcesConfiguration.PLAYER_CACHE_SIZE)
+            );
         } catch (ConfigurationRuntimeException exception) {
             log.info("No cache was specified for player");
-            return;
         }
-        dst.setPlayerCache(
-                cache.getBoolean("cacheEnabled", ResourcesConfiguration.PLAYER_CACHE_ENABLED),
-                cache.getInt("cacheSize", ResourcesConfiguration.PLAYER_CACHE_SIZE)
-        );
-
+        dst.setConnectionTimeout(player.getInt("connectionTimeout", ResourcesConfiguration.CONNECTION_TIMEOUT));
     }
 
     private static void configureSubsystems(final XMLConfiguration xml, final SubsystemsConfiguration dst) throws javax.naming.ConfigurationException {
