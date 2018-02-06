@@ -1,5 +1,8 @@
 package org.restcomm.media.server.standalone.bootstrap.ioc.provider;
 
+import org.restcomm.media.server.standalone.configuration.MediaServerConfiguration;
+
+import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 /**
@@ -9,8 +12,9 @@ public class DirectRemoteStreamProvider implements Provider<org.restcomm.media.r
 
     private org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider instance;
 
-    public DirectRemoteStreamProvider() {
-        instance = new org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider();
+    @Inject
+    public DirectRemoteStreamProvider(MediaServerConfiguration config) {
+        instance = new org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider(config.getResourcesConfiguration().getConnectionTimeout());
     }
 
     @Override
