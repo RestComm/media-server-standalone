@@ -275,7 +275,9 @@ In the current Media Server release, a global pool of resources is used to decre
 <resources>
 	<localConnection poolSize="100" />
 	<remoteConnection poolSize="50" />
-	<player poolSize="50" />
+	<player poolSize="50">
+		<connectionTimeout>2000</connectionTimeout>
+	</player>
 	<recorder poolSize="50" />
 	<dtmfDetector poolSize="50" dbi="-35" />
 	<dtmfGenerator poolSize="50" toneVolume="-20" toneDuration="80" />
@@ -570,7 +572,20 @@ Kills the active tmux session named _mediaserver_.
 ||
 |===
 
-[[_ctms_configuring_the_media_server_automatic_asr]]
+[_ctms_configuring_the_media_server_automatic_resources]]
+=== Configuring Media Resources
+
+Media resource components are configured by difining the values in `mediaserver.conf`.
+
+The following values could be specified in configuration file.
+
+.Configuration in mediaserver.conf
+====
+[source,shell]
+----
+PLAYER_CONNECTION_TIMEOUT=2000
+----
+====
 === Configuring Speech Recognition Drivers
 
 To install an ASR driver, the user must simply copy the driver's jar file to `MS_HOME/lib` directory and specify it in `mediaserver.conf`.
@@ -705,6 +720,7 @@ Configuring Media Codecs [pcmu,pcma,telephone-event]
 Configuring Network [BindAddress=192.168.0.182, ExternalAddress=5.158.17.91, Network=192.168.0.254, Subnet=192.168.0.255, Use SBC=false]
 Configuring Resource Pools [Local Connections=400, Remote Connections=200, Players=200, Recorders=200, DTMF Detectors=200, DTMF Generators=200]
 Configuring Audio Cache [Enabled=true, Size=50]
+Configuring Audio Player [Connection Timeout=2000]
 Configuring DTMF Detector [Dbi=-25]
 Media Server automatic configuration finished!
 Starting RestComm Media Server...
