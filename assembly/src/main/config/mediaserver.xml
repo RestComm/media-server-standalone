@@ -31,6 +31,7 @@
 
 	<media>
 		<timeout>0</timeout>
+		<halfOpenDuration>300</halfOpenDuration>
 		<maxDuration>14400</maxDuration>
 		<lowPort>34534</lowPort>
 		<highPort>65534</highPort>

@@ -1,7 +1,7 @@
 /*
  * TeleStax, Open Source Cloud Communications
  * Copyright 2011-2016, Telestax Inc and individual contributors
- * by the @authors tag. 
+ * by the @authors tag.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -27,19 +27,20 @@ import java.util.Set;
 
 /**
  * Configuration of Media elements.
- * 
- * @author Henrique Rosa (henrique.rosa@telestax.com)
  *
+ * @author Henrique Rosa (henrique.rosa@telestax.com)
  */
 public class MediaConfiguration {
-    
+
     public static final int MAX_DURATION = 4 * 60 * 60;
+    public static final int HALF_OPEN_DURATION = 60;
     public static final int TIMEOUT = 0;
     public static final int LOW_PORT = 64534;
     public static final int HIGH_PORT = 65534;
     public static final int JITTER_BUFFER_SIZE = 50;
 
     private int maxDuration;
+    private int halfOpenDuration;
     private int timeout;
     private int lowPort;
     private int highPort;
@@ -48,20 +49,33 @@ public class MediaConfiguration {
 
     public MediaConfiguration() {
         this.maxDuration = MAX_DURATION;
+        this.halfOpenDuration = HALF_OPEN_DURATION;
         this.timeout = TIMEOUT;
         this.lowPort = LOW_PORT;
         this.highPort = HIGH_PORT;
         this.jitterBufferSize = JITTER_BUFFER_SIZE;
         this.codecs = new HashSet<>(5);
     }
-    
+
     public int getMaxDuration() {
         return maxDuration;
     }
-    
+
     public void setMaxDuration(int maxDuration) {
         this.maxDuration = maxDuration;
     }
+
+    public int getHalfOpenDuration() {
+        return halfOpenDuration;
+    }
+
+    public void setHalfOpenDuration(int halfOpenDuration) {
+        if (halfOpenDuration < 0) {
+            throw new IllegalArgumentException("Media half-open timeout cannot be negative");
+        }
+        this.halfOpenDuration = halfOpenDuration;
+    }
+
 
     public int getTimeout() {
         return timeout;
@@ -121,14 +135,14 @@ public class MediaConfiguration {
     public Iterator<String> getCodecs() {
         return this.codecs.iterator();
     }
-    
+
     public boolean hasCodec(String codec) {
-        if(codec == null || codec.isEmpty()) {
+        if (codec == null || codec.isEmpty()) {
             return false;
         }
         return this.codecs.contains(codec.toLowerCase());
     }
-    
+
     public int countCodecs() {
         return this.codecs.size();
     }

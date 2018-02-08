@@ -168,6 +168,7 @@ The media configuration contains definitions that have an impact on the media ch
 ----
 <media>
 	<timeout>30</timeout>
+	<halfOpenDuration>300</halfOpenDuration>
 	<maxDuration>14400</maxDuration>
 	<lowPort>34534</lowPort>
 	<highPort>65534</highPort>
@@ -189,6 +190,7 @@ The media configuration contains definitions that have an impact on the media ch
 The *LowPort* and *HighPort* define the port range reserved for RTP channels.
 These values should be an even number, since odd ports are reserved for RTCP channels.
 
+The *HalfOpenDuration* value define the maximum duration an RTP channel can remain half-open, that is, in a state were is waiting for a response from the remote peer in order to fully establish the connection. If set to zero, the connection will stay half-open indeterminately.
 The *MaxDuration* value defines the maximum duration an RTP channel can remain open, thus limiting the lifetime of calls. If set to zero, the connection will stay open forever.
 
 The *JitterBuffer* size parameter sets the maximum capacity of the jitter buffer, in milliseconds.

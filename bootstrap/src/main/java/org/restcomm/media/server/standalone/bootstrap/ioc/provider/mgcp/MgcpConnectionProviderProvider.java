@@ -1,7 +1,7 @@
 /*
  * TeleStax, Open Source Cloud Communications
  * Copyright 2011-2016, Telestax Inc and individual contributors
- * by the @authors tag. 
+ * by the @authors tag.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -33,7 +33,6 @@ import com.google.inject.Provider;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com)
- *
  */
 public class MgcpConnectionProviderProvider implements Provider<MgcpConnectionProvider> {
 
@@ -55,8 +54,10 @@ public class MgcpConnectionProviderProvider implements Provider<MgcpConnectionPr
 
     @Override
     public MgcpConnectionProvider get() {
-        int timeout = this.configuration.getMediaConfiguration().getMaxDuration();
-        return new MgcpConnectionProvider(timeout, this.eventProvider, this.mediaChannelProvider, this.channelsManager, executor);
+        final int timeout = this.configuration.getMediaConfiguration().getMaxDuration();
+        final int halfOpenTimeout = this.configuration.getMediaConfiguration().getHalfOpenDuration();
+
+        return new MgcpConnectionProvider(halfOpenTimeout, timeout, this.eventProvider, this.mediaChannelProvider, this.channelsManager, executor);
     }
 
 }

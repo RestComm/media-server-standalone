@@ -4,15 +4,17 @@
 
 configMedia() {
 	readonly timeout=${1-0}
-    readonly max_duration=${2-14440}
-	readonly lowPort=${3-54534}
-	readonly highPort=${4-65534}
-	readonly jitter_size=${5-50}
+    readonly half_open_duration=${2-300}
+    readonly max_duration=${3-14440}
+	readonly lowPort=${4-54534}
+	readonly highPort=${5-65534}
+	readonly jitter_size=${6-50}
 	
-	echo "Configuring MGCP Media [Timeout=$timeout, Max Duration=$max_duration, Lowest Port=$lowPort, Highest Port=$highPort, Jitter Size=$jitter_size]"
+	echo "Configuring MGCP Media [Timeout=$timeout, Half Open Duration=$half_open_duration, Max Duration=$max_duration, Lowest Port=$lowPort, Highest Port=$highPort, Jitter Size=$jitter_size]"
 
 	xmlstarlet ed --inplace --pf \
         -u "/mediaserver/media/timeout" -v "$timeout" \
+        -u "/mediaserver/media/halfOpenDuration" -v "$half_open_duration" \
         -u "/mediaserver/media/maxDuration" -v "$max_duration" \
         -u "/mediaserver/media/lowPort" -v "$lowPort" \
         -u "/mediaserver/media/highPort" -v "$highPort" \
@@ -38,5 +40,5 @@ configCodecs() {
 	done
 }
 
-configMedia $MEDIA_TIMEOUT $MEDIA_MAX_DURATION $MEDIA_LOW_PORT $MEDIA_HIGH_PORT $MEDIA_JITTER_SIZE
+configMedia $MEDIA_TIMEOUT $MEDIA_HALF_OPEN_DURATION $MEDIA_MAX_DURATION $MEDIA_LOW_PORT $MEDIA_HIGH_PORT $MEDIA_JITTER_SIZE
 configCodecs $MEDIA_CODECS
