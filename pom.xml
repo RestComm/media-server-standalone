@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.restcomm</groupId>
-        <artifactId>restcomm-parent</artifactId>
-        <version>4.1.0-14</version>
+        <groupId>org.restcomm.media</groupId>
+        <artifactId>media-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <groupId>org.restcomm.media.server</groupId>
@@ -21,87 +21,12 @@
         <url>http://www.telestax.com</url>
     </organization>
     <issueManagement>
-        <url>https://github.com/RestComm/media-server-standalone/issues</url>
+        <url>https://telestax.atlassian.net/projects/RMS/issues</url>
     </issueManagement>
 
     <properties>
-        <java.version>1.8</java.version>
-
         <restcomm.media.core.version>8.0.0-SNAPSHOT</restcomm.media.core.version>
-
-        <log4j.version>2.10.0</log4j.version>
-        <log4j.version>2.10.0</log4j.version>
-        <slf4j.version>1.7.7</slf4j.version>
-
-        <junit.version>4.12</junit.version>
-        <mockito.version>1.10.19</mockito.version>
-        <powermock.version>1.6.6</powermock.version>
-
-        <maven.compiler.version>3.7.0</maven.compiler.version>
-        <maven.surefire.version>2.20.1</maven.surefire.version>
-        <maven.release.version>2.5.1</maven.release.version>
-        <maven.source.version>3.0.1</maven.source.version>
-        <maven.javadoc.version>2.8.1</maven.javadoc.version>
-        <maven.assembly.version>3.1.0</maven.assembly.version>
-        <maven.gpg.version>1.6</maven.gpg.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <!-- Logging -->
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-api</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-1.2-api</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-
-            <!-- Testing -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
-                <version>${mockito.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-module-junit4</artifactId>
-                <version>${powermock.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-api-mockito</artifactId>
-                <version>${powermock.version}</version>
-                <scope>test</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <!-- Testing -->
@@ -130,83 +55,6 @@
         <module>assembly</module>
     </modules>
 
-    <profiles>
-        <profile>
-            <id>maven-release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                        <version>${maven.release.version}</version>
-                        <configuration>
-                            <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
-                            <autoVersionSubmodules>true</autoVersionSubmodules>
-                            <preparationGoals>clean install</preparationGoals>
-                            <arguments>-Dmaven.test.skip</arguments>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>${maven.source.version}</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>${maven.javadoc.version}</version>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>release-sign-artifacts</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${maven.gpg.version}</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
     <scm>
         <connection>scm:git:git@github.com:RestComm/media-server-standalone.git</connection>
         <developerConnection>scm:git:git@github.com:RestComm/media-server-standalone.git</developerConnection>
@@ -227,22 +75,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <!-- Dupe info from parent, but it's only way to retrieve the parent without user configuration -->
-    <repositories>
-        <repository>
-            <id>mobicents-public-repository-group</id>
-            <name>Mobicens Public Maven Repository Group</name>
-            <url>https://oss.sonatype.org/content/groups/public</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
 </project>
