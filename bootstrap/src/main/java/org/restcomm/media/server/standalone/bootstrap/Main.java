@@ -24,9 +24,13 @@ package org.restcomm.media.server.standalone.bootstrap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 04/01/2018
  */
+@SpringBootApplication(scanBasePackages = "org.restcomm.media.plugin.vad") 
 public class Main {
 
     private static final Logger log = LogManager.getLogger(Main.class);
@@ -37,6 +41,10 @@ public class Main {
     private static Bootstrapper bootstrapper;
 
     public static void main(String[] args) throws Throwable {
+
+        // Load Spring Boot application
+        new SpringApplication(Main.class).run(args); 
+
         // Load HOME_DIR
         final String home = loadHomeDir();
         if (log.isInfoEnabled()) {
