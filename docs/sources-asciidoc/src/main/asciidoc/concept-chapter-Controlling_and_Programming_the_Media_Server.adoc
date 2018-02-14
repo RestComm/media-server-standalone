@@ -343,9 +343,8 @@ Also used as a return parameter to indicate the number of attempts the user made
 [[_captms_media_gateway_control_protocol_packages_au_asr]]
 ===== Automatic Speech Recognition (asr)
 
-Gracefully terminates a Play, PlayCollect, or PlayRecord signal.
-
-For each of these signals, if the signal is terminated with the EndSignal signal the resulting OperationComplete event or OperationFailed event will contain all the parameters it would normally, including any collected digits or the recording id of the recording that was in progress when the EndSignal signal was received.
+Performs speech recognition by receiving an incoming voice stream and providing the client with an interpretation of what was spoken in textual form.
+It may also work in mixed mode, where DTMF tones may also be accepted as input data.
 
 |===
 |Symbol |Name |Description
