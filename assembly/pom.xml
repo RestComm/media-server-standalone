@@ -99,7 +99,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>${maven.assembly.version}</version>
                 <configuration>
                     <descriptors>
                         <descriptor>src/main/assembly/descriptor.xml</descriptor>
