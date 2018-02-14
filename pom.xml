@@ -25,8 +25,20 @@
     </issueManagement>
 
     <properties>
-        <restcomm.media.core.version>8.0.0-SNAPSHOT</restcomm.media.core.version>
+        <restcomm.media.bom.version>1.0.0-2</restcomm.media.bom.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.restcomm.media</groupId>
+                <artifactId>media-bom</artifactId>
+                <version>${restcomm.media.bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Testing -->
