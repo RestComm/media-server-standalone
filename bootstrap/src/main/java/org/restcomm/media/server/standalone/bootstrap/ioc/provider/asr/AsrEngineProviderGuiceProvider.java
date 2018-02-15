@@ -1,7 +1,7 @@
 /*
  * TeleStax, Open Source Cloud Communications
  * Copyright 2011-2017, Telestax Inc and individual contributors
- * by the @authors tag. 
+ * by the @authors tag.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -18,28 +18,27 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-        
+
 package org.restcomm.media.server.standalone.bootstrap.ioc.provider.asr;
 
-import java.util.Collection;
-
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.restcomm.media.asr.AsrEngineProvider;
 import org.restcomm.media.asr.AsrEngineProviderImpl;
 import org.restcomm.media.asr.driver.AsrDriverManagerImpl;
+import org.restcomm.media.core.resource.vad.VoiceActivityDetectorProvider;
+import org.restcomm.media.drivers.asr.AsrDriverManager;
+import org.restcomm.media.scheduler.PriorityQueueScheduler;
 import org.restcomm.media.server.standalone.configuration.DriverConfiguration;
 import org.restcomm.media.server.standalone.configuration.MediaServerConfiguration;
 import org.restcomm.media.server.standalone.configuration.SubsystemsConfiguration;
-import org.restcomm.media.drivers.asr.AsrDriverManager;
-import org.restcomm.media.scheduler.PriorityQueueScheduler;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import java.util.Collection;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com)
- *
  */
 public class AsrEngineProviderGuiceProvider implements Provider<AsrEngineProvider> {
 
@@ -47,12 +46,14 @@ public class AsrEngineProviderGuiceProvider implements Provider<AsrEngineProvide
 
     private final PriorityQueueScheduler scheduler;
     private final MediaServerConfiguration configuration;
+    private final VoiceActivityDetectorProvider vadProvider;
 
     @Inject
-    public AsrEngineProviderGuiceProvider(PriorityQueueScheduler scheduler, MediaServerConfiguration configuration) {
+    public AsrEngineProviderGuiceProvider(PriorityQueueScheduler scheduler, MediaServerConfiguration configuration, VoiceActivityDetectorProvider vadProvider) {
         super();
         this.scheduler = scheduler;
         this.configuration = configuration;
+        this.vadProvider = vadProvider;
     }
 
     @Override
@@ -70,8 +71,7 @@ public class AsrEngineProviderGuiceProvider implements Provider<AsrEngineProvide
                 logger.info("Driver \'" + driverName + "' (" + className + ") is successfully registered");
             }
         }
-        final int silenceLevel = configuration.getResourcesConfiguration().getSpeechDetectorSilenceLevel();
-        return new AsrEngineProviderImpl(scheduler, mng, silenceLevel);
+        return new AsrEngineProviderImpl(scheduler, mng, this.vadProvider);
     }
-    
+
 }
