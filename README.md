@@ -1,3 +1,5 @@
+![RestComm Media](https://github.com/RestComm/media-server-standalone/blob/master/logo.svg)
+
 # RestComm Media Server, Community Edition
 
 **RestComm Media Server, Community Edition** (RMS) is a standalone real-time Media Server developed in Java.
