@@ -21,25 +21,16 @@
 
 package org.restcomm.media.server.standalone.configuration;
 
-import java.util.Collection;
-import java.util.Map;
-
 import org.bouncycastle.crypto.tls.ClientCertificateType;
 import org.bouncycastle.crypto.tls.ProtocolVersion;
 import org.bouncycastle.crypto.tls.SignatureAlgorithm;
 import org.junit.Assert;
 import org.junit.Test;
-import org.restcomm.media.server.standalone.configuration.DriverConfiguration;
-import org.restcomm.media.server.standalone.configuration.DtlsConfiguration;
-import org.restcomm.media.server.standalone.configuration.MediaConfiguration;
-import org.restcomm.media.server.standalone.configuration.MediaServerConfiguration;
-import org.restcomm.media.server.standalone.configuration.MgcpControllerConfiguration;
-import org.restcomm.media.server.standalone.configuration.MgcpEndpointConfiguration;
-import org.restcomm.media.server.standalone.configuration.NetworkConfiguration;
-import org.restcomm.media.server.standalone.configuration.ResourcesConfiguration;
-import org.restcomm.media.server.standalone.configuration.SubsystemsConfiguration;
 import org.restcomm.media.server.standalone.configuration.loader.XmlConfigurationLoader;
 import org.restcomm.media.spi.RelayType;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com)
@@ -113,7 +104,6 @@ public class XmlConfigurationLoaderTest {
 
         Assert.assertEquals(100, resources.getPlayerCacheSize());
         Assert.assertEquals(true, resources.getPlayerCacheEnabled());
-        Assert.assertEquals(100, resources.getSpeechDetectorSilenceLevel());
 
         final SubsystemsConfiguration subsystemsConf = config.getSubsystemsConfiguration();
         Assert.assertNotNull(subsystemsConf);
