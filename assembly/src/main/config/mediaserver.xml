@@ -63,7 +63,6 @@
 		</player>
 		<dtmfDetector dbi="-35" toneDuration="100" toneInterval="400" />
 		<dtmfGenerator toneVolume="-20" toneDuration="100" />
-		<speechDetector silenceLevel="100" />
 	</resources>
 
 	<dtls>

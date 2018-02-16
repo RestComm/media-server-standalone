@@ -123,9 +123,9 @@ public class XmlConfigurationLoader implements ConfigurationLoader {
     private static void configureResource(HierarchicalConfiguration<ImmutableNode> src, ResourcesConfiguration dst) {
         dst.setDtmfDetectorDbi(src.getInt("dtmfDetector[@dbi]", ResourcesConfiguration.DTMF_DETECTOR_DBI));
         dst.setDtmfDetectorToneDuration(src.getInt("dtmfDetector[@toneDuration]", ResourcesConfiguration.DTMF_DETECTOR_TONE_DURATION));
+        dst.setDtmfDetectorToneInterval(src.getInt("dtmfDetector[@toneInterval]", ResourcesConfiguration.DTMF_DETECTOR_TONE_INTERVAL));
         dst.setDtmfGeneratorToneVolume(src.getInt("dtmfGenerator[@toneVolume]", ResourcesConfiguration.DTMF_GENERATOR_TONE_VOLUME));
         dst.setDtmfGeneratorToneDuration(src.getInt("dtmfGenerator[@toneDuration]", ResourcesConfiguration.DTMF_GENERATOR_TONE_DURATION));
-        dst.setSpeechDetectorSilenceLevel(src.getInt("speechDetector[@silenceLevel]", ResourcesConfiguration.SPEECH_DETECTOR_SILENCE_LEVEL));
         configurePlayer(src, dst);
     }
 

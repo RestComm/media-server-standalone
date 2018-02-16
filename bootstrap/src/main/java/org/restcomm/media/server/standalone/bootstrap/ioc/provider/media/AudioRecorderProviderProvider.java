@@ -1,7 +1,7 @@
 /*
  * TeleStax, Open Source Cloud Communications
  * Copyright 2011-2016, Telestax Inc and individual contributors
- * by the @authors tag. 
+ * by the @authors tag.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -21,30 +21,31 @@
 
 package org.restcomm.media.server.standalone.bootstrap.ioc.provider.media;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import org.restcomm.media.core.resource.vad.VoiceActivityDetectorProvider;
 import org.restcomm.media.resource.recorder.audio.AudioRecorderProvider;
 import org.restcomm.media.scheduler.PriorityQueueScheduler;
 import org.restcomm.media.spi.recorder.RecorderProvider;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com)
- *
  */
 public class AudioRecorderProviderProvider implements Provider<RecorderProvider> {
 
     private final PriorityQueueScheduler scheduler;
+    private final VoiceActivityDetectorProvider vadProvider;
 
     @Inject
-    public AudioRecorderProviderProvider(PriorityQueueScheduler scheduler) {
+    public AudioRecorderProviderProvider(PriorityQueueScheduler scheduler, VoiceActivityDetectorProvider vadProvider) {
         super();
         this.scheduler = scheduler;
+        this.vadProvider = vadProvider;
     }
 
     @Override
     public RecorderProvider get() {
-        return new AudioRecorderProvider(this.scheduler);
+        return new AudioRecorderProvider(this.scheduler, this.vadProvider);
     }
 
 }

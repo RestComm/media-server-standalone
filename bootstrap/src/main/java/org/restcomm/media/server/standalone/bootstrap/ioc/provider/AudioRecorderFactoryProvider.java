@@ -1,7 +1,7 @@
 /*
  * TeleStax, Open Source Cloud Communications
  * Copyright 2011-2016, Telestax Inc and individual contributors
- * by the @authors tag. 
+ * by the @authors tag.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -21,31 +21,32 @@
 
 package org.restcomm.media.server.standalone.bootstrap.ioc.provider;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.TypeLiteral;
+import org.restcomm.media.core.resource.vad.VoiceActivityDetectorProvider;
 import org.restcomm.media.resource.recorder.audio.AudioRecorderFactory;
 import org.restcomm.media.resource.recorder.audio.AudioRecorderImpl;
 import org.restcomm.media.scheduler.PriorityQueueScheduler;
 import org.restcomm.media.spi.pooling.PooledObjectFactory;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.TypeLiteral;
-
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com)
- *
  */
 public class AudioRecorderFactoryProvider implements Provider<AudioRecorderFactory> {
 
     private final PriorityQueueScheduler mediaScheduler;
+    private final VoiceActivityDetectorProvider vadProvider;
 
     @Inject
-    public AudioRecorderFactoryProvider(PriorityQueueScheduler mediaScheduler) {
+    public AudioRecorderFactoryProvider(PriorityQueueScheduler mediaScheduler, VoiceActivityDetectorProvider vadProvider) {
         this.mediaScheduler = mediaScheduler;
+        this.vadProvider = vadProvider;
     }
 
     @Override
     public AudioRecorderFactory get() {
-        return new AudioRecorderFactory(mediaScheduler);
+        return new AudioRecorderFactory(mediaScheduler, vadProvider);
     }
 
     public static final class AudioRecorderFactoryType extends TypeLiteral<PooledObjectFactory<AudioRecorderImpl>> {

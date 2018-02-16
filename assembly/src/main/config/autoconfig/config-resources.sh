@@ -39,17 +39,6 @@ configDtmfDetector() {
         $MS_HOME/conf/mediaserver.xml
 }
 
-configSpeechDetector() {
-    readonly silence_level=${1-10}
-
-    echo "Configuring Speech Detector [Silence Level=$silence_level]"
-
-    xmlstarlet ed --inplace --pf \
-        -u "/mediaserver/resources/speechDetector/@silenceLevel" -v "$silence_level" \
-        $MS_HOME/conf/mediaserver.xml
-}
-
 configAudioCache $AUDIO_CACHE_ENABLED $AUDIO_CACHE_SIZE
 configAudioPlayer $PLAYER_CONNECTION_TIMEOUT
 configDtmfDetector $DTMF_DETECTOR_DBI $DTMF_DETECTOR_TONE_DURATION $DTMF_DETECTOR_TONE_INTERVAL
-configSpeechDetector $SPEECH_DETECTOR_SILENCE_LEVEL
