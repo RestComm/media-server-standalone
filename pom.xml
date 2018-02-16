@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.restcomm.media</groupId>
         <artifactId>media-parent</artifactId>
-        <version>1.0.0-15</version>
+        <version>1.0.0-16</version>
     </parent>
 
     <groupId>org.restcomm.media.server</groupId>
@@ -25,8 +25,20 @@
     </issueManagement>
 
     <properties>
-        <restcomm.media.core.version>8.0.0-SNAPSHOT</restcomm.media.core.version>
+        <restcomm.media.bom.version>1.0.0-4</restcomm.media.bom.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.restcomm.media</groupId>
+                <artifactId>media-bom</artifactId>
+                <version>${restcomm.media.bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Testing -->
@@ -67,11 +79,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.version}</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>
