@@ -23,7 +23,8 @@ package org.restcomm.media.server.standalone.bootstrap.ioc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.restcomm.media.server.standalone.bootstrap.ioc.provider.mgcp.MgcpEndpointManagerProvider;
+import org.restcomm.media.server.standalone.bootstrap.ioc.guice.module.*;
+import org.restcomm.media.server.standalone.bootstrap.ioc.guice.provider.mgcp.MgcpEndpointManagerProvider;
 import org.restcomm.media.control.mgcp.command.MgcpCommandProvider;
 import org.restcomm.media.control.mgcp.connection.MgcpConnectionProvider;
 import org.restcomm.media.control.mgcp.network.netty.AsyncMgcpChannel;

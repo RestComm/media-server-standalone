@@ -23,6 +23,7 @@ package org.restcomm.media.server.standalone.bootstrap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.restcomm.media.server.standalone.bootstrap.ioc.guice.GuiceBootstrapper;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 04/01/2018
