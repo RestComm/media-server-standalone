@@ -52,13 +52,6 @@
             <artifactId>asr-engine</artifactId>
         </dependency>
 
-        <!-- Plugins -->
-        <dependency>
-            <groupId>org.restcomm.media.plugin.vad</groupId>
-            <artifactId>media-plugin-vad-noise-threshold</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-
         <!-- codecs -->
         <dependency>
             <groupId>org.restcomm.media.core.codec</groupId>

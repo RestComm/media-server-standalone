@@ -21,25 +21,14 @@
 
 package org.restcomm.media.server.standalone.bootstrap;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.restcomm.media.server.standalone.bootstrap.ioc.AsrModule;
-import org.restcomm.media.server.standalone.bootstrap.ioc.CoreModule;
-import org.restcomm.media.server.standalone.bootstrap.ioc.MediaModule;
-import org.restcomm.media.server.standalone.bootstrap.ioc.MgcpModule;
-import org.restcomm.media.server.standalone.configuration.loader.ConfigurationLoader;
-import org.restcomm.media.server.standalone.configuration.loader.XmlConfigurationLoader;
-import org.restcomm.media.server.standalone.configuration.MediaServerConfiguration;
-import org.restcomm.media.core.resource.vad.VoiceActivityDetectorProvider;
-import org.restcomm.media.plugin.vad.spring.NoiseThresholdDetectorSpringProvider;
-
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.guice.module.SpringModule;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.restcomm.media.server.standalone.bootstrap.ioc.*;
+import org.restcomm.media.server.standalone.configuration.MediaServerConfiguration;
+import org.restcomm.media.server.standalone.configuration.loader.ConfigurationLoader;
+import org.restcomm.media.server.standalone.configuration.loader.XmlConfigurationLoader;
 import org.restcomm.media.spi.MediaServer;
 
 /**
@@ -48,14 +37,6 @@ import org.restcomm.media.spi.MediaServer;
  * @author Henrique Rosa (henrique.rosa@telestax.com)
  */
 public class GuiceBootstrapper implements Bootstrapper {
-
-    @Configuration
-    public static class SpringBootConfig {
-        @Bean
-        public VoiceActivityDetectorProvider voiceActivityDetectorProvider() {
-            return new NoiseThresholdDetectorSpringProvider(15);
-        }
-    }
 
     private static final Logger log = LogManager.getLogger(GuiceBootstrapper.class);
     private final String filepath;
@@ -69,8 +50,7 @@ public class GuiceBootstrapper implements Bootstrapper {
 
     public void deploy() throws Exception {
         MediaServerConfiguration conf = configurationLoader.load(this.filepath);
-        Injector injector = Guice.createInjector(new CoreModule(conf), new MediaModule(), new MgcpModule(), new AsrModule(),
-            new SpringModule(new AnnotationConfigApplicationContext(SpringBootConfig.class)));
+        Injector injector = Guice.createInjector(new CoreModule(conf), new MediaModule(), new MgcpModule(), new AsrModule(), new VadModule());
         this.mediaServer = injector.getInstance(StandaloneMediaServer.class);
         this.mediaServer.start();
     }
