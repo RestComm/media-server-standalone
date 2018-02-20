@@ -23,7 +23,8 @@ package org.restcomm.media.server.standalone.bootstrap.ioc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.restcomm.media.server.standalone.bootstrap.ioc.provider.mgcp.MgcpEndpointManagerProvider;
+import org.restcomm.media.server.standalone.bootstrap.ioc.guice.module.*;
+import org.restcomm.media.server.standalone.bootstrap.ioc.guice.provider.mgcp.MgcpEndpointManagerProvider;
 import org.restcomm.media.control.mgcp.command.MgcpCommandProvider;
 import org.restcomm.media.control.mgcp.connection.MgcpConnectionProvider;
 import org.restcomm.media.control.mgcp.network.netty.AsyncMgcpChannel;
@@ -44,7 +45,7 @@ public class MgcpModuleTest {
     public void testMgcpConnectionProviderBinding() {
         // given
         final MediaServerConfiguration config = new MediaServerConfiguration();
-        final Injector injector = Guice.createInjector(new MgcpModule(), new MediaModule(), new CoreModule(config), new AsrModule());
+        final Injector injector = Guice.createInjector(new MgcpModule(), new MediaModule(), new CoreModule(config), new AsrModule(), new VadModule());
 
         // when
         MgcpConnectionProvider obj = injector.getInstance(MgcpConnectionProvider.class);
@@ -57,7 +58,7 @@ public class MgcpModuleTest {
     public void testMgcpEndpointManagerProviderBinding() {
         // given
         final MediaServerConfiguration config = new MediaServerConfiguration();
-        final Injector injector = Guice.createInjector(new MgcpModule(), new MediaModule(), new CoreModule(config), new AsrModule());
+        final Injector injector = Guice.createInjector(new MgcpModule(), new MediaModule(), new CoreModule(config), new AsrModule(), new VadModule());
 
         // when
         MgcpEndpointManagerProvider obj = injector.getInstance(MgcpEndpointManagerProvider.class);
@@ -70,7 +71,7 @@ public class MgcpModuleTest {
     public void testMgcpCommandProviderBinding() {
         // given
         final MediaServerConfiguration config = new MediaServerConfiguration();
-        final Injector injector = Guice.createInjector(new MgcpModule(), new MediaModule(), new CoreModule(config), new AsrModule());
+        final Injector injector = Guice.createInjector(new MgcpModule(), new MediaModule(), new CoreModule(config), new AsrModule(), new VadModule());
 
         // when
         MgcpCommandProvider obj = injector.getInstance(MgcpCommandProvider.class);
@@ -83,7 +84,7 @@ public class MgcpModuleTest {
     public void testMgcpSignalProviderBinding() {
         // given
         final MediaServerConfiguration config = new MediaServerConfiguration();
-        final Injector injector = Guice.createInjector(new MgcpModule(), new MediaModule(), new CoreModule(config), new AsrModule());
+        final Injector injector = Guice.createInjector(new MgcpModule(), new MediaModule(), new CoreModule(config), new AsrModule(), new VadModule());
 
         // when
         MgcpSignalProvider obj = injector.getInstance(MgcpSignalProvider.class);
@@ -96,7 +97,7 @@ public class MgcpModuleTest {
     public void testAsyncMgcpChannelBinding() {
         // given
         final MediaServerConfiguration config = new MediaServerConfiguration();
-        final Injector injector = Guice.createInjector(new MgcpModule(), new MediaModule(), new CoreModule(config), new AsrModule());
+        final Injector injector = Guice.createInjector(new MgcpModule(), new MediaModule(), new CoreModule(config), new AsrModule(), new VadModule());
         
         // when
         AsyncMgcpChannel obj = injector.getInstance(AsyncMgcpChannel.class);
@@ -109,7 +110,7 @@ public class MgcpModuleTest {
     public void testServerManagerBinding() {
         // given
         final MediaServerConfiguration config = new MediaServerConfiguration();
-        final Injector injector = Guice.createInjector(new MgcpModule(), new MediaModule(), new CoreModule(config), new AsrModule());
+        final Injector injector = Guice.createInjector(new MgcpModule(), new MediaModule(), new CoreModule(config), new AsrModule(), new VadModule());
         
         // when
         ServerManager obj = injector.getInstance(ServerManager.class);
