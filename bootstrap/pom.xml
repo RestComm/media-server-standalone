@@ -30,6 +30,12 @@
             <artifactId>mgcp</artifactId>
         </dependency>
 
+        <!-- Plugins -->
+        <dependency>
+            <groupId>org.restcomm.media.plugin.vad</groupId>
+            <artifactId>media-plugin-vad-noise-threshold</artifactId>
+        </dependency>
+
         <!-- Dependency Injection -->
         <dependency>
             <groupId>com.google.inject</groupId>
