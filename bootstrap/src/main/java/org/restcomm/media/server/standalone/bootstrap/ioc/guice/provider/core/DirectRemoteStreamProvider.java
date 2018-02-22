@@ -35,7 +35,7 @@ public class DirectRemoteStreamProvider implements Provider<org.restcomm.media.r
 
     @Inject
     public DirectRemoteStreamProvider(MediaServerConfiguration config) {
-        instance = new org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider(config.getResourcesConfiguration().getConnectionTimeout());
+        instance = new org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider(config.getResourcesConfiguration().getPlayerConnectionTimeout());
     }
 
     @Override

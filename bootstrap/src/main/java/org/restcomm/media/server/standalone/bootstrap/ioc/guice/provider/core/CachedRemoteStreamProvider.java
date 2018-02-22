@@ -36,7 +36,7 @@ public class CachedRemoteStreamProvider implements Provider<org.restcomm.media.r
     @Inject
     public CachedRemoteStreamProvider(MediaServerConfiguration config) {
         instance = new org.restcomm.media.resource.player.audio.CachedRemoteStreamProvider(
-                config.getResourcesConfiguration().getPlayerCacheSize(), config.getResourcesConfiguration().getConnectionTimeout());
+                config.getResourcesConfiguration().getPlayerCacheSize(), config.getResourcesConfiguration().getPlayerConnectionTimeout());
     }
 
     @Override
