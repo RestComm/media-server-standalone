@@ -26,6 +26,7 @@ import org.restcomm.media.control.mgcp.network.netty.MgcpChannelInboundHandler;
 import org.restcomm.media.control.mgcp.network.netty.MgcpChannelInitializer;
 import org.restcomm.media.control.mgcp.network.netty.MgcpMessageDecoder;
 import org.restcomm.media.control.mgcp.network.netty.MgcpMessageEncoder;
+import org.restcomm.media.control.mgcp.transaction.MgcpTransactionNumberspace;
 import org.restcomm.media.network.netty.handler.NetworkFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -60,6 +61,11 @@ public class SpringMgcpConfiguration {
     @Bean
     public MgcpChannelInitializer mgcpChannelInitializer(int channelBuffer, @Qualifier("LocalNetworkFilter") NetworkFilter filter, MgcpMessageDecoder decoder, MgcpChannelInboundHandler inboundHandler, MgcpMessageEncoder encoder) {
         return new MgcpChannelInitializer(channelBuffer, filter, decoder, inboundHandler, encoder);
+    }
+
+    @Bean
+    public MgcpTransactionNumberspace mgcpTransactionNumberspace() {
+        return new MgcpTransactionNumberspace();
     }
 
 }
