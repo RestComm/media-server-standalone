@@ -24,10 +24,12 @@ package org.restcomm.media.server.standalone.bootstrap.ioc.spring.core;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.restcomm.media.scheduler.Clock;
-import org.restcomm.media.scheduler.PriorityQueueScheduler;
-import org.restcomm.media.scheduler.ServiceScheduler;
-import org.restcomm.media.scheduler.WallClock;
+import org.restcomm.media.network.deprecated.PortManager;
+import org.restcomm.media.network.deprecated.RtpPortManager;
+import org.restcomm.media.network.deprecated.UdpManager;
+import org.restcomm.media.scheduler.*;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -49,7 +51,7 @@ public class SpringCoreConfiguration {
     }
 
     @Bean("TaskScheduler")
-    public ServiceScheduler serviceScheduler(Clock wallClock) {
+    public Scheduler serviceScheduler(Clock wallClock) {
         return new ServiceScheduler(wallClock);
     }
 
@@ -67,6 +69,29 @@ public class SpringCoreConfiguration {
         executor.prestartAllCoreThreads();
         executor.setRemoveOnCancelPolicy(true);
         return MoreExecutors.listeningDecorator(executor);
+    }
+
+    @Bean("RtpPortManager")
+    public PortManager rtpPortManager(@Value("${mediaserver.media.lowPort}") int lowPort, @Value("${mediaserver.media.highPort}") int highPort) {
+        return new RtpPortManager(lowPort, highPort);
+    }
+
+    @Bean("LocalPortManager")
+    public PortManager localPortManager() {
+        return new RtpPortManager();
+    }
+
+    @Bean("UdpManager")
+    public UdpManager udpManager(Scheduler scheduler, @Qualifier("RtpPortManager") PortManager rtpPortManager, @Qualifier("LocalPortManager") PortManager localPortManager, @Value("${mediaserver.network.bindAddress}") String bindAddress, @Value("${mediaserver.controller.mgcp.address}") String mgcpAddress, @Value("${mediaserver.network.externalAddress}") String externalAddress, @Value("${mediaserver.network.network}") String network, @Value("${mediaserver.network.subnet}") String subnet, @Value("${mediaserver.media.timeout}") int timeout, @Value("${mediaserver.network.sbc}") boolean sbc) {
+        final UdpManager udpManager = new UdpManager(scheduler, rtpPortManager, localPortManager);
+        udpManager.setBindAddress(bindAddress);
+        udpManager.setLocalBindAddress(mgcpAddress);
+        udpManager.setExternalAddress(externalAddress);
+        udpManager.setLocalNetwork(network);
+        udpManager.setLocalSubnet(subnet);
+        udpManager.setUseSbc(sbc);
+        udpManager.setRtpTimeout(timeout);
+        return udpManager;
     }
 
 }
