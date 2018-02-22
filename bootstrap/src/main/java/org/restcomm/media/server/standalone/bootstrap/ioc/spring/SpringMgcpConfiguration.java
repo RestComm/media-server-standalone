@@ -21,12 +21,15 @@
 
 package org.restcomm.media.server.standalone.bootstrap.ioc.spring;
 
+import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import org.restcomm.media.control.mgcp.message.MgcpMessageParser;
 import org.restcomm.media.control.mgcp.network.netty.MgcpChannelInboundHandler;
 import org.restcomm.media.control.mgcp.network.netty.MgcpChannelInitializer;
 import org.restcomm.media.control.mgcp.network.netty.MgcpMessageDecoder;
 import org.restcomm.media.control.mgcp.network.netty.MgcpMessageEncoder;
+import org.restcomm.media.control.mgcp.transaction.MgcpTransactionManagerProvider;
 import org.restcomm.media.control.mgcp.transaction.MgcpTransactionNumberspace;
+import org.restcomm.media.control.mgcp.transaction.SubMgcpTransactionManagerProvider;
 import org.restcomm.media.network.netty.handler.NetworkFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -66,6 +69,11 @@ public class SpringMgcpConfiguration {
     @Bean
     public MgcpTransactionNumberspace mgcpTransactionNumberspace() {
         return new MgcpTransactionNumberspace();
+    }
+
+    @Bean
+    public SubMgcpTransactionManagerProvider subMgcpTransactionManagerProvider(MgcpTransactionNumberspace numberspace, ListeningScheduledExecutorService executor) {
+        return new SubMgcpTransactionManagerProvider(numberspace, executor);
     }
 
 }
