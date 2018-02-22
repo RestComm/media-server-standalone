@@ -21,6 +21,9 @@
 
 package org.restcomm.media.server.standalone.bootstrap.ioc.spring.core;
 
+import com.google.common.util.concurrent.ListeningScheduledExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.restcomm.media.scheduler.Clock;
 import org.restcomm.media.scheduler.PriorityQueueScheduler;
 import org.restcomm.media.scheduler.ServiceScheduler;
@@ -28,25 +31,42 @@ import org.restcomm.media.scheduler.WallClock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 22/02/2018
  */
 @Configuration
 public class SpringCoreConfiguration {
 
-    @Bean
+    private static final int N_PROC = Runtime.getRuntime().availableProcessors();
+
+    @Bean("WallClock")
     public Clock wallClock() {
         return new WallClock();
     }
 
-    @Bean
+    @Bean("TaskScheduler")
     public ServiceScheduler serviceScheduler(Clock wallClock) {
         return new ServiceScheduler(wallClock);
     }
 
-    @Bean
+    @Bean("MediaScheduler")
     public PriorityQueueScheduler mediaScheduler(Clock clock) {
         return new PriorityQueueScheduler(clock);
+    }
+
+    @Bean("MgcpScheduler")
+    public ListeningScheduledExecutorService listeningScheduledExecutorService() {
+        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("mgcp-%d").build();
+        // TODO set uncaught exception handler
+
+        ScheduledThreadPoolExecutor executor = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(N_PROC, threadFactory);
+        executor.prestartAllCoreThreads();
+        executor.setRemoveOnCancelPolicy(true);
+        return MoreExecutors.listeningDecorator(executor);
     }
 
 }
