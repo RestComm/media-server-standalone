@@ -21,6 +21,8 @@
 
 package org.restcomm.media.server.standalone.bootstrap.ioc.spring.core;
 
+import org.restcomm.media.scheduler.Clock;
+import org.restcomm.media.scheduler.PriorityQueueScheduler;
 import org.restcomm.media.scheduler.ServiceScheduler;
 import org.restcomm.media.scheduler.WallClock;
 import org.springframework.context.annotation.Bean;
@@ -33,13 +35,18 @@ import org.springframework.context.annotation.Configuration;
 public class SpringCoreConfiguration {
 
     @Bean
-    public WallClock wallClock() {
+    public Clock wallClock() {
         return new WallClock();
     }
 
     @Bean
-    public ServiceScheduler serviceScheduler(WallClock wallClock) {
+    public ServiceScheduler serviceScheduler(Clock wallClock) {
         return new ServiceScheduler(wallClock);
+    }
+
+    @Bean
+    public PriorityQueueScheduler mediaScheduler(Clock clock) {
+        return new PriorityQueueScheduler(clock);
     }
 
 }
