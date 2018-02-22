@@ -21,29 +21,24 @@
 
 package org.restcomm.media.server.standalone.bootstrap.ioc.spring;
 
-import org.restcomm.media.resource.player.audio.CachedRemoteStreamProvider;
-import org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.restcomm.media.core.resource.vad.VoiceActivityDetectorProvider;
+import org.restcomm.media.plugin.vad.spring.NoiseThresholdDetectorSpringProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 22/02/2018
  */
 @Configuration
-public class SpringMediaConfiguration {
+public class SpringVadConfiguration {
+
+    private static final int SILENCE_LEVEL = 10;
 
     @Bean
-    @ConditionalOnProperty(name = "mediaserver.resources.player.cache.enabled", havingValue = "true")
-    public CachedRemoteStreamProvider cachedRemoteStreamProvider(@Value("${mediaserver.resources.player.connectionTimeout}") int connectionTimeout, @Value("${mediaserver.resources.player.cache.size}") int cacheSize) {
-        return new CachedRemoteStreamProvider(cacheSize, connectionTimeout);
-    }
-
-    @Bean
-    @ConditionalOnProperty(name = "mediaserver.resources.player.cache.enabled", havingValue = "false")
-    public DirectRemoteStreamProvider directRemoteStreamProvider(@Value("${mediaserver.resources.player.connectionTimeout}") int connectionTimeout) {
-        return new DirectRemoteStreamProvider(connectionTimeout);
+    @Scope("prototype")
+    public VoiceActivityDetectorProvider voiceActivityDetectorProvider() {
+        return new NoiseThresholdDetectorSpringProvider(SILENCE_LEVEL);
     }
 
 }
