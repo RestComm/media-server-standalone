@@ -21,10 +21,10 @@
 
 package org.restcomm.media.server.standalone.bootstrap.ioc.spring.core;
 
+import org.restcomm.media.scheduler.ServiceScheduler;
 import org.restcomm.media.scheduler.WallClock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 22/02/2018
@@ -33,9 +33,13 @@ import org.springframework.context.annotation.Scope;
 public class SpringCoreConfiguration {
 
     @Bean
-    @Scope("singleton")
     public WallClock wallClock() {
         return new WallClock();
+    }
+
+    @Bean
+    public ServiceScheduler serviceScheduler(WallClock wallClock) {
+        return new ServiceScheduler(wallClock);
     }
 
 }
