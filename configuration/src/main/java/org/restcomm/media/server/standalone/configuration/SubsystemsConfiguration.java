@@ -21,10 +21,7 @@
 
 package org.restcomm.media.server.standalone.configuration;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.naming.ConfigurationException;
 
@@ -34,7 +31,12 @@ import org.apache.commons.lang3.StringUtils;
  * @author anikiforov
  */
 public class SubsystemsConfiguration {
+
     private final Map<String, SubsystemConfiguration> subsystems = new HashMap<>();
+
+    public Collection<SubsystemConfiguration> getSubsystems() {
+        return this.subsystems.values();
+    }
 
     public Collection<DriverConfiguration> getDrivers(final String subsystemName) {
         final SubsystemConfiguration subsystem = subsystems.get(subsystemName);

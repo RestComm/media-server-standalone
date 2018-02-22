@@ -21,8 +21,8 @@
 
 package org.restcomm.media.server.standalone.configuration;
 
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -54,7 +54,7 @@ public class MediaConfiguration {
         this.lowPort = LOW_PORT;
         this.highPort = HIGH_PORT;
         this.jitterBufferSize = JITTER_BUFFER_SIZE;
-        this.codecs = new HashSet<>(5);
+        this.codecs = new LinkedHashSet<>(5);
     }
 
     public int getMaxDuration() {
