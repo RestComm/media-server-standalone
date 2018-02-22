@@ -27,9 +27,7 @@ import org.restcomm.media.control.mgcp.network.netty.MgcpChannelInboundHandler;
 import org.restcomm.media.control.mgcp.network.netty.MgcpChannelInitializer;
 import org.restcomm.media.control.mgcp.network.netty.MgcpMessageDecoder;
 import org.restcomm.media.control.mgcp.network.netty.MgcpMessageEncoder;
-import org.restcomm.media.control.mgcp.transaction.MgcpTransactionManagerProvider;
-import org.restcomm.media.control.mgcp.transaction.MgcpTransactionNumberspace;
-import org.restcomm.media.control.mgcp.transaction.SubMgcpTransactionManagerProvider;
+import org.restcomm.media.control.mgcp.transaction.*;
 import org.restcomm.media.network.netty.handler.NetworkFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -72,8 +70,13 @@ public class SpringMgcpConfiguration {
     }
 
     @Bean
-    public SubMgcpTransactionManagerProvider subMgcpTransactionManagerProvider(MgcpTransactionNumberspace numberspace, ListeningScheduledExecutorService executor) {
+    public MgcpTransactionManagerProvider subMgcpTransactionManagerProvider(MgcpTransactionNumberspace numberspace, ListeningScheduledExecutorService executor) {
         return new SubMgcpTransactionManagerProvider(numberspace, executor);
+    }
+
+    @Bean
+    public MgcpTransactionManager mgcpTransactionManager(MgcpTransactionManagerProvider transactionManagerProvider) {
+        return new GlobalMgcpTransactionManager(transactionManagerProvider);
     }
 
 }
