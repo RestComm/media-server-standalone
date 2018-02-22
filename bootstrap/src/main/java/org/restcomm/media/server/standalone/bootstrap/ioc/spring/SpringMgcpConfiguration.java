@@ -21,7 +21,13 @@
 
 package org.restcomm.media.server.standalone.bootstrap.ioc.spring;
 
+import org.restcomm.media.control.mgcp.message.MgcpMessageParser;
 import org.restcomm.media.control.mgcp.network.netty.MgcpChannelInboundHandler;
+import org.restcomm.media.control.mgcp.network.netty.MgcpChannelInitializer;
+import org.restcomm.media.control.mgcp.network.netty.MgcpMessageDecoder;
+import org.restcomm.media.control.mgcp.network.netty.MgcpMessageEncoder;
+import org.restcomm.media.network.netty.handler.NetworkFilter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,6 +40,26 @@ public class SpringMgcpConfiguration {
     @Bean
     public MgcpChannelInboundHandler mgcpChannelInboundHandler() {
         return new MgcpChannelInboundHandler();
+    }
+
+    @Bean
+    public MgcpMessageParser mgcpMessageParser() {
+        return new MgcpMessageParser();
+    }
+
+    @Bean
+    public MgcpMessageDecoder mgcpMessageDecoder(MgcpMessageParser parser) {
+        return new MgcpMessageDecoder(parser);
+    }
+
+    @Bean
+    public MgcpMessageEncoder mgcpMessageEncoder() {
+        return new MgcpMessageEncoder();
+    }
+
+    @Bean
+    public MgcpChannelInitializer mgcpChannelInitializer(int channelBuffer, @Qualifier("LocalNetworkFilter") NetworkFilter filter, MgcpMessageDecoder decoder, MgcpChannelInboundHandler inboundHandler, MgcpMessageEncoder encoder) {
+        return new MgcpChannelInitializer(channelBuffer, filter, decoder, inboundHandler, encoder);
     }
 
 }

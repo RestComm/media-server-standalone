@@ -26,6 +26,7 @@ import org.restcomm.media.network.deprecated.RtpPortManager;
 import org.restcomm.media.network.deprecated.UdpManager;
 import org.restcomm.media.network.netty.filter.LocalNetworkGuard;
 import org.restcomm.media.network.netty.filter.NetworkGuard;
+import org.restcomm.media.network.netty.handler.NetworkFilter;
 import org.restcomm.media.scheduler.Scheduler;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,6 +65,11 @@ public class SpringNetworkConfiguration {
     @Bean("LocalNetworkGuard")
     public NetworkGuard localNetworkGuard(@Value("${mediaserver.network.network}") String network, @Value("${mediaserver.network.subnet}") String subnet) {
         return new LocalNetworkGuard(network, subnet);
+    }
+
+    @Bean("LocalNetworkFilter")
+    public NetworkFilter mgcpNetworkFilter(@Qualifier("LocalNetworkGuard") NetworkGuard networkGuard) {
+        return new NetworkFilter(networkGuard);
     }
 
 }
