@@ -72,9 +72,12 @@ public class XmlToPropertiesConfigurationLoader extends XmlConfigurationLoader {
         setMgcpControllerProperty("channelBuffer", String.valueOf(configuration.getChannelBuffer()));
 
         final Iterator<MgcpEndpointConfiguration> endpoints = configuration.getEndpoints();
+        int index = 0;
         while (endpoints.hasNext()) {
             final MgcpEndpointConfiguration endpoint = endpoints.next();
-            setMgcpControllerProperty("endpoint." + endpoint.getName() + ".relay", endpoint.getRelayType().name());
+            setMgcpControllerProperty("endpoints[" + index +"].name", endpoint.getName());
+            setMgcpControllerProperty("endpoints[" + index +"].relay", endpoint.getRelayType().name());
+            index++;
         }
     }
 
