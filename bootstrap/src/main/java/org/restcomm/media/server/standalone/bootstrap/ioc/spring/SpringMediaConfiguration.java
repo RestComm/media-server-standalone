@@ -21,8 +21,12 @@
 
 package org.restcomm.media.server.standalone.bootstrap.ioc.spring;
 
+import org.bouncycastle.crypto.tls.ProtocolVersion;
 import org.restcomm.media.resource.player.audio.CachedRemoteStreamProvider;
 import org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider;
+import org.restcomm.media.rtp.crypto.AlgorithmCertificate;
+import org.restcomm.media.rtp.crypto.CipherSuite;
+import org.restcomm.media.rtp.crypto.DtlsSrtpServerProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +48,30 @@ public class SpringMediaConfiguration {
     @ConditionalOnProperty(name = "mediaserver.resources.player.cache.enabled", havingValue = "false")
     public DirectRemoteStreamProvider directRemoteStreamProvider(@Value("${mediaserver.resources.player.connectionTimeout}") int connectionTimeout) {
         return new DirectRemoteStreamProvider(connectionTimeout);
+    }
+
+    @Bean
+    public DtlsSrtpServerProvider dtlsSrtpServerProvider(@Value("${mediaserver.dtls.minVersion}") int minVersion, @Value("${mediaserver.dtls.maxVersion}") int maxVersion, @Value("${mediaserver.dtls.cipherSuites}") String cipherSuites, @Value("${mediaserver.dtls.certificate.path}") String certificatePath, @Value("${mediaserver.dtls.certificate.key}") String keyPath, @Value("${mediaserver.dtls.certificate.algorithm}") String algorithmCertificate) {
+        ProtocolVersion minProtocolVersion = ProtocolVersion.DTLSv10;
+        if (minVersion == ProtocolVersion.DTLSv12.getFullVersion()) {
+            minProtocolVersion = ProtocolVersion.DTLSv12;
+        }
+
+        ProtocolVersion maxProtocolVersion = ProtocolVersion.DTLSv12;
+        if (maxVersion == ProtocolVersion.DTLSv10.getFullVersion()) {
+            maxProtocolVersion = ProtocolVersion.DTLSv10;
+        }
+
+        return new DtlsSrtpServerProvider(minProtocolVersion, maxProtocolVersion, buildCipherSuite(cipherSuites), certificatePath, keyPath, AlgorithmCertificate.valueOf(algorithmCertificate.toUpperCase()));
+    }
+
+    private CipherSuite[] buildCipherSuite(String cipherSuites) {
+        String[] values = cipherSuites.split(",");
+        CipherSuite[] cipherSuiteTemp = new CipherSuite[values.length];
+        for (int i = 0; i < values.length; i++) {
+            cipherSuiteTemp[i] = CipherSuite.valueOf(values[i].trim());
+        }
+        return cipherSuiteTemp;
     }
 
 }
