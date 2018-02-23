@@ -22,11 +22,12 @@
 package org.restcomm.media.server.standalone.bootstrap.ioc.spring;
 
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.restcomm.media.control.mgcp.message.MgcpMessageParser;
-import org.restcomm.media.control.mgcp.network.netty.MgcpChannelInboundHandler;
-import org.restcomm.media.control.mgcp.network.netty.MgcpChannelInitializer;
-import org.restcomm.media.control.mgcp.network.netty.MgcpMessageDecoder;
-import org.restcomm.media.control.mgcp.network.netty.MgcpMessageEncoder;
+import org.restcomm.media.control.mgcp.network.netty.*;
 import org.restcomm.media.control.mgcp.transaction.*;
 import org.restcomm.media.network.netty.handler.NetworkFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,11 +42,6 @@ import org.springframework.context.annotation.Configuration;
 public class SpringMgcpConfiguration {
 
     @Bean
-    public MgcpChannelInboundHandler mgcpChannelInboundHandler() {
-        return new MgcpChannelInboundHandler();
-    }
-
-    @Bean
     public MgcpMessageParser mgcpMessageParser() {
         return new MgcpMessageParser();
     }
@@ -58,6 +54,11 @@ public class SpringMgcpConfiguration {
     @Bean
     public MgcpMessageEncoder mgcpMessageEncoder() {
         return new MgcpMessageEncoder();
+    }
+
+    @Bean
+    public MgcpChannelInboundHandler mgcpChannelInboundHandler() {
+        return new MgcpChannelInboundHandler();
     }
 
     @Bean
@@ -78,6 +79,21 @@ public class SpringMgcpConfiguration {
     @Bean
     public MgcpTransactionManager mgcpTransactionManager(MgcpTransactionManagerProvider transactionManagerProvider) {
         return new GlobalMgcpTransactionManager(transactionManagerProvider);
+    }
+
+    @Bean("MgcpNioEventLoopGroup")
+    public NioEventLoopGroup mgcpNioEventLoopGroup(ListeningScheduledExecutorService executor) {
+        return new NioEventLoopGroup(Runtime.getRuntime().availableProcessors(), executor);
+    }
+
+    @Bean("MgcpNioBootstrap")
+    public Bootstrap mgcpNioBootstrap(@Qualifier("MgcpNioEventLoopGroup") EventLoopGroup eventLoopGroup) {
+        return new Bootstrap().channel(NioDatagramChannel.class).group(eventLoopGroup);
+    }
+
+    @Bean
+    public MgcpNetworkManager mgcpNetworkManager(@Qualifier("MgcpNioBootstrap") Bootstrap bootstrap, MgcpChannelInitializer initializer) {
+        return new MgcpNetworkManager(bootstrap, initializer);
     }
 
 }
