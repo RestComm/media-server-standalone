@@ -26,6 +26,8 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
+import org.restcomm.media.control.mgcp.call.GlobalMgcpCallManager;
+import org.restcomm.media.control.mgcp.call.MgcpCallManager;
 import org.restcomm.media.control.mgcp.message.MgcpMessageParser;
 import org.restcomm.media.control.mgcp.network.netty.*;
 import org.restcomm.media.control.mgcp.pkg.*;
@@ -139,6 +141,11 @@ public class SpringMgcpConfiguration {
     @Bean
     public MgcpSignalProvider mgcpSignalProvider(ListeningScheduledExecutorService executor) {
         return new MgcpSignalProvider(executor);
+    }
+
+    @Bean
+    public MgcpCallManager mgcpCallManager() {
+        return new GlobalMgcpCallManager();
     }
 
 }
