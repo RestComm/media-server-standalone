@@ -97,7 +97,7 @@ public class SpringMediaConfiguration {
             final String[] codecSplit = codecs.split(",");
             codecTypes = new CodecType[codecSplit.length];
 
-            for (int i = 0; 1 < codecSplit.length; i++) {
+            for (int i = 0; i < codecSplit.length; i++) {
                 CodecType codecType = CodecType.fromName(codecs);
                 if (codecType != null) {
                     codecTypes[i] = codecType;

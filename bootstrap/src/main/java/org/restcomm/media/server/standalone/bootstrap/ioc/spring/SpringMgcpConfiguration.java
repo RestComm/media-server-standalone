@@ -116,17 +116,17 @@ public class SpringMgcpConfiguration {
         return new AudioPackage();
     }
 
-    @Bean
+    @Bean()
     public RtpPackage rtpPackage() {
         return new RtpPackage();
     }
 
-    @Bean
+    @Bean("RtpEventProvider")
     public RtpEventProvider rtpEventProvider(RtpPackage rtpPackage) {
         return new RtpEventProvider(rtpPackage);
     }
 
-    @Bean
+    @Bean("MgcpEventProvider")
     public MgcpEventProvider mgcpEventProvider(RtpEventProvider rtpProvider) {
         GlobalMgcpEventProvider eventProvider = new GlobalMgcpEventProvider();
         eventProvider.registerProvider(RtpPackage.PACKAGE_NAME, rtpProvider);
@@ -152,7 +152,7 @@ public class SpringMgcpConfiguration {
     }
 
     @Bean
-    public MgcpConnectionProvider mgcpConnectionProvider(MgcpEventProvider eventProvider, MediaChannelProvider mediaChannelProvider, ChannelsManager channelsManager, ListeningScheduledExecutorService executor, @Value("${mediaserver.media.halfOpenDuration}") int halfOpenTimeout, @Value("${mediaserver.media.maxDuration}") int openTimeout) {
+    public MgcpConnectionProvider mgcpConnectionProvider(@Qualifier("MgcpEventProvider") MgcpEventProvider eventProvider, MediaChannelProvider mediaChannelProvider, ChannelsManager channelsManager, ListeningScheduledExecutorService executor, @Value("${mediaserver.media.halfOpenDuration}") int halfOpenTimeout, @Value("${mediaserver.media.maxDuration}") int openTimeout) {
         return new MgcpConnectionProvider(halfOpenTimeout, openTimeout, eventProvider, mediaChannelProvider, channelsManager, executor);
     }
 
