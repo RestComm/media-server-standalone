@@ -23,11 +23,14 @@ package org.restcomm.media.server.standalone.bootstrap.ioc.spring;
 
 import org.bouncycastle.crypto.tls.ProtocolVersion;
 import org.restcomm.media.component.dsp.DspFactoryImpl;
+import org.restcomm.media.resource.player.audio.AudioPlayerProvider;
 import org.restcomm.media.resource.player.audio.CachedRemoteStreamProvider;
 import org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider;
+import org.restcomm.media.resource.player.audio.RemoteStreamProvider;
 import org.restcomm.media.rtp.crypto.AlgorithmCertificate;
 import org.restcomm.media.rtp.crypto.CipherSuite;
 import org.restcomm.media.rtp.crypto.DtlsSrtpServerProvider;
+import org.restcomm.media.scheduler.PriorityQueueScheduler;
 import org.restcomm.media.server.standalone.bootstrap.ioc.guice.provider.media.DspProvider;
 import org.restcomm.media.server.standalone.configuration.CodecType;
 import org.restcomm.media.spi.dsp.DspFactory;
@@ -91,6 +94,11 @@ public class SpringMediaConfiguration {
             }
         }
         return dsp;
+    }
+
+    @Bean
+    public AudioPlayerProvider audioPlayerProvider(PriorityQueueScheduler scheduler, RemoteStreamProvider streamProvider, DspFactory dspFactory) {
+        return new AudioPlayerProvider(scheduler, streamProvider, dspFactory);
     }
 
 }
