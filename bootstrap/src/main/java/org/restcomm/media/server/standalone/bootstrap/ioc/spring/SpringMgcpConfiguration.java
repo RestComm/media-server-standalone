@@ -28,10 +28,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.restcomm.media.control.mgcp.message.MgcpMessageParser;
 import org.restcomm.media.control.mgcp.network.netty.*;
-import org.restcomm.media.control.mgcp.pkg.DynamicMgcpPackageManager;
-import org.restcomm.media.control.mgcp.pkg.GlobalMgcpEventProvider;
-import org.restcomm.media.control.mgcp.pkg.MgcpEventProvider;
-import org.restcomm.media.control.mgcp.pkg.MgcpPackageManager;
+import org.restcomm.media.control.mgcp.pkg.*;
 import org.restcomm.media.control.mgcp.pkg.au.AudioPackage;
 import org.restcomm.media.control.mgcp.pkg.r.RtpEventProvider;
 import org.restcomm.media.control.mgcp.pkg.r.RtpPackage;
@@ -137,6 +134,11 @@ public class SpringMgcpConfiguration {
         packageManager.registerPackage(rtpPackage);
         packageManager.registerPackage(audioPackage);
         return packageManager;
+    }
+
+    @Bean
+    public MgcpSignalProvider mgcpSignalProvider(ListeningScheduledExecutorService executor) {
+        return new MgcpSignalProvider(executor);
     }
 
 }
