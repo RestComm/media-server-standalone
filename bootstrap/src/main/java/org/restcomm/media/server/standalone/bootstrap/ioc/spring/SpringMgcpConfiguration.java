@@ -29,6 +29,11 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.restcomm.media.control.mgcp.call.GlobalMgcpCallManager;
 import org.restcomm.media.control.mgcp.call.MgcpCallManager;
 import org.restcomm.media.control.mgcp.connection.MgcpConnectionProvider;
+import org.restcomm.media.control.mgcp.endpoint.MgcpEndpoint;
+import org.restcomm.media.control.mgcp.endpoint.provider.MediaGroupProvider;
+import org.restcomm.media.control.mgcp.endpoint.provider.MgcpEndpointProvider;
+import org.restcomm.media.control.mgcp.endpoint.provider.MgcpMixerEndpointProvider;
+import org.restcomm.media.control.mgcp.endpoint.provider.MgcpSplitterEndpointProvider;
 import org.restcomm.media.control.mgcp.message.MgcpMessageParser;
 import org.restcomm.media.control.mgcp.network.netty.*;
 import org.restcomm.media.control.mgcp.pkg.*;
@@ -40,10 +45,15 @@ import org.restcomm.media.network.netty.channel.NettyNetworkChannelGlobalContext
 import org.restcomm.media.network.netty.handler.NetworkFilter;
 import org.restcomm.media.rtp.ChannelsManager;
 import org.restcomm.media.rtp.channels.MediaChannelProvider;
+import org.restcomm.media.scheduler.PriorityQueueScheduler;
+import org.restcomm.media.spi.RelayType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 22/02/2018
@@ -154,6 +164,37 @@ public class SpringMgcpConfiguration {
     @Bean
     public MgcpConnectionProvider mgcpConnectionProvider(@Qualifier("MgcpEventProvider") MgcpEventProvider eventProvider, MediaChannelProvider mediaChannelProvider, ChannelsManager channelsManager, ListeningScheduledExecutorService executor, @Value("${mediaserver.media.halfOpenDuration}") int halfOpenTimeout, @Value("${mediaserver.media.maxDuration}") int openTimeout) {
         return new MgcpConnectionProvider(halfOpenTimeout, openTimeout, eventProvider, mediaChannelProvider, channelsManager, executor);
+    }
+
+    @Bean
+    public List<MgcpEndpointProvider<? extends MgcpEndpoint>> mgcpEndpointProviders(MgcpProperties mgcpProperties, PriorityQueueScheduler mediaScheduler, MgcpConnectionProvider connectionProvider) {
+        // TODO Pass MediaGroupProvider as injected parameter
+        MediaGroupProvider mediaGroupProvider = null;
+
+        final List<MgcpProperties.Endpoint> endpoints = mgcpProperties.getEndpoints();
+        final List<MgcpEndpointProvider<? extends MgcpEndpoint>> providers = new ArrayList<>(endpoints.size());
+        final String domain = mgcpProperties.getBindAddress() + ":" + mgcpProperties.getPort();
+
+        for (MgcpProperties.Endpoint endpoint : endpoints) {
+            final MgcpEndpointProvider<? extends MgcpEndpoint> provider;
+            final String namespace = endpoint.getName();
+
+            switch (RelayType.fromName(endpoint.getRelay())) {
+                case MIXER:
+                    provider = new MgcpMixerEndpointProvider(namespace, domain, mediaScheduler, connectionProvider, mediaGroupProvider);
+                    break;
+
+                case SPLITTER:
+                    provider = new MgcpSplitterEndpointProvider(namespace, domain, mediaScheduler, connectionProvider, mediaGroupProvider);
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Unknown relay type " + endpoint.getRelay());
+            }
+            providers.add(provider);
+        }
+
+        return providers;
     }
 
 }
