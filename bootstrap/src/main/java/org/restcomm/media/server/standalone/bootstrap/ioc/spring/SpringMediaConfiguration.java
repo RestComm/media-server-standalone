@@ -25,6 +25,7 @@ import org.bouncycastle.crypto.tls.ProtocolVersion;
 import org.restcomm.media.component.dsp.DspFactoryImpl;
 import org.restcomm.media.core.resource.vad.VoiceActivityDetectorProvider;
 import org.restcomm.media.network.deprecated.UdpManager;
+import org.restcomm.media.resource.dtmf.DtmfDetectorFactory;
 import org.restcomm.media.resource.player.audio.AudioPlayerProvider;
 import org.restcomm.media.resource.player.audio.CachedRemoteStreamProvider;
 import org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider;
@@ -127,6 +128,11 @@ public class SpringMediaConfiguration {
     @Bean
     public AudioRecorderProvider audioRecorderProvider(PriorityQueueScheduler scheduler, VoiceActivityDetectorProvider vadProvider) {
         return new AudioRecorderProvider(scheduler, vadProvider);
+    }
+
+    @Bean
+    public DtmfDetectorFactory dtmfDetectorFactory(PriorityQueueScheduler scheduler, @Value("${mediaserver.resources.dtmfDetector.dbi}") int volume, @Value("${mediaserver.resources.dtmfDetector.toneDuration}") int duration, @Value("${mediaserver.resources.dtmfDetector.toneInterval}") int interval) {
+        return new DtmfDetectorFactory(scheduler, volume, duration, interval);
     }
 
     @Bean
