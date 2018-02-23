@@ -32,6 +32,7 @@ import org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider;
 import org.restcomm.media.resource.player.audio.RemoteStreamProvider;
 import org.restcomm.media.resource.recorder.audio.AudioRecorderProvider;
 import org.restcomm.media.rtp.ChannelsManager;
+import org.restcomm.media.rtp.channels.MediaChannelProvider;
 import org.restcomm.media.rtp.crypto.AlgorithmCertificate;
 import org.restcomm.media.rtp.crypto.CipherSuite;
 import org.restcomm.media.rtp.crypto.DtlsSrtpServerProvider;
@@ -157,6 +158,11 @@ public class SpringMediaConfiguration {
         channelsManager.setScheduler(scheduler);
         channelsManager.setJitterBufferSize(jitterBufferSize);
         return channelsManager;
+    }
+
+    @Bean
+    public MediaChannelProvider mediaChannelProvider(ChannelsManager channelsManager, DspFactory dspFactory) {
+        return new MediaChannelProvider(channelsManager, dspFactory);
     }
 
 }
