@@ -28,6 +28,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.restcomm.media.control.mgcp.message.MgcpMessageParser;
 import org.restcomm.media.control.mgcp.network.netty.*;
+import org.restcomm.media.control.mgcp.pkg.DynamicMgcpPackageManager;
+import org.restcomm.media.control.mgcp.pkg.MgcpPackageManager;
+import org.restcomm.media.control.mgcp.pkg.au.AudioPackage;
+import org.restcomm.media.control.mgcp.pkg.r.RtpPackage;
 import org.restcomm.media.control.mgcp.transaction.*;
 import org.restcomm.media.network.netty.channel.NettyNetworkChannelGlobalContext;
 import org.restcomm.media.network.netty.handler.NetworkFilter;
@@ -100,6 +104,14 @@ public class SpringMgcpConfiguration {
     @Bean
     public AsyncMgcpChannel asyncMgcpChannel(MgcpNetworkManager networkManager, MgcpChannelInboundHandler inboundHandler) {
         return new AsyncMgcpChannel(new NettyNetworkChannelGlobalContext(networkManager), inboundHandler);
+    }
+
+    @Bean
+    public MgcpPackageManager mgcpPackageManager() {
+        final DynamicMgcpPackageManager packageManager = new DynamicMgcpPackageManager();
+        packageManager.registerPackage(new RtpPackage());
+        packageManager.registerPackage(new AudioPackage());
+        return packageManager;
     }
 
 }
