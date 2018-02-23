@@ -23,15 +23,19 @@ package org.restcomm.media.server.standalone.bootstrap.ioc.spring;
 
 import org.bouncycastle.crypto.tls.ProtocolVersion;
 import org.restcomm.media.component.dsp.DspFactoryImpl;
+import org.restcomm.media.network.deprecated.UdpManager;
 import org.restcomm.media.resource.player.audio.AudioPlayerProvider;
 import org.restcomm.media.resource.player.audio.CachedRemoteStreamProvider;
 import org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider;
 import org.restcomm.media.resource.player.audio.RemoteStreamProvider;
+import org.restcomm.media.rtp.ChannelsManager;
 import org.restcomm.media.rtp.crypto.AlgorithmCertificate;
 import org.restcomm.media.rtp.crypto.CipherSuite;
 import org.restcomm.media.rtp.crypto.DtlsSrtpServerProvider;
 import org.restcomm.media.scheduler.PriorityQueueScheduler;
-import org.restcomm.media.server.standalone.bootstrap.ioc.guice.provider.media.DspProvider;
+import org.restcomm.media.sdp.format.AVProfile;
+import org.restcomm.media.sdp.format.RTPFormat;
+import org.restcomm.media.sdp.format.RTPFormats;
 import org.restcomm.media.server.standalone.configuration.CodecType;
 import org.restcomm.media.spi.dsp.DspFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -81,16 +85,33 @@ public class SpringMediaConfiguration {
         return cipherSuiteTemp;
     }
 
+    public CodecType[] loadCodecs(@Value("${mediaserver.media.codecs}") String codecs) {
+        final CodecType[] codecTypes;
+        if (codecs == null || codecs.isEmpty()) {
+            codecTypes = new CodecType[0];
+        } else {
+            final String[] codecSplit = codecs.split(",");
+            codecTypes = new CodecType[codecSplit.length];
+
+            for (int i = 0; 1 < codecSplit.length; i++) {
+                CodecType codecType = CodecType.fromName(codecs);
+                if (codecType != null) {
+                    codecTypes[i] = codecType;
+                }
+            }
+        }
+        return codecTypes;
+    }
+
     @Bean
     public DspFactory dspFactory(@Value("${mediaserver.media.codecs}") String codecs) {
         final DspFactoryImpl dsp = new DspFactoryImpl();
-        if (codecs != null && !codecs.isEmpty()) {
-            for (String codec : codecs.split(",")) {
-                final CodecType codecType = CodecType.fromName(codec);
-                if (codecType != null && !codecType.getEncoder().isEmpty() && !codecType.getDecoder().isEmpty()) {
-                    dsp.addCodec(codecType.getDecoder());
-                    dsp.addCodec(codecType.getEncoder());
-                }
+        final CodecType[] codecTypes = loadCodecs(codecs);
+
+        for (CodecType codecType : codecTypes) {
+            if (codecType != null && !codecType.getEncoder().isEmpty() && !codecType.getDecoder().isEmpty()) {
+                dsp.addCodec(codecType.getDecoder());
+                dsp.addCodec(codecType.getEncoder());
             }
         }
         return dsp;
@@ -99,6 +120,30 @@ public class SpringMediaConfiguration {
     @Bean
     public AudioPlayerProvider audioPlayerProvider(PriorityQueueScheduler scheduler, RemoteStreamProvider streamProvider, DspFactory dspFactory) {
         return new AudioPlayerProvider(scheduler, streamProvider, dspFactory);
+    }
+
+    @Bean
+    public RTPFormats rtpFormats(@Value("${mediaserver.media.codecs}") String codecs) {
+        final RTPFormats rtpFormats = new RTPFormats();
+        final CodecType[] codecTypes = loadCodecs(codecs);
+
+        for (CodecType codecType : codecTypes) {
+            if (codecType != null) {
+                RTPFormat format = AVProfile.audio.find(codecType.getPayloadType());
+                if (format != null) {
+                    rtpFormats.add(format);
+                }
+            }
+        }
+        return rtpFormats;
+    }
+
+    @Bean
+    public ChannelsManager channelsManager(UdpManager udpManager, PriorityQueueScheduler scheduler, DtlsSrtpServerProvider dtlsProvider, RTPFormats rtpFormats, @Value("${mediaserver.media.jitterBuffer.size}") int jitterBufferSize) {
+        final ChannelsManager channelsManager = new ChannelsManager(udpManager, rtpFormats, dtlsProvider);
+        channelsManager.setScheduler(scheduler);
+        channelsManager.setJitterBufferSize(jitterBufferSize);
+        return channelsManager;
     }
 
 }
