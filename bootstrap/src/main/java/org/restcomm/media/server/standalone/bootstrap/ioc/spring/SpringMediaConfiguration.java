@@ -22,11 +22,15 @@
 package org.restcomm.media.server.standalone.bootstrap.ioc.spring;
 
 import org.bouncycastle.crypto.tls.ProtocolVersion;
+import org.restcomm.media.component.dsp.DspFactoryImpl;
 import org.restcomm.media.resource.player.audio.CachedRemoteStreamProvider;
 import org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider;
 import org.restcomm.media.rtp.crypto.AlgorithmCertificate;
 import org.restcomm.media.rtp.crypto.CipherSuite;
 import org.restcomm.media.rtp.crypto.DtlsSrtpServerProvider;
+import org.restcomm.media.server.standalone.bootstrap.ioc.guice.provider.media.DspProvider;
+import org.restcomm.media.server.standalone.configuration.CodecType;
+import org.restcomm.media.spi.dsp.DspFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -72,6 +76,21 @@ public class SpringMediaConfiguration {
             cipherSuiteTemp[i] = CipherSuite.valueOf(values[i].trim());
         }
         return cipherSuiteTemp;
+    }
+
+    @Bean
+    public DspFactory dspFactory(@Value("${mediaserver.media.codecs}") String codecs) {
+        final DspFactoryImpl dsp = new DspFactoryImpl();
+        if (codecs != null && !codecs.isEmpty()) {
+            for (String codec : codecs.split(",")) {
+                final CodecType codecType = CodecType.fromName(codec);
+                if (codecType != null && !codecType.getEncoder().isEmpty() && !codecType.getDecoder().isEmpty()) {
+                    dsp.addCodec(codecType.getDecoder());
+                    dsp.addCodec(codecType.getEncoder());
+                }
+            }
+        }
+        return dsp;
     }
 
 }
