@@ -31,6 +31,7 @@ import org.restcomm.media.control.mgcp.network.netty.*;
 import org.restcomm.media.control.mgcp.pkg.DynamicMgcpPackageManager;
 import org.restcomm.media.control.mgcp.pkg.MgcpPackageManager;
 import org.restcomm.media.control.mgcp.pkg.au.AudioPackage;
+import org.restcomm.media.control.mgcp.pkg.r.RtpEventProvider;
 import org.restcomm.media.control.mgcp.pkg.r.RtpPackage;
 import org.restcomm.media.control.mgcp.transaction.*;
 import org.restcomm.media.network.netty.channel.NettyNetworkChannelGlobalContext;
@@ -107,10 +108,25 @@ public class SpringMgcpConfiguration {
     }
 
     @Bean
-    public MgcpPackageManager mgcpPackageManager() {
+    public AudioPackage audioPackage() {
+        return new AudioPackage();
+    }
+
+    @Bean
+    public RtpPackage rtpPackage() {
+        return new RtpPackage();
+    }
+
+    @Bean
+    public RtpEventProvider rtpEventProvider(RtpPackage rtpPackage) {
+        return new RtpEventProvider(rtpPackage);
+    }
+
+    @Bean
+    public MgcpPackageManager mgcpPackageManager(RtpPackage rtpPackage, AudioPackage audioPackage) {
         final DynamicMgcpPackageManager packageManager = new DynamicMgcpPackageManager();
-        packageManager.registerPackage(new RtpPackage());
-        packageManager.registerPackage(new AudioPackage());
+        packageManager.registerPackage(rtpPackage);
+        packageManager.registerPackage(audioPackage);
         return packageManager;
     }
 
