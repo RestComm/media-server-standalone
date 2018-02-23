@@ -29,6 +29,7 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.restcomm.media.control.mgcp.message.MgcpMessageParser;
 import org.restcomm.media.control.mgcp.network.netty.*;
 import org.restcomm.media.control.mgcp.transaction.*;
+import org.restcomm.media.network.netty.channel.NettyNetworkChannelGlobalContext;
 import org.restcomm.media.network.netty.handler.NetworkFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -94,6 +95,11 @@ public class SpringMgcpConfiguration {
     @Bean
     public MgcpNetworkManager mgcpNetworkManager(@Qualifier("MgcpNioBootstrap") Bootstrap bootstrap, MgcpChannelInitializer initializer) {
         return new MgcpNetworkManager(bootstrap, initializer);
+    }
+
+    @Bean
+    public AsyncMgcpChannel asyncMgcpChannel(MgcpNetworkManager networkManager, MgcpChannelInboundHandler inboundHandler) {
+        return new AsyncMgcpChannel(new NettyNetworkChannelGlobalContext(networkManager), inboundHandler);
     }
 
 }
