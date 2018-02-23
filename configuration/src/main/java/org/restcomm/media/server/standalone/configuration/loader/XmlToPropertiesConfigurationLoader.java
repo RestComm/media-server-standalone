@@ -91,10 +91,12 @@ public class XmlToPropertiesConfigurationLoader extends XmlConfigurationLoader {
         setMediaProperty("jitterBuffer.size", String.valueOf(configuration.getJitterBufferSize()));
 
         final Iterator<String> codecs = configuration.getCodecs();
-        int codecPriority = 0;
+        final StringBuilder codecsBuilder = new StringBuilder();
         while (codecs.hasNext()) {
-            setMediaProperty("codec." + codecs.next() + ".priority", String.valueOf(codecPriority++));
+            codecsBuilder.append(codecs.next()).append(",");
         }
+        codecsBuilder.deleteCharAt(codecsBuilder.lastIndexOf(","));
+        setMediaProperty("codecs", codecsBuilder.toString());
     }
 
     private void setResourcesProperty(String key, String value) {
