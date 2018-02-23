@@ -29,6 +29,8 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.restcomm.media.control.mgcp.message.MgcpMessageParser;
 import org.restcomm.media.control.mgcp.network.netty.*;
 import org.restcomm.media.control.mgcp.pkg.DynamicMgcpPackageManager;
+import org.restcomm.media.control.mgcp.pkg.GlobalMgcpEventProvider;
+import org.restcomm.media.control.mgcp.pkg.MgcpEventProvider;
 import org.restcomm.media.control.mgcp.pkg.MgcpPackageManager;
 import org.restcomm.media.control.mgcp.pkg.au.AudioPackage;
 import org.restcomm.media.control.mgcp.pkg.r.RtpEventProvider;
@@ -120,6 +122,13 @@ public class SpringMgcpConfiguration {
     @Bean
     public RtpEventProvider rtpEventProvider(RtpPackage rtpPackage) {
         return new RtpEventProvider(rtpPackage);
+    }
+
+    @Bean
+    public MgcpEventProvider mgcpEventProvider(RtpEventProvider rtpProvider) {
+        GlobalMgcpEventProvider eventProvider = new GlobalMgcpEventProvider();
+        eventProvider.registerProvider(RtpPackage.PACKAGE_NAME, rtpProvider);
+        return eventProvider;
     }
 
     @Bean
