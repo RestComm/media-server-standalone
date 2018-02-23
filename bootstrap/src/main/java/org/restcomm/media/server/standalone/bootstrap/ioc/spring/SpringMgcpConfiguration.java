@@ -28,6 +28,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.restcomm.media.control.mgcp.call.GlobalMgcpCallManager;
 import org.restcomm.media.control.mgcp.call.MgcpCallManager;
+import org.restcomm.media.control.mgcp.connection.MgcpConnectionProvider;
 import org.restcomm.media.control.mgcp.message.MgcpMessageParser;
 import org.restcomm.media.control.mgcp.network.netty.*;
 import org.restcomm.media.control.mgcp.pkg.*;
@@ -37,6 +38,8 @@ import org.restcomm.media.control.mgcp.pkg.r.RtpPackage;
 import org.restcomm.media.control.mgcp.transaction.*;
 import org.restcomm.media.network.netty.channel.NettyNetworkChannelGlobalContext;
 import org.restcomm.media.network.netty.handler.NetworkFilter;
+import org.restcomm.media.rtp.ChannelsManager;
+import org.restcomm.media.rtp.channels.MediaChannelProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -146,6 +149,11 @@ public class SpringMgcpConfiguration {
     @Bean
     public MgcpCallManager mgcpCallManager() {
         return new GlobalMgcpCallManager();
+    }
+
+    @Bean
+    public MgcpConnectionProvider mgcpConnectionProvider(MgcpEventProvider eventProvider, MediaChannelProvider mediaChannelProvider, ChannelsManager channelsManager, ListeningScheduledExecutorService executor, @Value("${mediaserver.media.halfOpenDuration}") int halfOpenTimeout, @Value("${mediaserver.media.maxDuration}") int openTimeout) {
+        return new MgcpConnectionProvider(halfOpenTimeout, openTimeout, eventProvider, mediaChannelProvider, channelsManager, executor);
     }
 
 }
