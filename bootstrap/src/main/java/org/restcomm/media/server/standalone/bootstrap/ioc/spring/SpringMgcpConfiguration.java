@@ -30,6 +30,7 @@ import org.restcomm.media.control.mgcp.call.GlobalMgcpCallManager;
 import org.restcomm.media.control.mgcp.call.MgcpCallManager;
 import org.restcomm.media.control.mgcp.connection.MgcpConnectionProvider;
 import org.restcomm.media.control.mgcp.endpoint.MgcpEndpoint;
+import org.restcomm.media.control.mgcp.endpoint.MgcpEndpointManager;
 import org.restcomm.media.control.mgcp.endpoint.provider.MediaGroupProvider;
 import org.restcomm.media.control.mgcp.endpoint.provider.MgcpEndpointProvider;
 import org.restcomm.media.control.mgcp.endpoint.provider.MgcpMixerEndpointProvider;
@@ -192,6 +193,15 @@ public class SpringMgcpConfiguration {
         }
 
         return providers;
+    }
+
+    @Bean
+    public MgcpEndpointManager mgcpEndpointManager(List<MgcpEndpointProvider<? extends MgcpEndpoint>> endpointProviders) {
+        final MgcpEndpointManager manager = new MgcpEndpointManager();
+        for (MgcpEndpointProvider<? extends MgcpEndpoint> endpointProvider : endpointProviders) {
+            manager.installProvider(endpointProvider);
+        }
+        return manager;
     }
 
 }
