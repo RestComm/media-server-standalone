@@ -23,6 +23,7 @@ package org.restcomm.media.server.standalone.configuration;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -46,7 +47,7 @@ public class MgcpControllerConfiguration {
         this.address = ADDRESS;
         this.port = PORT;
         this.channelBuffer = CHANNEL_BUFFER;
-        this.endpoints = new HashMap<>(5);
+        this.endpoints = new LinkedHashMap<>(5);
     }
 
     public String getAddress() {

@@ -53,21 +53,18 @@ public class XmlToPropertiesConfigurationLoaderTest {
         assertEquals("198.162.1.175", System.getProperty("mediaserver.controller.mgcp.address"));
         assertEquals("3437", System.getProperty("mediaserver.controller.mgcp.port"));
         assertEquals("4000", System.getProperty("mediaserver.controller.mgcp.channelBuffer"));
-        assertEquals(RelayType.SPLITTER.name(), System.getProperty("mediaserver.controller.mgcp.endpoint.mobicents/bridge/.relay"));
-        assertEquals(RelayType.MIXER.name(), System.getProperty("mediaserver.controller.mgcp.endpoint.mobicents/ivr/.relay"));
-        assertEquals(RelayType.MIXER.name(), System.getProperty("mediaserver.controller.mgcp.endpoint.mobicents/cnf/.relay"));
+        assertEquals("mobicents/bridge/", System.getProperty("mediaserver.controller.mgcp.endpoints[0].name"));
+        assertEquals(RelayType.SPLITTER.name(), System.getProperty("mediaserver.controller.mgcp.endpoints[0].relay"));
+        assertEquals("mobicents/ivr/", System.getProperty("mediaserver.controller.mgcp.endpoints[1].name"));
+        assertEquals(RelayType.MIXER.name(), System.getProperty("mediaserver.controller.mgcp.endpoints[1].relay"));
+        assertEquals("mobicents/cnf/", System.getProperty("mediaserver.controller.mgcp.endpoints[2].name"));
+        assertEquals(RelayType.MIXER.name(), System.getProperty("mediaserver.controller.mgcp.endpoints[2].relay"));
 
         assertEquals("5", System.getProperty("mediaserver.media.timeout"));
         assertEquals("54534", System.getProperty("mediaserver.media.lowPort"));
         assertEquals("64534", System.getProperty("mediaserver.media.highPort"));
         assertEquals("60", System.getProperty("mediaserver.media.jitterBuffer.size"));
-        assertEquals("0", System.getProperty("mediaserver.media.codec.l16.priority"));
-        assertEquals("1", System.getProperty("mediaserver.media.codec.pcmu.priority"));
-        assertEquals("2", System.getProperty("mediaserver.media.codec.pcma.priority"));
-        assertEquals("3", System.getProperty("mediaserver.media.codec.gsm.priority"));
-        assertEquals("4", System.getProperty("mediaserver.media.codec.opus.priority"));
-        assertEquals("5", System.getProperty("mediaserver.media.codec.g729.priority"));
-        assertEquals("6", System.getProperty("mediaserver.media.codec.telephone-event.priority"));
+        assertEquals("l16,pcmu,pcma,gsm,opus,g729,telephone-event", System.getProperty("mediaserver.media.codecs"));
 
         assertEquals("-25", System.getProperty("mediaserver.resources.dtmfDetector.dbi"));
         assertEquals("100", System.getProperty("mediaserver.resources.dtmfDetector.toneDuration"));
