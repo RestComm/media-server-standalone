@@ -28,6 +28,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import org.restcomm.media.control.mgcp.call.GlobalMgcpCallManager;
 import org.restcomm.media.control.mgcp.call.MgcpCallManager;
+import org.restcomm.media.control.mgcp.command.MgcpCommandProvider;
 import org.restcomm.media.control.mgcp.connection.MgcpConnectionProvider;
 import org.restcomm.media.control.mgcp.endpoint.MgcpEndpoint;
 import org.restcomm.media.control.mgcp.endpoint.MgcpEndpointManager;
@@ -202,6 +203,11 @@ public class SpringMgcpConfiguration {
             manager.installProvider(endpointProvider);
         }
         return manager;
+    }
+
+    @Bean
+    public MgcpCommandProvider mgcpCommandProvider(MgcpEndpointManager endpointManager, MgcpPackageManager packageManager, MgcpSignalProvider signalProvider, MgcpCallManager callManager) {
+        return new MgcpCommandProvider(endpointManager, packageManager, signalProvider, callManager);
     }
 
 }
