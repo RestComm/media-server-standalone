@@ -23,8 +23,10 @@ package org.restcomm.media.server.standalone.bootstrap.ioc.spring;
 
 import org.bouncycastle.crypto.tls.ProtocolVersion;
 import org.restcomm.media.component.dsp.DspFactoryImpl;
+import org.restcomm.media.control.mgcp.endpoint.provider.MediaGroupProvider;
 import org.restcomm.media.core.resource.vad.VoiceActivityDetectorProvider;
 import org.restcomm.media.network.deprecated.UdpManager;
+import org.restcomm.media.resource.dtmf.DetectorProvider;
 import org.restcomm.media.resource.dtmf.DtmfDetectorFactory;
 import org.restcomm.media.resource.player.audio.AudioPlayerProvider;
 import org.restcomm.media.resource.player.audio.CachedRemoteStreamProvider;
@@ -42,6 +44,9 @@ import org.restcomm.media.sdp.format.RTPFormat;
 import org.restcomm.media.sdp.format.RTPFormats;
 import org.restcomm.media.server.standalone.configuration.CodecType;
 import org.restcomm.media.spi.dsp.DspFactory;
+import org.restcomm.media.spi.dtmf.DtmfDetectorProvider;
+import org.restcomm.media.spi.player.PlayerProvider;
+import org.restcomm.media.spi.recorder.RecorderProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -132,8 +137,8 @@ public class SpringMediaConfiguration {
     }
 
     @Bean
-    public DtmfDetectorFactory dtmfDetectorFactory(PriorityQueueScheduler scheduler, @Value("${mediaserver.resources.dtmfDetector.dbi}") int volume, @Value("${mediaserver.resources.dtmfDetector.toneDuration}") int duration, @Value("${mediaserver.resources.dtmfDetector.toneInterval}") int interval) {
-        return new DtmfDetectorFactory(scheduler, volume, duration, interval);
+    public DtmfDetectorProvider dtmfDetectorProvider(PriorityQueueScheduler scheduler, @Value("${mediaserver.resources.dtmfDetector.dbi}") int volume, @Value("${mediaserver.resources.dtmfDetector.toneDuration}") int duration, @Value("${mediaserver.resources.dtmfDetector.toneInterval}") int interval) {
+        return new DetectorProvider(scheduler, volume, duration, interval);
     }
 
     @Bean
@@ -163,6 +168,12 @@ public class SpringMediaConfiguration {
     @Bean
     public MediaChannelProvider mediaChannelProvider(ChannelsManager channelsManager, DspFactory dspFactory) {
         return new MediaChannelProvider(channelsManager, dspFactory);
+    }
+
+    @Bean
+    public MediaGroupProvider mediaGroupProvider(PlayerProvider players, DtmfDetectorProvider detectors, RecorderProvider recorders) {
+        // TODO Inject AsrEngineProvider
+        return new MediaGroupProvider(players, detectors, recorders, null);
     }
 
 }

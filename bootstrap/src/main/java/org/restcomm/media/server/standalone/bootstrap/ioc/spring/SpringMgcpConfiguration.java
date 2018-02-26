@@ -167,10 +167,7 @@ public class SpringMgcpConfiguration {
     }
 
     @Bean
-    public List<MgcpEndpointProvider<? extends MgcpEndpoint>> mgcpEndpointProviders(MgcpProperties mgcpProperties, PriorityQueueScheduler mediaScheduler, MgcpConnectionProvider connectionProvider) {
-        // TODO Pass MediaGroupProvider as injected parameter
-        MediaGroupProvider mediaGroupProvider = null;
-
+    public List<MgcpEndpointProvider<? extends MgcpEndpoint>> mgcpEndpointProviders(MgcpProperties mgcpProperties, PriorityQueueScheduler mediaScheduler, MgcpConnectionProvider connectionProvider, MediaGroupProvider mediaGroupProvider) {
         final List<MgcpProperties.Endpoint> endpoints = mgcpProperties.getEndpoints();
         final List<MgcpEndpointProvider<? extends MgcpEndpoint>> providers = new ArrayList<>(endpoints.size());
         final String domain = mgcpProperties.getBindAddress() + ":" + mgcpProperties.getPort();
