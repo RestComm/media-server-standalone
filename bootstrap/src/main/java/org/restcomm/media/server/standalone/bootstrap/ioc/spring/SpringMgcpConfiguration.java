@@ -30,6 +30,7 @@ import org.restcomm.media.control.mgcp.call.GlobalMgcpCallManager;
 import org.restcomm.media.control.mgcp.call.MgcpCallManager;
 import org.restcomm.media.control.mgcp.command.MgcpCommandProvider;
 import org.restcomm.media.control.mgcp.connection.MgcpConnectionProvider;
+import org.restcomm.media.control.mgcp.controller.MgcpController;
 import org.restcomm.media.control.mgcp.endpoint.MgcpEndpoint;
 import org.restcomm.media.control.mgcp.endpoint.MgcpEndpointManager;
 import org.restcomm.media.control.mgcp.endpoint.provider.MediaGroupProvider;
@@ -210,4 +211,8 @@ public class SpringMgcpConfiguration {
         return new MgcpCommandProvider(endpointManager, packageManager, signalProvider, callManager);
     }
 
+    @Bean
+    public MgcpController mgcpController(@Value("${mediaserver.controller.mgcp.address}") String address, @Value("${mediaserver.controller.mgcp.port}") int port, AsyncMgcpChannel channel, MgcpTransactionManager transactions, MgcpEndpointManager endpoints, MgcpCommandProvider commands) {
+        return new MgcpController(address, port, channel, transactions, endpoints, commands);
+    }
 }
