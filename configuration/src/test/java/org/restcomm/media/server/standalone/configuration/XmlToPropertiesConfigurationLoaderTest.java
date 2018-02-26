@@ -82,9 +82,9 @@ public class XmlToPropertiesConfigurationLoaderTest {
         assertEquals("../conf/dtls/x509-server-key-ecdsa.pem", System.getProperty("mediaserver.dtls.certificate.key"));
         assertEquals("ECDSA", System.getProperty("mediaserver.dtls.certificate.algorithm"));
 
-        assertEquals("org.mobicents.media.resource.asr.StubAsrDriver", System.getProperty("mediaserver.driver.asr.stub.class"));
-        assertEquals("Stub Driver", System.getProperty("mediaserver.driver.asr.stub.stubName"));
-        assertEquals("org.mobicents.media.resource.asr.StubAsrDriver2", System.getProperty("mediaserver.driver.asr.stub2.class"));
-        assertEquals("Stub Driver 2", System.getProperty("mediaserver.driver.asr.stub2.stubName2"));
+        assertEquals("org.mobicents.media.resource.asr.StubAsrDriver", System.getProperty("mediaserver.drivers.asr.stub.type"));
+        assertEquals("Stub Driver", System.getProperty("mediaserver.drivers.asr.stub.parameters.stubName"));
+        assertEquals("org.mobicents.media.resource.asr.StubAsrDriver2", System.getProperty("mediaserver.drivers.asr.stub2.type"));
+        assertEquals("Stub Driver 2", System.getProperty("mediaserver.drivers.asr.stub2.parameters.stubName2"));
     }
 }

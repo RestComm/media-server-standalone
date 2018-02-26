@@ -159,7 +159,7 @@ public class XmlToPropertiesConfigurationLoader extends XmlConfigurationLoader {
             setSubsystemProperty(subsystem, driverName, "type", driver.getClassName());
 
             for (Map.Entry<String, String> parameter : driver.getParameters().entrySet()) {
-                setSubsystemProperty(subsystem, driverName, parameter.getKey(), parameter.getValue());
+                setSubsystemProperty(subsystem, driverName, "parameters." + parameter.getKey(), parameter.getValue());
             }
         }
     }
