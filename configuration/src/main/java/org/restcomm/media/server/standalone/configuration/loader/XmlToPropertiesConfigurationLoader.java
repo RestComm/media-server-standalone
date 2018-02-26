@@ -139,7 +139,7 @@ public class XmlToPropertiesConfigurationLoader extends XmlConfigurationLoader {
     }
 
     private void setSubsystemProperty(String domain, String driver, String key, String value) {
-        System.setProperty("mediaserver.driver." + domain + "." + driver + "." + key, value);
+        System.setProperty("mediaserver.drivers." + domain + "." + driver + "." + key, value);
     }
 
     private void convertSubsystemsToProperties(SubsystemsConfiguration configuration) {
@@ -156,7 +156,7 @@ public class XmlToPropertiesConfigurationLoader extends XmlConfigurationLoader {
         for (DriverConfiguration driver : drivers) {
             final String driverName = driver.getDriverName();
 
-            setSubsystemProperty(subsystem, driverName, "class", driver.getClassName());
+            setSubsystemProperty(subsystem, driverName, "type", driver.getClassName());
 
             for (Map.Entry<String, String> parameter : driver.getParameters().entrySet()) {
                 setSubsystemProperty(subsystem, driverName, parameter.getKey(), parameter.getValue());
