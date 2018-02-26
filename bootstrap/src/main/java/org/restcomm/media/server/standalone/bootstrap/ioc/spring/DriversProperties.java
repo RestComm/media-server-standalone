@@ -23,10 +23,9 @@ package org.restcomm.media.server.standalone.bootstrap.ioc.spring;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -37,7 +36,7 @@ import java.util.Map;
 @EnableConfigurationProperties
 public class DriversProperties {
 
-    private Map<String, Map<String, DriverProperties>> drivers;
+    private Map<String, Map<String, DriverProperties>> drivers = Collections.emptyMap();
 
     public Map<String, Map<String, DriverProperties>> getDrivers() {
         return drivers;

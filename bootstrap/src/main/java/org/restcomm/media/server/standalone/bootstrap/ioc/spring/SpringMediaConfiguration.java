@@ -22,6 +22,7 @@
 package org.restcomm.media.server.standalone.bootstrap.ioc.spring;
 
 import org.bouncycastle.crypto.tls.ProtocolVersion;
+import org.restcomm.media.asr.AsrEngineProvider;
 import org.restcomm.media.component.dsp.DspFactoryImpl;
 import org.restcomm.media.control.mgcp.endpoint.provider.MediaGroupProvider;
 import org.restcomm.media.core.resource.vad.VoiceActivityDetectorProvider;
@@ -171,9 +172,8 @@ public class SpringMediaConfiguration {
     }
 
     @Bean
-    public MediaGroupProvider mediaGroupProvider(PlayerProvider players, DtmfDetectorProvider detectors, RecorderProvider recorders) {
-        // TODO Inject AsrEngineProvider
-        return new MediaGroupProvider(players, detectors, recorders, null);
+    public MediaGroupProvider mediaGroupProvider(PlayerProvider players, DtmfDetectorProvider detectors, RecorderProvider recorders, AsrEngineProvider asrEngines) {
+        return new MediaGroupProvider(players, detectors, recorders, asrEngines);
     }
 
 }
