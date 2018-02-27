@@ -51,7 +51,7 @@ public class SpringNetworkConfiguration {
     @Bean("UdpManager")
     public UdpManager udpManager(Scheduler scheduler, @Qualifier("RtpPortManager") PortManager rtpPortManager, @Qualifier("LocalPortManager") PortManager localPortManager, NetworkConfiguration networkConfiguration, MgcpConfiguration mgcpConfiguration, MediaConfiguration mediaConfiguration) {
         final UdpManager udpManager = new UdpManager(scheduler, rtpPortManager, localPortManager);
-        udpManager.setBindAddress(networkConfiguration.getBindAddress());
+        udpManager.setBindAddress(networkConfiguration.getAddress());
         udpManager.setLocalBindAddress(mgcpConfiguration.getAddress());
         udpManager.setExternalAddress(networkConfiguration.getExternalAddress());
         udpManager.setLocalNetwork(networkConfiguration.getNetwork());

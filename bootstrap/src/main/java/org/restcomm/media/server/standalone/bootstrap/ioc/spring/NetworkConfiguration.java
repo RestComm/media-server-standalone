@@ -33,18 +33,18 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "mediaserver.network")
 public class NetworkConfiguration {
 
-    private String bindAddress = "127.0.0.1";
+    private String address = "127.0.0.1";
     private String externalAddress = "127.0.0.1";
     private String network = "127.0.0.1";
     private String subnet = "255.255.255.255";
     private boolean sbc = false;
 
-    public String getBindAddress() {
-        return bindAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setBindAddress(String bindAddress) {
-        this.bindAddress = bindAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getExternalAddress() {
