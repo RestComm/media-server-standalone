@@ -21,6 +21,9 @@
 
 package org.restcomm.media.server.standalone.bootstrap.spring.di.module;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.restcomm.media.network.deprecated.UdpManager;
 import org.restcomm.media.scheduler.PriorityQueueScheduler;
 import org.restcomm.media.scheduler.Scheduler;
@@ -46,12 +49,26 @@ public class SpringMediaServer extends StandaloneMediaServer {
     @Override
     @PostConstruct
     public void start() throws IllegalStateException {
+        // Start the Media Server
         super.start();
+
+        // Call the Garbage Collector
+        if (log.isInfoEnabled()) {
+            log.info("Called the Garbage collector to clear bootstrap data");
+        }
+        System.gc();
     }
 
     @Override
     @PreDestroy
     public void stop() throws IllegalStateException {
+        // Stop the Media Server
         super.stop();
+
+        // Shutdown log4j2
+        Configurator.shutdown((LoggerContext) LogManager.getContext());
+        if (log.isInfoEnabled()) {
+            log.info("Shut down logging engine");
+        }
     }
 }

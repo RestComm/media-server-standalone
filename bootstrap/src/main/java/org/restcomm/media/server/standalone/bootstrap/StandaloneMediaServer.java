@@ -39,7 +39,7 @@ import java.util.Map;
  */
 public class StandaloneMediaServer implements MediaServer {
 
-    private static final Logger log = LogManager.getLogger(StandaloneMediaServer.class);
+    protected static final Logger log = LogManager.getLogger(StandaloneMediaServer.class);
 
     // Media Server State
     private boolean started;
