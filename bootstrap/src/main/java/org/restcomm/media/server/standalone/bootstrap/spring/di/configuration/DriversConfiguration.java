@@ -19,7 +19,7 @@
  *  02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.restcomm.media.server.standalone.bootstrap.spring.di;
+package org.restcomm.media.server.standalone.bootstrap.spring.di.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

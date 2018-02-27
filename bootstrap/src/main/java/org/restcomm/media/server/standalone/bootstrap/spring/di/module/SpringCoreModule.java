@@ -19,7 +19,7 @@
  *  02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.restcomm.media.server.standalone.bootstrap.spring.di;
+package org.restcomm.media.server.standalone.bootstrap.spring.di.module;
 
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -41,7 +41,7 @@ import java.util.concurrent.ThreadFactory;
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 22/02/2018
  */
 @Configuration
-public class SpringCoreConfiguration {
+public class SpringCoreModule {
 
     @Bean("WallClock")
     public Clock wallClock() {

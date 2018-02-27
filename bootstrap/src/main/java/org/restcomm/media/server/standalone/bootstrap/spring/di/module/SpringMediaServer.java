@@ -19,7 +19,7 @@
  *  02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.restcomm.media.server.standalone.bootstrap.spring.di;
+package org.restcomm.media.server.standalone.bootstrap.spring.di.module;
 
 import org.restcomm.media.network.deprecated.UdpManager;
 import org.restcomm.media.scheduler.PriorityQueueScheduler;

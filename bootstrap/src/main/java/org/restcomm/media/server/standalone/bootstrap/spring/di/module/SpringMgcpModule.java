@@ -19,7 +19,7 @@
  *  02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.restcomm.media.server.standalone.bootstrap.spring.di;
+package org.restcomm.media.server.standalone.bootstrap.spring.di.module;
 
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import io.netty.bootstrap.Bootstrap;
@@ -49,6 +49,8 @@ import org.restcomm.media.network.netty.handler.NetworkFilter;
 import org.restcomm.media.rtp.ChannelsManager;
 import org.restcomm.media.rtp.channels.MediaChannelProvider;
 import org.restcomm.media.scheduler.PriorityQueueScheduler;
+import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.MediaConfiguration;
+import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.MgcpConfiguration;
 import org.restcomm.media.spi.RelayType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -61,7 +63,7 @@ import java.util.List;
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 22/02/2018
  */
 @Configuration
-public class SpringMgcpConfiguration {
+public class SpringMgcpModule {
 
     @Bean
     public MgcpMessageParser mgcpMessageParser() {

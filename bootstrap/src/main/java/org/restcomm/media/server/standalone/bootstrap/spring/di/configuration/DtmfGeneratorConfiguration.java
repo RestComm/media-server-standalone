@@ -19,26 +19,37 @@
  *  02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.restcomm.media.server.standalone.bootstrap.spring.di;
+package org.restcomm.media.server.standalone.bootstrap.spring.di.configuration;
 
-import org.restcomm.media.core.resource.vad.VoiceActivityDetectorProvider;
-import org.restcomm.media.plugin.vad.spring.NoiseThresholdDetectorSpringProvider;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
- * @author Henrique Rosa (henrique.rosa@telestax.com) created on 22/02/2018
+ * @author Henrique Rosa (henrique.rosa@telestax.com) created on 26/02/2018
  */
-// @Configuration
-public class SpringVadConfiguration {
+@Component
+@EnableConfigurationProperties
+@ConfigurationProperties(prefix = "mediaserver.resources.dtmfGenerator")
+public class DtmfGeneratorConfiguration {
 
-    private static final int SILENCE_LEVEL = 10;
+    private int toneVolume = -20;
+    private int toneDuration = 100;
 
-    //@Bean
-    //@Scope("prototype")
-    public VoiceActivityDetectorProvider voiceActivityDetectorProvider() {
-        return new NoiseThresholdDetectorSpringProvider(SILENCE_LEVEL);
+    public int getToneVolume() {
+        return toneVolume;
+    }
+
+    public void setToneVolume(int toneVolume) {
+        this.toneVolume = toneVolume;
+    }
+
+    public int getToneDuration() {
+        return toneDuration;
+    }
+
+    public void setToneDuration(int toneDuration) {
+        this.toneDuration = toneDuration;
     }
 
 }

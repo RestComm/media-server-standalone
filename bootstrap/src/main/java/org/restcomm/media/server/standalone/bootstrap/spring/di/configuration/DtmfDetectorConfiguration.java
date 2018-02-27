@@ -19,7 +19,7 @@
  *  02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.restcomm.media.server.standalone.bootstrap.spring.di;
+package org.restcomm.media.server.standalone.bootstrap.spring.di.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -30,49 +30,35 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @EnableConfigurationProperties
-@ConfigurationProperties(prefix = "mediaserver.resources.player")
-public class PlayerConfiguration {
+@ConfigurationProperties(prefix = "mediaserver.resources.dtmfDetector")
+public class DtmfDetectorConfiguration {
 
-    private int connectionTimeout = 2000;
-    private CacheConfiguration cache;
+    private int dbi = -25;
+    private int toneDuration = 100;
+    private int toneInterval = 400;
 
-    public int getConnectionTimeout() {
-        return connectionTimeout;
+    public int getDbi() {
+        return dbi;
     }
 
-    public void setConnectionTimeout(int connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
+    public void setDbi(int dbi) {
+        this.dbi = dbi;
     }
 
-    public CacheConfiguration getCache() {
-        return cache;
+    public int getToneDuration() {
+        return toneDuration;
     }
 
-    public void setCache(CacheConfiguration cache) {
-        this.cache = cache;
+    public void setToneDuration(int toneDuration) {
+        this.toneDuration = toneDuration;
     }
 
-    public static class CacheConfiguration {
-
-        private int size = 100;
-        private boolean enabled = false;
-
-        public int getSize() {
-            return size;
-        }
-
-        public void setSize(int size) {
-            this.size = size;
-        }
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
+    public int getToneInterval() {
+        return toneInterval;
     }
 
+    public void setToneInterval(int toneInterval) {
+        this.toneInterval = toneInterval;
+    }
 
 }

@@ -19,7 +19,7 @@
  *  02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.restcomm.media.server.standalone.bootstrap.spring.di;
+package org.restcomm.media.server.standalone.bootstrap.spring.di.module;
 
 import org.bouncycastle.crypto.tls.ProtocolVersion;
 import org.restcomm.media.asr.AsrEngineProvider;
@@ -42,6 +42,10 @@ import org.restcomm.media.scheduler.PriorityQueueScheduler;
 import org.restcomm.media.sdp.format.AVProfile;
 import org.restcomm.media.sdp.format.RTPFormat;
 import org.restcomm.media.sdp.format.RTPFormats;
+import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.DtlsConfiguration;
+import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.DtmfDetectorConfiguration;
+import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.MediaConfiguration;
+import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.PlayerConfiguration;
 import org.restcomm.media.server.standalone.configuration.CodecType;
 import org.restcomm.media.spi.dsp.DspFactory;
 import org.restcomm.media.spi.dtmf.DtmfDetectorProvider;
@@ -55,7 +59,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 22/02/2018
  */
 @Configuration
-public class SpringMediaConfiguration {
+public class SpringMediaModule {
 
     @Bean
     @ConditionalOnProperty(name = "mediaserver.resources.player.cache.enabled", havingValue = "true")

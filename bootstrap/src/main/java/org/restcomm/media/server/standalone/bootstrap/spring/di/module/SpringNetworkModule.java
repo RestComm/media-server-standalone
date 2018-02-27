@@ -19,7 +19,7 @@
  *  02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.restcomm.media.server.standalone.bootstrap.spring.di;
+package org.restcomm.media.server.standalone.bootstrap.spring.di.module;
 
 import org.restcomm.media.network.deprecated.PortManager;
 import org.restcomm.media.network.deprecated.RtpPortManager;
@@ -28,6 +28,9 @@ import org.restcomm.media.network.netty.filter.LocalNetworkGuard;
 import org.restcomm.media.network.netty.filter.NetworkGuard;
 import org.restcomm.media.network.netty.handler.NetworkFilter;
 import org.restcomm.media.scheduler.Scheduler;
+import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.MediaConfiguration;
+import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.MgcpConfiguration;
+import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.NetworkConfiguration;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +39,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 22/02/2018
  */
 @Configuration
-public class SpringNetworkConfiguration {
+public class SpringNetworkModule {
 
     @Bean("RtpPortManager")
     public PortManager rtpPortManager(MediaConfiguration mediaConfiguration) {

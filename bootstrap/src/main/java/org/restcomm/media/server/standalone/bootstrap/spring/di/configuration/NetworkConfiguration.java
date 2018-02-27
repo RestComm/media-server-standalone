@@ -19,7 +19,7 @@
  *  02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.restcomm.media.server.standalone.bootstrap.spring.di;
+package org.restcomm.media.server.standalone.bootstrap.spring.di.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -30,26 +30,53 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @EnableConfigurationProperties
-@ConfigurationProperties(prefix = "mediaserver.resources.dtmfGenerator")
-public class DtmfGeneratorConfiguration {
+@ConfigurationProperties(prefix = "mediaserver.network")
+public class NetworkConfiguration {
 
-    private int toneVolume = -20;
-    private int toneDuration = 100;
+    private String address = "127.0.0.1";
+    private String externalAddress = "127.0.0.1";
+    private String network = "127.0.0.1";
+    private String subnet = "255.255.255.255";
+    private boolean sbc = false;
 
-    public int getToneVolume() {
-        return toneVolume;
+    public String getAddress() {
+        return address;
     }
 
-    public void setToneVolume(int toneVolume) {
-        this.toneVolume = toneVolume;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public int getToneDuration() {
-        return toneDuration;
+    public String getExternalAddress() {
+        return externalAddress;
     }
 
-    public void setToneDuration(int toneDuration) {
-        this.toneDuration = toneDuration;
+    public void setExternalAddress(String externalAddress) {
+        this.externalAddress = externalAddress;
+    }
+
+    public String getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(String network) {
+        this.network = network;
+    }
+
+    public String getSubnet() {
+        return subnet;
+    }
+
+    public void setSubnet(String subnet) {
+        this.subnet = subnet;
+    }
+
+    public boolean isSbc() {
+        return sbc;
+    }
+
+    public void setSbc(boolean sbc) {
+        this.sbc = sbc;
     }
 
 }
