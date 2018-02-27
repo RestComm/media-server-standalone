@@ -36,18 +36,6 @@
             <artifactId>media-plugin-vad-noise-threshold</artifactId>
         </dependency>
 
-        <!-- Dependency Injection - Guice (Deprecated) -->
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>${google.guice.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject.extensions</groupId>
-            <artifactId>guice-grapher</artifactId>
-            <version>${google.guice.grapher.version}</version>
-        </dependency>
-
         <!-- Dependency Injection - Spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
