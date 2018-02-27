@@ -29,14 +29,10 @@ import org.restcomm.media.asr.driver.AsrDriverManagerImpl;
 import org.restcomm.media.core.resource.vad.VoiceActivityDetectorProvider;
 import org.restcomm.media.drivers.asr.AsrDriverManager;
 import org.restcomm.media.scheduler.PriorityQueueScheduler;
-import org.restcomm.media.server.standalone.configuration.DriverConfiguration;
-import org.restcomm.media.server.standalone.configuration.SubsystemsConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 26/02/2018
@@ -47,13 +43,13 @@ public class SpringAsrConfiguration {
     private static final Logger log = LogManager.getLogger(SpringAsrConfiguration.class);
 
     @Bean
-    public AsrEngineProvider asrEngineProvider(DriversProperties drivers, PriorityQueueScheduler scheduler, VoiceActivityDetectorProvider vadProvider) {
+    public AsrEngineProvider asrEngineProvider(DriversConfiguration drivers, PriorityQueueScheduler scheduler, VoiceActivityDetectorProvider vadProvider) {
         final AsrDriverManager mng = new AsrDriverManagerImpl();
-        final Map<String, DriversProperties.DriverProperties> asrDrivers = drivers.getDrivers().get("asr");
+        final Map<String, DriversConfiguration.DriverProperties> asrDrivers = drivers.getDrivers().get("asr");
 
         if (asrDrivers != null && !asrDrivers.isEmpty()) {
-            for (Map.Entry<String, DriversProperties.DriverProperties> driver : asrDrivers.entrySet()) {
-                final DriversProperties.DriverProperties driverProperties = driver.getValue();
+            for (Map.Entry<String, DriversConfiguration.DriverProperties> driver : asrDrivers.entrySet()) {
+                final DriversConfiguration.DriverProperties driverProperties = driver.getValue();
                 mng.registerDriver(driver.getKey(), driverProperties.getType(), driverProperties.getParameters());
 
                 if (log.isInfoEnabled()) {

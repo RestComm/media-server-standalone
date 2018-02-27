@@ -25,48 +25,40 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.Map;
-
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 26/02/2018
  */
-@ConfigurationProperties(prefix = "mediaserver")
 @Component
 @EnableConfigurationProperties
-public class DriversProperties {
+@ConfigurationProperties(prefix = "mediaserver.resources.dtmfDetector")
+public class DtmfDetectorConfiguration {
 
-    private Map<String, Map<String, DriverProperties>> drivers = Collections.emptyMap();
+    private int dbi = -25;
+    private int toneDuration = 100;
+    private int toneInterval = 400;
 
-    public Map<String, Map<String, DriverProperties>> getDrivers() {
-        return drivers;
+    public int getDbi() {
+        return dbi;
     }
 
-    public void setDrivers(Map<String, Map<String, DriverProperties>> drivers) {
-        this.drivers = drivers;
+    public void setDbi(int dbi) {
+        this.dbi = dbi;
     }
 
-    public static class DriverProperties {
+    public int getToneDuration() {
+        return toneDuration;
+    }
 
-        private String type;
-        private Map<String, String> parameters;
+    public void setToneDuration(int toneDuration) {
+        this.toneDuration = toneDuration;
+    }
 
-        public String getType() {
-            return type;
-        }
+    public int getToneInterval() {
+        return toneInterval;
+    }
 
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public Map<String, String> getParameters() {
-            return parameters;
-        }
-
-        public void setParameters(Map<String, String> parameters) {
-            this.parameters = parameters;
-        }
-
+    public void setToneInterval(int toneInterval) {
+        this.toneInterval = toneInterval;
     }
 
 }

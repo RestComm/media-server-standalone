@@ -75,8 +75,8 @@ public class XmlToPropertiesConfigurationLoader extends XmlConfigurationLoader {
         int index = 0;
         while (endpoints.hasNext()) {
             final MgcpEndpointConfiguration endpoint = endpoints.next();
-            setMgcpControllerProperty("endpoints[" + index +"].name", endpoint.getName());
-            setMgcpControllerProperty("endpoints[" + index +"].relay", endpoint.getRelayType().name());
+            setMgcpControllerProperty("endpoints[" + index + "].name", endpoint.getName());
+            setMgcpControllerProperty("endpoints[" + index + "].relay", endpoint.getRelayType().name());
             index++;
         }
     }
@@ -122,8 +122,11 @@ public class XmlToPropertiesConfigurationLoader extends XmlConfigurationLoader {
     }
 
     private void convertDtlsToProperties(DtlsConfiguration configuration) {
-        setDtlsProperty("minVersion", String.valueOf(configuration.getMinVersion().getFullVersion()));
-        setDtlsProperty("maxVersion", String.valueOf(configuration.getMaxVersion().getFullVersion()));
+        final String minVersion = ProtocolVersion.DTLSv10.equals(configuration.getMinVersion()) ? "1.0" : "1.2";
+        final String maxVersion = ProtocolVersion.DTLSv10.equals(configuration.getMaxVersion()) ? "1.0" : "1.2";
+
+        setDtlsProperty("minVersion", minVersion);
+        setDtlsProperty("maxVersion", maxVersion);
 
         final CipherSuite[] cipherSuites = configuration.getCipherSuites();
         final StringBuilder cipherBuilder = new StringBuilder();

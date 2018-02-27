@@ -28,7 +28,6 @@ import org.restcomm.media.control.mgcp.endpoint.provider.MediaGroupProvider;
 import org.restcomm.media.core.resource.vad.VoiceActivityDetectorProvider;
 import org.restcomm.media.network.deprecated.UdpManager;
 import org.restcomm.media.resource.dtmf.DetectorProvider;
-import org.restcomm.media.resource.dtmf.DtmfDetectorFactory;
 import org.restcomm.media.resource.player.audio.AudioPlayerProvider;
 import org.restcomm.media.resource.player.audio.CachedRemoteStreamProvider;
 import org.restcomm.media.resource.player.audio.DirectRemoteStreamProvider;
@@ -48,7 +47,6 @@ import org.restcomm.media.spi.dsp.DspFactory;
 import org.restcomm.media.spi.dtmf.DtmfDetectorProvider;
 import org.restcomm.media.spi.player.PlayerProvider;
 import org.restcomm.media.spi.recorder.RecorderProvider;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,62 +59,57 @@ public class SpringMediaConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = "mediaserver.resources.player.cache.enabled", havingValue = "true")
-    public CachedRemoteStreamProvider cachedRemoteStreamProvider(@Value("${mediaserver.resources.player.connectionTimeout}") int connectionTimeout, @Value("${mediaserver.resources.player.cache.size}") int cacheSize) {
-        return new CachedRemoteStreamProvider(cacheSize, connectionTimeout);
+    public CachedRemoteStreamProvider cachedRemoteStreamProvider(PlayerConfiguration playerConfiguration) {
+        return new CachedRemoteStreamProvider(playerConfiguration.getCache().getSize(), playerConfiguration.getConnectionTimeout());
     }
 
     @Bean
     @ConditionalOnProperty(name = "mediaserver.resources.player.cache.enabled", havingValue = "false")
-    public DirectRemoteStreamProvider directRemoteStreamProvider(@Value("${mediaserver.resources.player.connectionTimeout}") int connectionTimeout) {
-        return new DirectRemoteStreamProvider(connectionTimeout);
+    public DirectRemoteStreamProvider directRemoteStreamProvider(PlayerConfiguration playerConfiguration) {
+        return new DirectRemoteStreamProvider(playerConfiguration.getConnectionTimeout());
     }
 
     @Bean
-    public DtlsSrtpServerProvider dtlsSrtpServerProvider(@Value("${mediaserver.dtls.minVersion}") int minVersion, @Value("${mediaserver.dtls.maxVersion}") int maxVersion, @Value("${mediaserver.dtls.cipherSuites}") String cipherSuites, @Value("${mediaserver.dtls.certificate.path}") String certificatePath, @Value("${mediaserver.dtls.certificate.key}") String keyPath, @Value("${mediaserver.dtls.certificate.algorithm}") String algorithmCertificate) {
+    public DtlsSrtpServerProvider dtlsSrtpServerProvider(DtlsConfiguration dtlsConfiguration) {
         ProtocolVersion minProtocolVersion = ProtocolVersion.DTLSv10;
-        if (minVersion == ProtocolVersion.DTLSv12.getFullVersion()) {
+        if (dtlsConfiguration.getMinVersion() == 1.2) {
             minProtocolVersion = ProtocolVersion.DTLSv12;
         }
 
         ProtocolVersion maxProtocolVersion = ProtocolVersion.DTLSv12;
-        if (maxVersion == ProtocolVersion.DTLSv10.getFullVersion()) {
+        if (dtlsConfiguration.getMaxVersion() == 1.0) {
             maxProtocolVersion = ProtocolVersion.DTLSv10;
         }
 
-        return new DtlsSrtpServerProvider(minProtocolVersion, maxProtocolVersion, buildCipherSuite(cipherSuites), certificatePath, keyPath, AlgorithmCertificate.valueOf(algorithmCertificate.toUpperCase()));
+        final CipherSuite[] cipherSuites = buildCipherSuite(dtlsConfiguration.getCipherSuites());
+        final DtlsConfiguration.CertificateConfiguration certificate = dtlsConfiguration.getCertificate();
+
+        return new DtlsSrtpServerProvider(minProtocolVersion, maxProtocolVersion, cipherSuites, certificate.getPath(), certificate.getKey(), AlgorithmCertificate.valueOf(certificate.getAlgorithm().toUpperCase()));
     }
 
-    private CipherSuite[] buildCipherSuite(String cipherSuites) {
-        String[] values = cipherSuites.split(",");
-        CipherSuite[] cipherSuiteTemp = new CipherSuite[values.length];
-        for (int i = 0; i < values.length; i++) {
-            cipherSuiteTemp[i] = CipherSuite.valueOf(values[i].trim());
+    private CipherSuite[] buildCipherSuite(String[] cipherSuites) {
+        CipherSuite[] cipherSuiteTemp = new CipherSuite[cipherSuites.length];
+        for (int i = 0; i < cipherSuites.length; i++) {
+            cipherSuiteTemp[i] = CipherSuite.valueOf(cipherSuites[i].trim());
         }
         return cipherSuiteTemp;
     }
 
-    public CodecType[] loadCodecs(@Value("${mediaserver.media.codecs}") String codecs) {
-        final CodecType[] codecTypes;
-        if (codecs == null || codecs.isEmpty()) {
-            codecTypes = new CodecType[0];
-        } else {
-            final String[] codecSplit = codecs.split(",");
-            codecTypes = new CodecType[codecSplit.length];
-
-            for (int i = 0; i < codecSplit.length; i++) {
-                CodecType codecType = CodecType.fromName(codecs);
-                if (codecType != null) {
-                    codecTypes[i] = codecType;
-                }
+    private CodecType[] loadCodecs(String[] codecs) {
+        final CodecType[] codecTypes = new CodecType[codecs.length];
+        for (int i = 0; i < codecs.length; i++) {
+            CodecType codecType = CodecType.fromName(codecs[i]);
+            if (codecType != null) {
+                codecTypes[i] = codecType;
             }
         }
         return codecTypes;
     }
 
     @Bean
-    public DspFactory dspFactory(@Value("${mediaserver.media.codecs}") String codecs) {
+    public DspFactory dspFactory(MediaConfiguration mediaConfiguration) {
         final DspFactoryImpl dsp = new DspFactoryImpl();
-        final CodecType[] codecTypes = loadCodecs(codecs);
+        final CodecType[] codecTypes = loadCodecs(mediaConfiguration.getCodecs());
 
         for (CodecType codecType : codecTypes) {
             if (codecType != null && !codecType.getEncoder().isEmpty() && !codecType.getDecoder().isEmpty()) {
@@ -138,14 +131,14 @@ public class SpringMediaConfiguration {
     }
 
     @Bean
-    public DtmfDetectorProvider dtmfDetectorProvider(PriorityQueueScheduler scheduler, @Value("${mediaserver.resources.dtmfDetector.dbi}") int volume, @Value("${mediaserver.resources.dtmfDetector.toneDuration}") int duration, @Value("${mediaserver.resources.dtmfDetector.toneInterval}") int interval) {
-        return new DetectorProvider(scheduler, volume, duration, interval);
+    public DtmfDetectorProvider dtmfDetectorProvider(PriorityQueueScheduler scheduler, DtmfDetectorConfiguration dtmfDetectorConfiguration) {
+        return new DetectorProvider(scheduler, dtmfDetectorConfiguration.getDbi(), dtmfDetectorConfiguration.getToneDuration(), dtmfDetectorConfiguration.getToneInterval());
     }
 
     @Bean
-    public RTPFormats rtpFormats(@Value("${mediaserver.media.codecs}") String codecs) {
+    public RTPFormats rtpFormats(MediaConfiguration mediaConfiguration) {
         final RTPFormats rtpFormats = new RTPFormats();
-        final CodecType[] codecTypes = loadCodecs(codecs);
+        final CodecType[] codecTypes = loadCodecs(mediaConfiguration.getCodecs());
 
         for (CodecType codecType : codecTypes) {
             if (codecType != null) {
@@ -159,10 +152,10 @@ public class SpringMediaConfiguration {
     }
 
     @Bean
-    public ChannelsManager channelsManager(UdpManager udpManager, PriorityQueueScheduler scheduler, DtlsSrtpServerProvider dtlsProvider, RTPFormats rtpFormats, @Value("${mediaserver.media.jitterBuffer.size}") int jitterBufferSize) {
+    public ChannelsManager channelsManager(UdpManager udpManager, PriorityQueueScheduler scheduler, DtlsSrtpServerProvider dtlsProvider, RTPFormats rtpFormats, MediaConfiguration mediaConfiguration) {
         final ChannelsManager channelsManager = new ChannelsManager(udpManager, rtpFormats, dtlsProvider);
         channelsManager.setScheduler(scheduler);
-        channelsManager.setJitterBufferSize(jitterBufferSize);
+        channelsManager.setJitterBufferSize(mediaConfiguration.getJitterBuffer().getSize());
         return channelsManager;
     }
 

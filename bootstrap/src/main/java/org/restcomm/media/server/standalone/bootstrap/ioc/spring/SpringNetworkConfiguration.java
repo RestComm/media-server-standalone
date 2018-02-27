@@ -29,7 +29,6 @@ import org.restcomm.media.network.netty.filter.NetworkGuard;
 import org.restcomm.media.network.netty.handler.NetworkFilter;
 import org.restcomm.media.scheduler.Scheduler;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -40,8 +39,8 @@ import org.springframework.context.annotation.Configuration;
 public class SpringNetworkConfiguration {
 
     @Bean("RtpPortManager")
-    public PortManager rtpPortManager(@Value("${mediaserver.media.lowPort}") int lowPort, @Value("${mediaserver.media.highPort}") int highPort) {
-        return new RtpPortManager(lowPort, highPort);
+    public PortManager rtpPortManager(MediaConfiguration mediaConfiguration) {
+        return new RtpPortManager(mediaConfiguration.getLowPort(), mediaConfiguration.getHighPort());
     }
 
     @Bean("LocalPortManager")
@@ -50,21 +49,21 @@ public class SpringNetworkConfiguration {
     }
 
     @Bean("UdpManager")
-    public UdpManager udpManager(Scheduler scheduler, @Qualifier("RtpPortManager") PortManager rtpPortManager, @Qualifier("LocalPortManager") PortManager localPortManager, @Value("${mediaserver.network.bindAddress}") String bindAddress, @Value("${mediaserver.controller.mgcp.address}") String mgcpAddress, @Value("${mediaserver.network.externalAddress}") String externalAddress, @Value("${mediaserver.network.network}") String network, @Value("${mediaserver.network.subnet}") String subnet, @Value("${mediaserver.media.timeout}") int timeout, @Value("${mediaserver.network.sbc}") boolean sbc) {
+    public UdpManager udpManager(Scheduler scheduler, @Qualifier("RtpPortManager") PortManager rtpPortManager, @Qualifier("LocalPortManager") PortManager localPortManager, NetworkConfiguration networkConfiguration, MgcpConfiguration mgcpConfiguration, MediaConfiguration mediaConfiguration) {
         final UdpManager udpManager = new UdpManager(scheduler, rtpPortManager, localPortManager);
-        udpManager.setBindAddress(bindAddress);
-        udpManager.setLocalBindAddress(mgcpAddress);
-        udpManager.setExternalAddress(externalAddress);
-        udpManager.setLocalNetwork(network);
-        udpManager.setLocalSubnet(subnet);
-        udpManager.setUseSbc(sbc);
-        udpManager.setRtpTimeout(timeout);
+        udpManager.setBindAddress(networkConfiguration.getBindAddress());
+        udpManager.setLocalBindAddress(mgcpConfiguration.getAddress());
+        udpManager.setExternalAddress(networkConfiguration.getExternalAddress());
+        udpManager.setLocalNetwork(networkConfiguration.getNetwork());
+        udpManager.setLocalSubnet(networkConfiguration.getSubnet());
+        udpManager.setUseSbc(networkConfiguration.isSbc());
+        udpManager.setRtpTimeout(mediaConfiguration.getTimeout());
         return udpManager;
     }
 
     @Bean("LocalNetworkGuard")
-    public NetworkGuard localNetworkGuard(@Value("${mediaserver.network.network}") String network, @Value("${mediaserver.network.subnet}") String subnet) {
-        return new LocalNetworkGuard(network, subnet);
+    public NetworkGuard localNetworkGuard(NetworkConfiguration networkConfiguration) {
+        return new LocalNetworkGuard(networkConfiguration.getNetwork(), networkConfiguration.getSubnet());
     }
 
     @Bean("LocalNetworkFilter")

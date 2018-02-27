@@ -23,25 +23,21 @@ package org.restcomm.media.server.standalone.bootstrap.ioc.spring;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * @author Henrique Rosa (henrique.rosa@telestax.com) created on 23/02/2018
+ * @author Henrique Rosa (henrique.rosa@telestax.com) created on 26/02/2018
  */
-@ConfigurationProperties(prefix = "mediaserver.controller.mgcp", ignoreInvalidFields = false)
 @Component
 @EnableConfigurationProperties
-public class MgcpProperties {
+@ConfigurationProperties(prefix = "mediaserver.network")
+public class NetworkConfiguration {
 
-    private String bindAddress;
-    private int port;
-    private int channelBuffer;
-    @NestedConfigurationProperty
-    private List<Endpoint> endpoints;
+    private String bindAddress = "127.0.0.1";
+    private String externalAddress = "127.0.0.1";
+    private String network = "127.0.0.1";
+    private String subnet = "255.255.255.255";
+    private boolean sbc = false;
 
     public String getBindAddress() {
         return bindAddress;
@@ -51,50 +47,36 @@ public class MgcpProperties {
         this.bindAddress = bindAddress;
     }
 
-    public int getPort() {
-        return port;
+    public String getExternalAddress() {
+        return externalAddress;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setExternalAddress(String externalAddress) {
+        this.externalAddress = externalAddress;
     }
 
-    public int getChannelBuffer() {
-        return channelBuffer;
+    public String getNetwork() {
+        return network;
     }
 
-    public void setChannelBuffer(int channelBuffer) {
-        this.channelBuffer = channelBuffer;
+    public void setNetwork(String network) {
+        this.network = network;
     }
 
-    public List<Endpoint> getEndpoints() {
-        return endpoints;
+    public String getSubnet() {
+        return subnet;
     }
 
-    public void setEndpoints(List<Endpoint> endpoints) {
-        this.endpoints = endpoints;
+    public void setSubnet(String subnet) {
+        this.subnet = subnet;
     }
 
-    public static class Endpoint {
+    public boolean isSbc() {
+        return sbc;
+    }
 
-        private String name;
-        private String relay;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getRelay() {
-            return relay;
-        }
-
-        public void setRelay(String relay) {
-            this.relay = relay;
-        }
+    public void setSbc(boolean sbc) {
+        this.sbc = sbc;
     }
 
 }

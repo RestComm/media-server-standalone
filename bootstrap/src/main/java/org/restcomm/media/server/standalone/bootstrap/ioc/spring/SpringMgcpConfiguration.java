@@ -51,7 +51,6 @@ import org.restcomm.media.rtp.channels.MediaChannelProvider;
 import org.restcomm.media.scheduler.PriorityQueueScheduler;
 import org.restcomm.media.spi.RelayType;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -85,8 +84,8 @@ public class SpringMgcpConfiguration {
     }
 
     @Bean
-    public MgcpChannelInitializer mgcpChannelInitializer(@Value("${mediaserver.controller.mgcp.channelBuffer}") int channelBuffer, @Qualifier("LocalNetworkFilter") NetworkFilter filter, MgcpMessageDecoder decoder, MgcpChannelInboundHandler inboundHandler, MgcpMessageEncoder encoder) {
-        return new MgcpChannelInitializer(channelBuffer, filter, decoder, inboundHandler, encoder);
+    public MgcpChannelInitializer mgcpChannelInitializer(MgcpConfiguration mgcpConfiguration, @Qualifier("LocalNetworkFilter") NetworkFilter filter, MgcpMessageDecoder decoder, MgcpChannelInboundHandler inboundHandler, MgcpMessageEncoder encoder) {
+        return new MgcpChannelInitializer(mgcpConfiguration.getChannelBuffer(), filter, decoder, inboundHandler, encoder);
     }
 
     @Bean
@@ -165,17 +164,17 @@ public class SpringMgcpConfiguration {
     }
 
     @Bean
-    public MgcpConnectionProvider mgcpConnectionProvider(@Qualifier("MgcpEventProvider") MgcpEventProvider eventProvider, MediaChannelProvider mediaChannelProvider, ChannelsManager channelsManager, ListeningScheduledExecutorService executor, @Value("${mediaserver.media.halfOpenDuration}") int halfOpenTimeout, @Value("${mediaserver.media.maxDuration}") int openTimeout) {
-        return new MgcpConnectionProvider(halfOpenTimeout, openTimeout, eventProvider, mediaChannelProvider, channelsManager, executor);
+    public MgcpConnectionProvider mgcpConnectionProvider(@Qualifier("MgcpEventProvider") MgcpEventProvider eventProvider, MediaChannelProvider mediaChannelProvider, ChannelsManager channelsManager, ListeningScheduledExecutorService executor, MediaConfiguration mediaConfiguration) {
+        return new MgcpConnectionProvider(mediaConfiguration.getHalfOpenDuration(), mediaConfiguration.getMaxDuration(), eventProvider, mediaChannelProvider, channelsManager, executor);
     }
 
     @Bean
-    public List<MgcpEndpointProvider<? extends MgcpEndpoint>> mgcpEndpointProviders(MgcpProperties mgcpProperties, PriorityQueueScheduler mediaScheduler, MgcpConnectionProvider connectionProvider, MediaGroupProvider mediaGroupProvider) {
-        final List<MgcpProperties.Endpoint> endpoints = mgcpProperties.getEndpoints();
+    public List<MgcpEndpointProvider<? extends MgcpEndpoint>> mgcpEndpointProviders(MgcpConfiguration mgcpConfiguration, PriorityQueueScheduler mediaScheduler, MgcpConnectionProvider connectionProvider, MediaGroupProvider mediaGroupProvider) {
+        final List<MgcpConfiguration.Endpoint> endpoints = mgcpConfiguration.getEndpoints();
         final List<MgcpEndpointProvider<? extends MgcpEndpoint>> providers = new ArrayList<>(endpoints.size());
-        final String domain = mgcpProperties.getBindAddress() + ":" + mgcpProperties.getPort();
+        final String domain = mgcpConfiguration.getAddress() + ":" + mgcpConfiguration.getPort();
 
-        for (MgcpProperties.Endpoint endpoint : endpoints) {
+        for (MgcpConfiguration.Endpoint endpoint : endpoints) {
             final MgcpEndpointProvider<? extends MgcpEndpoint> provider;
             final String namespace = endpoint.getName();
 
@@ -212,7 +211,7 @@ public class SpringMgcpConfiguration {
     }
 
     @Bean
-    public MgcpController mgcpController(@Value("${mediaserver.controller.mgcp.address}") String address, @Value("${mediaserver.controller.mgcp.port}") int port, AsyncMgcpChannel channel, MgcpTransactionManager transactions, MgcpEndpointManager endpoints, MgcpCommandProvider commands) {
-        return new MgcpController(address, port, channel, transactions, endpoints, commands);
+    public MgcpController mgcpController(MgcpConfiguration mgcpConfiguration, AsyncMgcpChannel channel, MgcpTransactionManager transactions, MgcpEndpointManager endpoints, MgcpCommandProvider commands) {
+        return new MgcpController(mgcpConfiguration.getAddress(), mgcpConfiguration.getPort(), channel, transactions, endpoints, commands);
     }
 }

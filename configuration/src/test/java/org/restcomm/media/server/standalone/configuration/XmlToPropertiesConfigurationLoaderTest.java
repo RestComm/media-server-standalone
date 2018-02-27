@@ -75,8 +75,8 @@ public class XmlToPropertiesConfigurationLoaderTest {
         assertEquals("100", System.getProperty("mediaserver.resources.player.cache.size"));
         assertEquals("true", System.getProperty("mediaserver.resources.player.cache.enabled"));
 
-        assertEquals(String.valueOf(ProtocolVersion.DTLSv10.getFullVersion()), System.getProperty("mediaserver.dtls.minVersion"));
-        assertEquals(String.valueOf(ProtocolVersion.DTLSv12.getFullVersion()), System.getProperty("mediaserver.dtls.maxVersion"));
+        assertEquals("1.0", System.getProperty("mediaserver.dtls.minVersion"));
+        assertEquals("1.2", System.getProperty("mediaserver.dtls.maxVersion"));
         assertEquals("TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA", System.getProperty("mediaserver.dtls.cipherSuites"));
         assertEquals("../conf/dtls/x509-server-ecdsa.pem", System.getProperty("mediaserver.dtls.certificate.path"));
         assertEquals("../conf/dtls/x509-server-key-ecdsa.pem", System.getProperty("mediaserver.dtls.certificate.key"));

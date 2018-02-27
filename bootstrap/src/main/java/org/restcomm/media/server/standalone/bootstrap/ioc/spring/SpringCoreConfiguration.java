@@ -43,8 +43,6 @@ import java.util.concurrent.ThreadFactory;
 @Configuration
 public class SpringCoreConfiguration {
 
-    private static final int N_PROC = Runtime.getRuntime().availableProcessors();
-
     @Bean("WallClock")
     public Clock wallClock() {
         return new WallClock();
@@ -65,7 +63,7 @@ public class SpringCoreConfiguration {
         ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("mgcp-%d").build();
         // TODO set uncaught exception handler
 
-        ScheduledThreadPoolExecutor executor = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(N_PROC, threadFactory);
+        ScheduledThreadPoolExecutor executor = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors(), threadFactory);
         executor.prestartAllCoreThreads();
         executor.setRemoveOnCancelPolicy(true);
         return MoreExecutors.listeningDecorator(executor);
