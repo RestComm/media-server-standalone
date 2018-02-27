@@ -1,7 +1,7 @@
 /*
  * TeleStax, Open Source Cloud Communications
  * Copyright 2011-2018, Telestax Inc and individual contributors
- * by the @authors tag. 
+ * by the @authors tag.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -21,7 +21,6 @@
 
 package org.restcomm.media.server.standalone.bootstrap;
 
-import com.google.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.restcomm.media.network.deprecated.UdpManager;
@@ -37,7 +36,6 @@ import java.util.Map;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com)
- *
  */
 public class StandaloneMediaServer implements MediaServer {
 
@@ -57,7 +55,6 @@ public class StandaloneMediaServer implements MediaServer {
     private final int heartbeatTime;
     private volatile long ttl;
 
-    @Inject
     public StandaloneMediaServer(PriorityQueueScheduler mediaScheduler, Scheduler taskScheduler, UdpManager udpManager, ServerManager controller) {
         // Core Components
         this.mediaScheduler = mediaScheduler;
@@ -132,7 +129,7 @@ public class StandaloneMediaServer implements MediaServer {
             log.info("Media Server stopped");
         }
     }
-    
+
     @Override
     public boolean isRunning() {
         return this.started;
