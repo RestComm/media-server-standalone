@@ -184,6 +184,9 @@ echo "==========================================================================
 
 "$JAVA" $JAVA_OPTS \
     -Dmediaserver.config.file="$MMS_HOME/conf/mediaserver.xml" \
+    -Dspring.config.additional-location="$MMS_HOME/conf/" \
+    -Dspring.config.name="media" \
+    -Dspring.profiles.active="plugin-vad-noise-threshold" \
     -Dlogging.config="$MMS_HOME/conf/log4j2.xml" \
     -Djava.ext.dirs="$MMS_ENDORSED_DIRS" \
     -Dmbrola.base="$MMS_HOME/mbrola" \

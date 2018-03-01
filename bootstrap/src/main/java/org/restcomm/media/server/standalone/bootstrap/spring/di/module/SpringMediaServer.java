@@ -66,9 +66,9 @@ public class SpringMediaServer extends StandaloneMediaServer {
         super.stop();
 
         // Shutdown log4j2
-        Configurator.shutdown((LoggerContext) LogManager.getContext());
         if (log.isInfoEnabled()) {
-            log.info("Shut down logging engine");
+            log.info("Shutting down logger engine");
         }
+        Configurator.shutdown((LoggerContext) LogManager.getContext());
     }
 }

@@ -23,9 +23,11 @@ package org.restcomm.media.server.standalone.bootstrap.spring;
 
 import org.restcomm.media.server.standalone.configuration.loader.XmlToPropertiesConfigurationLoader;
 import org.springframework.boot.Banner;
+import org.springframework.boot.ResourceBanner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.io.Resource;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 27/02/2018
@@ -39,7 +41,6 @@ public class SpringBootstrapper {
             new XmlToPropertiesConfigurationLoader().load(configPath);
 
             final SpringApplication application = new SpringApplication(SpringBootstrapper.class);
-            application.setBannerMode(Banner.Mode.OFF);
             application.setHeadless(true);
             application.setWebEnvironment(false);
             application.setRegisterShutdownHook(true);
