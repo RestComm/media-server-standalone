@@ -1,0 +1,72 @@
+mediaserver:
+
+  network:
+    address: "192.168.1.175"
+    externalAddress: "50.54.74.123"
+    network: "192.168.1.0"
+    subnet: "192.168.1.255"
+    sbc: true
+
+  controller:
+    mgcp:
+      address: "198.162.1.175"
+      port: 3437
+      channelBuffer: 3000
+      endpoints:
+        - name: "restcomm/bridge/"
+          relay: "splitter"
+        - name: "restcomm/ivr/"
+          relay: "mixer"
+        - name: "restcomm/cnf/"
+          relay: "mixer"
+
+  media:
+    timeout: 5
+    halfOpenDuration: 120
+    maxDuration: 6000
+    lowPort: 50000
+    highPort: 60000
+    jitterBuffer:
+      size: 60
+    codecs:
+      - pcmu
+      - pcma
+      - telephone-event
+
+  resources:
+    player:
+      connectionTimeout: 5000
+      cache:
+        enabled: true
+        size: 350
+    dtmfDetector:
+      dbi: -15
+      toneDuration: 70
+      toneInterval: 30
+    dtmfGenerator:
+      toneVolume: -10
+      toneDuration: 120
+
+  dtls:
+    minVersion: 1.1
+    maxVersion: 1.1
+    cipherSuites:
+      - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+      - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+    certificate:
+      path: "../conf/dtls/certificate.pem"
+      key: "../conf/dtls/mykey.pem"
+      algorithm: rsa
+
+  drivers:
+    #asr:
+    #  driver-name:
+    #    type: java.lang.String
+    #    parameters:
+    #      hertz: 8000
+    #      responseTimeout: 1000
+    #      interimResults: true
+
+media-plugin-vad-noise-threshold:
+  enabled: true
+  silenceLevel: 15

@@ -13,8 +13,8 @@
         </file>
 
         <file>
-            <source>src/main/config/mediaserver.xml</source>
-            <destName>conf/mediaserver.xml</destName>
+            <source>src/main/config/media-server.yml</source>
+            <destName>conf/media-server.yml</destName>
         </file>
 
         <!-- Auto-configuration -->

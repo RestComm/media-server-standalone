@@ -37,8 +37,8 @@ public class SpringBootstrapper {
 
     public static void main(String[] args) {
         try {
-            final String configPath = System.getProperty("mediaserver.config.file");
-            new XmlToPropertiesConfigurationLoader().load(configPath);
+            //final String configPath = System.getProperty("mediaserver.config.file");
+            //new XmlToPropertiesConfigurationLoader().load(configPath);
 
             final SpringApplication application = new SpringApplication(SpringBootstrapper.class);
             application.setHeadless(true);

@@ -28,25 +28,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 26/02/2018
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {NetworkConfiguration.class})
-public class NetworkConfigurationTest {
+@SpringBootTest(classes = {DtmfDetectorConfiguration.class})
+public class DtmfDetectorConfigurationTest {
 
     @Autowired
-    private NetworkConfiguration networkConfiguration;
+    private DtmfDetectorConfiguration configuration;
 
     @Test
     public void testConfiguration() {
-        assertEquals("192.168.1.175", networkConfiguration.getAddress());
-        assertEquals("50.54.74.123", networkConfiguration.getExternalAddress());
-        assertEquals("192.168.1.0", networkConfiguration.getNetwork());
-        assertEquals("192.168.1.255", networkConfiguration.getSubnet());
-        assertTrue(networkConfiguration.isSbc());
+        assertEquals(-15, configuration.getDbi());
+        assertEquals(70, configuration.getToneDuration());
+        assertEquals(30, configuration.getToneInterval());
     }
 
 }
