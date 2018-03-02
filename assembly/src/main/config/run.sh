@@ -181,24 +181,14 @@ echo ""
 echo "  CLASSPATH: $MMS_CLASSPATH"
 echo ""
 echo "=============================================================================="
-echo ""
-echo "=============================================================================="
-echo "==                                                                          =="
-echo "==          RestComm Media Server ships with G.729 codec.                   =="
-echo "==      G.729 includes patents from several companies and is licensed by    =="
-echo "==      Sipro Lab Telecom. Sipro Lab Telecom is the authorized Intellectual =="
-echo "==      Property Licensing Administrator for G.729 technology and patent    =="
-echo "==      pool. In a number of countries, the use of G.729 may require        =="
-echo "==      a license fee and/or royalty fee. For more information please visit =="
-echo "==                       http://www.sipro.com/G-729.html                    =="
-echo "==                                                                          =="
-echo "=============================================================================="
-echo ""
 
-      "$JAVA" $JAVA_OPTS \
-         -Dlog4j.configurationFile="$MMS_HOME/conf/log4j2.xml" \
-         -Djava.ext.dirs="$MMS_ENDORSED_DIRS" \
-         -Dmbrola.base="$MMS_HOME/mbrola" \
-         -classpath "$MMS_CLASSPATH" \
-         org.restcomm.media.server.standalone.bootstrap.Main "$@"
-      MMS_STATUS=$?
+"$JAVA" $JAVA_OPTS \
+    -Dmediaserver.config.file="$MMS_HOME/conf/mediaserver.xml" \
+    -Dspring.config.additional-location="$MMS_HOME/conf/" \
+    -Dspring.config.name=$(find $MMS_HOME/conf -name 'media-*.yml' -exec basename {} \; | xargs echo | tr ' ' ',' | sed 's|.yml||g') \
+    -Dlogging.config="$MMS_HOME/conf/log4j2.xml" \
+    -Djava.ext.dirs="$MMS_ENDORSED_DIRS" \
+    -Dmbrola.base="$MMS_HOME/mbrola" \
+    -classpath "$MMS_CLASSPATH" \
+    org.restcomm.media.server.standalone.bootstrap.spring.SpringBootstrapper "$@"
+MMS_STATUS=$?

@@ -136,7 +136,7 @@ public class ResourcesConfiguration {
         this.connectionTimeout = timeout;
     }
 
-    public int getConnectionTimeout() {
+    public int getPlayerConnectionTimeout() {
         return connectionTimeout;
     }
 }
