@@ -21,33 +21,21 @@
 
 package org.restcomm.media.server.standalone.bootstrap.spring;
 
-import org.restcomm.media.server.standalone.configuration.loader.XmlToPropertiesConfigurationLoader;
-import org.springframework.boot.Banner;
-import org.springframework.boot.ResourceBanner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.io.Resource;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 27/02/2018
  */
-@SpringBootApplication(scanBasePackages = {"org.restcomm.media.server.standalone.bootstrap.spring.di","org.restcomm.media.plugin"})
+@SpringBootApplication(scanBasePackages = {"org.restcomm.media.server.standalone.bootstrap.spring.di", "org.restcomm.media.plugin"})
 public class SpringBootstrapper {
 
     public static void main(String[] args) {
-        try {
-            //final String configPath = System.getProperty("mediaserver.config.file");
-            //new XmlToPropertiesConfigurationLoader().load(configPath);
-
-            final SpringApplication application = new SpringApplication(SpringBootstrapper.class);
-            application.setHeadless(true);
-            application.setWebEnvironment(false);
-            application.setRegisterShutdownHook(true);
-            application.run(args);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        final SpringApplication application = new SpringApplication(SpringBootstrapper.class);
+        application.setHeadless(true);
+        application.setWebEnvironment(false);
+        application.setRegisterShutdownHook(true);
+        application.run(args);
     }
 
 }

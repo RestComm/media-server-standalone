@@ -16,6 +16,10 @@
             <source>src/main/config/media-server.yml</source>
             <destName>conf/media-server.yml</destName>
         </file>
+        <file>
+            <source>src/main/config/media-server-override.yml</source>
+            <destName>conf/media-server-override.yml</destName>
+        </file>
 
         <!-- Auto-configuration -->
         <file>
