@@ -1,24 +1,24 @@
 mediaserver:
 
   network:
-    address: "127.0.0.1"
-    externalAddress: ""
-    network: "127.0.0.1"
-    subnet: "255.255.255.255"
+    address: 127.0.0.1
+    externalAddress: null
+    network: 127.0.0.1
+    subnet: 255.255.255.255
     sbc: false
 
   controller:
     mgcp:
-      address: "127.0.0.1"
+      address: 127.0.0.1
       port: 2427
       channelBuffer: 5000
       endpoints:
         - name: "restcomm/bridge/"
-          relay: "splitter"
+          relay: splitter
         - name: "restcomm/ivr/"
-          relay: "mixer"
+          relay: mixer
         - name: "restcomm/cnf/"
-          relay: "mixer"
+          relay: mixer
 
   media:
     timeout: 0
@@ -59,6 +59,14 @@ mediaserver:
       path: "../conf/dtls/x509-server-ecdsa.pem"
       key: "../conf/dtls/x509-server-key-ecdsa.pem"
       algorithm: ecdsa
+
+  ssl:
+    keyStore: null
+    keyStorePassword: null
+    trustStore: null
+    trustStorePassword: null
+    trustStoreType: null
+    debug: null
 
 #  drivers:
 #    - asr:

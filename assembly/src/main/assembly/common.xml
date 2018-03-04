@@ -28,24 +28,8 @@
             <destName>stop-mediaserver.sh</destName>
         </file>
         <file>
-            <source>src/main/config/autoconfig/ssl.conf</source>
-            <destName>ssl.conf</destName>
-        </file>
-        <file>
             <source>src/main/config/autoconfig/verify-dependencies.sh</source>
             <destName>.autoconfig/verify-dependencies.sh</destName>
-        </file>
-        <file>
-            <source>src/main/config/autoconfig/autoconfigure.sh</source>
-            <destName>.autoconfig/autoconfigure.sh</destName>
-        </file>
-        <file>
-            <source>src/main/config/autoconfig/config-java-opts.sh</source>
-            <destName>.autoconfig/autoconfig.d/config-java-opts.sh</destName>
-        </file>
-        <file>
-            <source>src/main/config/autoconfig/config-ssl.sh</source>
-            <destName>.autoconfig/autoconfig.d/config-ssl.sh</destName>
         </file>
 
         <!-- dtls -->
