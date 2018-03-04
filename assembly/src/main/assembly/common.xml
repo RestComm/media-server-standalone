@@ -6,19 +6,16 @@
             <destName>bin/run.sh</destName>
         </file>
 
-        <!-- Conf -->
+        <!-- Logger -->
         <file>
             <source>src/main/config/log4j2.yml</source>
             <destName>conf/log4j2.yml</destName>
         </file>
 
+        <!-- Configuration -->
         <file>
             <source>src/main/config/media-server.yml</source>
             <destName>conf/media-server.yml</destName>
-        </file>
-        <file>
-            <source>src/main/config/media-server-override.yml</source>
-            <destName>conf/media-server-override.yml</destName>
         </file>
 
         <!-- Auto-configuration -->
