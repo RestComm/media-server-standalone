@@ -7,7 +7,7 @@ Configuration:
       name: CONSOLE
       target: SYSTEM_OUT
       PatternLayout:
-        pattern: "%d{ABSOLUTE} %-5p [%c{1}] (%t) %m%n"
+        pattern: "%highlight{%d{ABSOLUTE} %-5p [%c{1}] (%t) %msg%n%throwable}"
 
     RollingFile:
       name: FILE

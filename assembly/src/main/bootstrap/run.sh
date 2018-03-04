@@ -183,6 +183,7 @@ echo "==========================================================================
 MS_CONF_FILES=$(find $MMS_HOME/conf -name 'media-*.yml' -exec basename {} \; | xargs echo | tr ' ' ',' | sed 's|.yml||g')
 
 "$JAVA" $JAVA_OPTS \
+    -Dspring.output.ansi.enabled="DETECT" \
     -Dspring.config.location="$MMS_HOME/conf/" \
     -Dspring.config.name="$MS_CONF_FILES,media-server-override" \
     -Dlogging.config="$MMS_HOME/conf/log4j2.yml" \
