@@ -28,6 +28,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Optional;
+import java.util.StringJoiner;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 04/03/2018
@@ -94,8 +96,5 @@ public class SslConfiguration {
         if (this.debug != null) {
             System.setProperty("javax.net.debug", String.valueOf(this.debug));
         }
-
-        log.info("SYSTEM PROPERTIES:");
-        System.getProperties().forEach((key, value) -> log.info(key + ": " + value));
     }
 }
