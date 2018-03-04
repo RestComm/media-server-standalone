@@ -5,12 +5,12 @@
 verifyJava() {
     if [ -z "$(which java)" ]; then
         echo "Java dependency is missing."
-        echo "CentOS/RHEL: java-1.7.0-openjdk-devel.x86_64"
+        echo "CentOS/RHEL: java-1.8.0-openjdk-devel.x86_64"
         echo "Debian/Ubuntu:"
         echo "    add-apt-repository ppa:openjdk-r/ppa"
         echo "    apt-get update"
-        echo "    apt-get install openjdk-7-jdk"
-        echo "macOS: brew cask install java7"
+        echo "    apt-get install openjdk-8-jdk"
+        echo "macOS: brew cask install java8"
         exit 1
     fi
 }

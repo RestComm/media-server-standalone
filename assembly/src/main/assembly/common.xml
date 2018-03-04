@@ -8,8 +8,8 @@
 
         <!-- Conf -->
         <file>
-            <source>src/main/config/log4j2.xml</source>
-            <destName>conf/log4j2.xml</destName>
+            <source>src/main/config/log4j2.yml</source>
+            <destName>conf/log4j2.yml</destName>
         </file>
 
         <file>
@@ -31,14 +31,6 @@
             <destName>stop-mediaserver.sh</destName>
         </file>
         <file>
-            <source>src/main/config/autoconfig/mediaserver.conf</source>
-            <destName>mediaserver.conf</destName>
-        </file>
-        <file>
-            <source>src/main/config/autoconfig/logger.conf</source>
-            <destName>logger.conf</destName>
-        </file>
-        <file>
             <source>src/main/config/autoconfig/ssl.conf</source>
             <destName>ssl.conf</destName>
         </file>
@@ -51,40 +43,12 @@
             <destName>.autoconfig/autoconfigure.sh</destName>
         </file>
         <file>
-            <source>src/main/config/autoconfig/config-network.sh</source>
-            <destName>.autoconfig/autoconfig.d/config-network.sh</destName>
-        </file>
-        <file>
-            <source>src/main/config/autoconfig/config-controller-mgcp.sh</source>
-            <destName>.autoconfig/autoconfig.d/config-controller-mgcp.sh</destName>
-        </file>
-        <file>
-            <source>src/main/config/autoconfig/config-media.sh</source>
-            <destName>.autoconfig/autoconfig.d/config-media.sh</destName>
-        </file>
-        <file>
-            <source>src/main/config/autoconfig/config-resources.sh</source>
-            <destName>.autoconfig/autoconfig.d/config-resources.sh</destName>
-        </file>
-        <file>
-            <source>src/main/config/autoconfig/config-dtls.sh</source>
-            <destName>.autoconfig/autoconfig.d/config-dtls.sh</destName>
-        </file>
-        <file>
-            <source>src/main/config/autoconfig/config-logger.sh</source>
-            <destName>.autoconfig/autoconfig.d/config-logger.sh</destName>
-        </file>
-        <file>
             <source>src/main/config/autoconfig/config-java-opts.sh</source>
             <destName>.autoconfig/autoconfig.d/config-java-opts.sh</destName>
         </file>
         <file>
             <source>src/main/config/autoconfig/config-ssl.sh</source>
             <destName>.autoconfig/autoconfig.d/config-ssl.sh</destName>
-        </file>
-        <file>
-            <source>src/main/config/autoconfig/config-asr-drivers.sh</source>
-            <destName>.autoconfig/autoconfig.d/config-asr-drivers.sh</destName>
         </file>
 
         <!-- dtls -->

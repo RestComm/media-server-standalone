@@ -67,7 +67,6 @@
 
     <modules>
         <module>bootstrap</module>
-        <module>configuration</module>
         <module>docs</module>
         <module>assembly</module>
     </modules>
