@@ -17,11 +17,6 @@
     <dependencies>
         <dependency>
             <groupId>org.restcomm.media.server.standalone</groupId>
-            <artifactId>configuration</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.restcomm.media.server.standalone</groupId>
             <artifactId>bootstrap</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -108,13 +103,13 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>unpack-plugin-configuration</id>
+                        <id>unpack-configuration</id>
                         <phase>package</phase>
                         <goals>
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
-                            <includeGroupIds>org.restcomm.media.plugin</includeGroupIds>
+                            <includeGroupIds>org.restcomm.media.plugin,org.restcomm.media.server.standalone</includeGroupIds>
                             <includes>**/*.yml</includes>
                             <outputDirectory>target/media-server-standalone-${project.version}/conf</outputDirectory>
                         </configuration>
