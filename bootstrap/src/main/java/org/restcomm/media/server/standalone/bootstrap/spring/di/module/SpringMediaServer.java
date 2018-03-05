@@ -75,8 +75,6 @@ public class SpringMediaServer extends StandaloneMediaServer {
             log.info("Called the Garbage collector to clear bootstrap data");
         }
         System.gc();
-
-        log.info(this.networkConfiguration);
     }
 
     @Override

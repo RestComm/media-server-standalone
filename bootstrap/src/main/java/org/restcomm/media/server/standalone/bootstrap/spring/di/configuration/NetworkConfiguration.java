@@ -79,14 +79,4 @@ public class NetworkConfiguration {
         this.sbc = sbc;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder builder = new StringBuilder("Network Configuration:").append(System.lineSeparator());
-        builder.append("address:").append(address).append(System.lineSeparator());
-        builder.append("externalAddress:").append(externalAddress).append(System.lineSeparator());
-        builder.append("network").append(network).append(System.lineSeparator());
-        builder.append("subnet").append(subnet).append(System.lineSeparator());
-        builder.append("sbc").append(sbc).append(System.lineSeparator());
-        return builder.toString();
-    }
 }
