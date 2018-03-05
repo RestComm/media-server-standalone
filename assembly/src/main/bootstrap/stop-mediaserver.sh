@@ -2,8 +2,6 @@
 ## Description: Stops Media Server process.
 ## Author     : Henrique Rosa (henrique.rosa@telestax.com)
 
-MS_HOME=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
-
 stopMediaServer() {
     echo 'Stopping RestComm Media Server...'
     if tmux ls | grep -q 'mediaserver'; then

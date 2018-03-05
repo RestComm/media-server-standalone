@@ -1,0 +1,52 @@
+Configuration:
+  shutdownHook: disable
+
+  Appenders:
+
+    Console:
+      name: CONSOLE
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%highlight{%d{ABSOLUTE} %-5p [%c{1}] (%t) %msg%n%throwable}"
+
+    RollingFile:
+      name: FILE
+      fileName: "../log/server.log"
+      filePattern: "../log/$${date:yyyy-MM-dd}/server-%d{yyyy-MM-dd_HHmm}-%i.log.gz"
+      append: false
+      immediateFlush: false
+      PatternLayout:
+        pattern: "%d %-5p [%c{1}] (%t) %m%n"
+      Policies:
+        OnStartupTriggeringPolicy:
+          minSize: 1
+        TimeBasedTriggeringPolicy:
+          interval: 60
+          modulate: true
+        SizeBasedTriggeringPolicy:
+          size: "100 MB"
+      DefaultRolloverStrategy:
+        max: 20
+        compressionLevel: 1
+
+    Async:
+      name: ASYNC
+      AppenderRef:
+        - ref: CONSOLE
+        - ref: FILE
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: ASYNC
+
+    Logger:
+      - name: org.restcomm.media
+        level: debug
+      - name: org.restcomm.media.control.mgcp
+        level: debug
+      - name: org.restcomm.media.rtp
+        level: info
+      - name: org.restcomm.media.rtcp
+        level: info

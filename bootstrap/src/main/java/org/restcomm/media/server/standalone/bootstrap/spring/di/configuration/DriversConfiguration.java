@@ -26,17 +26,18 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Henrique Rosa (henrique.rosa@telestax.com) created on 26/02/2018
  */
-@ConfigurationProperties(prefix = "mediaserver")
+@ConfigurationProperties(prefix = "mediaserver", ignoreInvalidFields = true, ignoreUnknownFields = true, exceptionIfInvalid = false)
 @Component
 @EnableConfigurationProperties
 public class DriversConfiguration {
 
-    private Map<String, Map<String, DriverProperties>> drivers = Collections.emptyMap();
+    private Map<String, Map<String, DriverProperties>> drivers = new HashMap<>(5);
 
     public Map<String, Map<String, DriverProperties>> getDrivers() {
         return drivers;
@@ -49,7 +50,7 @@ public class DriversConfiguration {
     public static class DriverProperties {
 
         private String type;
-        private Map<String, String> parameters;
+        private Map<String, String> parameters = new HashMap<>(5);
 
         public String getType() {
             return type;

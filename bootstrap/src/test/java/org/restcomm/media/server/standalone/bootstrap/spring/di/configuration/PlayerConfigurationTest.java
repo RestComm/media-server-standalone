@@ -19,23 +19,31 @@
  *  02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
-package org.restcomm.media.server.standalone.bootstrap.spring;
+package org.restcomm.media.server.standalone.bootstrap.spring.di.configuration;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.junit.Assert.assertEquals;
 
 /**
- * @author Henrique Rosa (henrique.rosa@telestax.com) created on 27/02/2018
+ * @author Henrique Rosa (henrique.rosa@telestax.com) created on 26/02/2018
  */
-@SpringBootApplication(scanBasePackages = {"org.restcomm.media.server.standalone.bootstrap.spring.di", "org.restcomm.media.plugin"})
-public class SpringBootstrapper {
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {PlayerConfiguration.class})
+public class PlayerConfigurationTest {
 
-    public static void main(String[] args) {
-        final SpringApplication application = new SpringApplication(SpringBootstrapper.class);
-        application.setHeadless(true);
-        application.setWebEnvironment(false);
-        application.setRegisterShutdownHook(true);
-        application.run(args);
+    @Autowired
+    private PlayerConfiguration playerConfiguration;
+
+    @Test
+    public void testConfiguration() {
+        assertEquals(5000, playerConfiguration.getConnectionTimeout());
+        assertEquals(true, playerConfiguration.getCache().isEnabled());
+        assertEquals(350, playerConfiguration.getCache().getSize());
     }
 
 }

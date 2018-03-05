@@ -28,6 +28,7 @@ import org.restcomm.media.network.deprecated.UdpManager;
 import org.restcomm.media.scheduler.PriorityQueueScheduler;
 import org.restcomm.media.scheduler.Scheduler;
 import org.restcomm.media.server.standalone.bootstrap.StandaloneMediaServer;
+import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.*;
 import org.restcomm.media.spi.ServerManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,6 +41,23 @@ import javax.annotation.PreDestroy;
  */
 @Component
 public class SpringMediaServer extends StandaloneMediaServer {
+
+    @Autowired
+    NetworkConfiguration networkConfiguration;
+    @Autowired
+    MediaConfiguration mediaConfiguration;
+    @Autowired
+    MgcpConfiguration mgcpConfiguration;
+    @Autowired
+    PlayerConfiguration playerConfiguration;
+    @Autowired
+    DtmfDetectorConfiguration dtmfDetectorConfiguration;
+    @Autowired
+    DtmfGeneratorConfiguration dtmfGeneratorConfiguration;
+    @Autowired
+    DtlsConfiguration dtlsConfiguration;
+    @Autowired
+    DriversConfiguration driversConfiguration;
 
     @Autowired
     public SpringMediaServer(PriorityQueueScheduler mediaScheduler, Scheduler taskScheduler, UdpManager udpManager, ServerManager controller) {
@@ -57,6 +75,8 @@ public class SpringMediaServer extends StandaloneMediaServer {
             log.info("Called the Garbage collector to clear bootstrap data");
         }
         System.gc();
+
+        log.info(this.networkConfiguration);
     }
 
     @Override
