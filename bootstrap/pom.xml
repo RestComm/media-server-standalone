@@ -21,11 +21,6 @@
     <dependencies>
         <!-- Modules -->
         <dependency>
-            <groupId>org.restcomm.media.server.standalone</groupId>
-            <artifactId>configuration</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.restcomm.media.core.control</groupId>
             <artifactId>mgcp</artifactId>
         </dependency>

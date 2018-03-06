@@ -42,11 +42,7 @@ import org.restcomm.media.scheduler.PriorityQueueScheduler;
 import org.restcomm.media.sdp.format.AVProfile;
 import org.restcomm.media.sdp.format.RTPFormat;
 import org.restcomm.media.sdp.format.RTPFormats;
-import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.DtlsConfiguration;
-import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.DtmfDetectorConfiguration;
-import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.MediaConfiguration;
-import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.PlayerConfiguration;
-import org.restcomm.media.server.standalone.configuration.CodecType;
+import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.*;
 import org.restcomm.media.spi.dsp.DspFactory;
 import org.restcomm.media.spi.dtmf.DtmfDetectorProvider;
 import org.restcomm.media.spi.player.PlayerProvider;
@@ -88,7 +84,7 @@ public class SpringMediaModule {
         final CipherSuite[] cipherSuites = buildCipherSuite(dtlsConfiguration.getCipherSuites());
         final DtlsConfiguration.CertificateConfiguration certificate = dtlsConfiguration.getCertificate();
 
-        System.out.println(minProtocolVersion+ " - " + maxProtocolVersion + " - " + cipherSuites +" - " + certificate);
+        System.out.println(minProtocolVersion + " - " + maxProtocolVersion + " - " + cipherSuites + " - " + certificate);
 
         return new DtlsSrtpServerProvider(minProtocolVersion, maxProtocolVersion, cipherSuites, certificate.getPath(), certificate.getKey(), AlgorithmCertificate.valueOf(certificate.getAlgorithm().toUpperCase()));
     }
