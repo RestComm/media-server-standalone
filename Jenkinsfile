@@ -2,14 +2,17 @@ def runUnitTests() {
     sh "mvn clean install -Dmaven.test.failure.ignore=true"
 }
 
-def setVersions() {
+def updateParentVersion() {
         if(env.UPDATE_PARENT == 'true') {
             sh "mvn versions:update-parent"
             echo 'Align parent to latest'
         } else {
             echo 'Using default parent version'
         }
-	sh "mvn versions:set -DnewVersion=$MAJOR_VERSION_NUMBER-$BUILD_NUMBER -DprocessDependencies=false -DprocessParent=true -Dmaven.test.skip=true"
+}
+
+def setVersions() {
+    sh "mvn versions:set -DnewVersion=$MAJOR_VERSION_NUMBER-$BUILD_NUMBER -DprocessDependencies=false -DprocessParent=true -Dmaven.test.skip=true"
 }
 
 def setMediaBomVersion() {
@@ -75,8 +78,9 @@ node("cxs-slave-master") {
    }
 
    stage ('Versioning') {
-    setVersions()
     setMediaBomVersion()
+    updateParentVersion()
+    setVersions()
    }
 
    stage ('Build') {
