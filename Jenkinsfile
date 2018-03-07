@@ -6,8 +6,8 @@ def setVersions() {
 	sh "mvn versions:set -DnewVersion=$MAJOR_VERSION_NUMBER-$BUILD_NUMBER -DprocessDependencies=false -DprocessParent=true -Dmaven.test.skip=true"
 }
 
-def setMediaCoreVersion() {
-    sh "mvn versions:set-property -Dproperty=restcomm.media.core.version -DnewVersion=${env.MEDIA_CORE_VERSION}"
+def setMediaBomVersion() {
+    sh "mvn versions:set-property -Dproperty=restcomm.media.bom.version -DnewVersion=${env.MEDIA_BOM_VERSION}"
 }
 
 def buildMedia() {
@@ -70,7 +70,7 @@ node("cxs-slave-master") {
 
    stage ('Versioning') {
     setVersions()
-    setMediaCoreVersion()
+    setMediaBomVersion()
    }
 
    stage ('Build') {
