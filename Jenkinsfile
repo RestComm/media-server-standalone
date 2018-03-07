@@ -16,7 +16,7 @@ def setVersions() {
 }
 
 def setMediaBomVersion() {
-    sh "mvn versions:set-property -Dproperty=restcomm.media.bom.version -DnewVersion=${env.MEDIA_BOM_VERSION}"
+    sh "mvn versions:set-property -Dproperty=restcomm.media.bom.version -DnewVersion=${env.MEDIA_BOM_VERSION} -Dbom.replacer=${env.BOM_REPLACER}"
 }
 
 def buildMedia() {
@@ -79,8 +79,8 @@ node("cxs-slave-master") {
 
    stage ('Versioning') {
     setMediaBomVersion()
-    updateParentVersion()
     setVersions()
+    updateParentVersion()
    }
 
    stage ('Build') {
