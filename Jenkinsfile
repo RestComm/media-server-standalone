@@ -3,6 +3,12 @@ def runUnitTests() {
 }
 
 def setVersions() {
+        if(env.UPDATE_PARENT == 'true') {
+            sh "mvn versions:update-parent"
+            echo 'Align parent to latest'
+        } else {
+            echo 'Using default parent version'
+        }
 	sh "mvn versions:set -DnewVersion=$MAJOR_VERSION_NUMBER-$BUILD_NUMBER -DprocessDependencies=false -DprocessParent=true -Dmaven.test.skip=true"
 }
 
