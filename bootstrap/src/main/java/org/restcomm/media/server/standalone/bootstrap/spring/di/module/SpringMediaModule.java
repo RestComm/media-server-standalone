@@ -84,8 +84,6 @@ public class SpringMediaModule {
         final CipherSuite[] cipherSuites = buildCipherSuite(dtlsConfiguration.getCipherSuites());
         final DtlsConfiguration.CertificateConfiguration certificate = dtlsConfiguration.getCertificate();
 
-        System.out.println(minProtocolVersion + " - " + maxProtocolVersion + " - " + cipherSuites + " - " + certificate);
-
         return new DtlsSrtpServerProvider(minProtocolVersion, maxProtocolVersion, cipherSuites, certificate.getPath(), certificate.getKey(), AlgorithmCertificate.valueOf(certificate.getAlgorithm().toUpperCase()));
     }
 
