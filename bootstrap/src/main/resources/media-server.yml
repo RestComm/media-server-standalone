@@ -68,11 +68,11 @@ mediaserver:
     trustStoreType: null
     debug: null
 
-#  drivers:
-#    - asr:
-#      - driver-name:
-#        type: org.restcomm.media.drivers.asr.someDriver
-#        parameters:
-#          - hertz: 8000
-#          - responseTimeout: 1000
-#          - interimResults: true
+  #drivers:
+    #asr:
+    #  driver-name:
+    #    type: java.lang.String
+    #    parameters:
+    #      hertz: 8000
+    #      responseTimeout: 1000
+    #      interimResults: true

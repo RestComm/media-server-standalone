@@ -105,7 +105,7 @@ if [ "x$JAVA" = "x" ]; then
 fi
 
 # Setup the classpath
-runjar="$MMS_HOME/bin/bootstrap.jar"
+runjar="$MMS_HOME/bin/media-server-standalone-bootstrap.jar"
 if [ ! -f "$runjar" ]; then
     die "Missing required file: $runjar"
 fi
