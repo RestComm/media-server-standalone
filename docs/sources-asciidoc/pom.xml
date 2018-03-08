@@ -5,12 +5,12 @@
 
     <parent>
         <groupId>org.restcomm.media.server.standalone</groupId>
-        <artifactId>docs</artifactId>
+        <artifactId>media-server-standalone-docs</artifactId>
         <version>8.0.0-SNAPSHOT</version>
     </parent>
 
     <groupId>org.restcomm.media.server.docs</groupId>
-    <artifactId>asciidoc</artifactId>
+    <artifactId>media-server-standalone-docs-asciidoc</artifactId>
     <name>media-server-standalone-docs-asciidoc</name>
 
     <properties>
