@@ -25,17 +25,86 @@
     </issueManagement>
 
     <properties>
-        <restcomm.media.bom.version>8.0.0-12</restcomm.media.bom.version>
+        <restcomm.media.core.version>[8.0.0-SNAPSHOT,9.0.0)</restcomm.media.core.version>
+        <restcomm.media.plugin.vad.version>[1.0.0-SNAPSHOT,2.0.0)</restcomm.media.plugin.vad.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Media Core -->
             <dependency>
-                <groupId>org.restcomm.media</groupId>
-                <artifactId>media-bom</artifactId>
-                <version>${restcomm.media.bom.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <groupId>org.restcomm.media.core</groupId>
+                <artifactId>media-core-spi</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.restcomm.media.core.control</groupId>
+                <artifactId>media-core-control-mgcp</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.restcomm.media.core</groupId>
+                <artifactId>media-core-rtp</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.restcomm.media.core.resource</groupId>
+                <artifactId>media-core-resource-dtmf</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.restcomm.media.core.resource</groupId>
+                <artifactId>media-core-resource-player</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.restcomm.media.core.resource</groupId>
+                <artifactId>media-core-resource-recorder</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.restcomm.media.core.asr</groupId>
+                <artifactId>media-core-asr-engine</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+
+            <!-- Media Core Codecs -->
+            <dependency>
+                <groupId>org.restcomm.media.core.codec</groupId>
+                <artifactId>media-core-codec-l16</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.restcomm.media.core.codec</groupId>
+                <artifactId>media-core-codec-g711</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.restcomm.media.core.codec</groupId>
+                <artifactId>media-core-codec-gsm</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.restcomm.media.core.codec</groupId>
+                <artifactId>media-core-codec-g729</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.restcomm.media.core.codec</groupId>
+                <artifactId>media-core-codec-ilbc</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.restcomm.media.core.codec.opus</groupId>
+                <artifactId>media-core-codec-opus-java</artifactId>
+                <version>${restcomm.media.core.version}</version>
+            </dependency>
+
+            <!-- Media Plugins -->
+            <dependency>
+                <groupId>org.restcomm.media.plugin.vad</groupId>
+                <artifactId>media-plugin-vad-noise-threshold</artifactId>
+                <version>${restcomm.media.plugin.vad.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

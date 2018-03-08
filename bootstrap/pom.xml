@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>org.restcomm.media.server.standalone</groupId>
-    <artifactId>bootstrap</artifactId>
+    <artifactId>media-server-standalone-bootstrap</artifactId>
     <name>media-server-standalone-bootstrap</name>
 
     <properties>
@@ -22,7 +22,7 @@
         <!-- Modules -->
         <dependency>
             <groupId>org.restcomm.media.core.control</groupId>
-            <artifactId>mgcp</artifactId>
+            <artifactId>media-core-control-mgcp</artifactId>
         </dependency>
 
         <!-- Plugins -->

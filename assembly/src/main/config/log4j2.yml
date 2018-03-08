@@ -44,9 +44,9 @@ Configuration:
     Logger:
       - name: org.restcomm.media
         level: debug
-      - name: org.restcomm.media.control.mgcp
+      - name: org.restcomm.media.core.control.mgcp
         level: debug
-      - name: org.restcomm.media.rtp
+      - name: org.restcomm.media.core.rtp
         level: info
-      - name: org.restcomm.media.rtcp
+      - name: org.restcomm.media.core.rtcp
         level: info

@@ -12,7 +12,7 @@
             <excludes>
                 <exclude>*:so</exclude>
                 <exclude>*:dylib</exclude>
-                <exclude>org.restcomm.media.server.standalone:bootstrap</exclude>
+                <exclude>org.restcomm.media.server.standalone:media-server-standalone-bootstrap</exclude>
             </excludes>
         </dependencySet>
         <dependencySet>
@@ -21,7 +21,7 @@
             <unpack>false</unpack>
             <scope>runtime</scope>
             <includes>
-                <include>org.restcomm.media.server.standalone:bootstrap</include>
+                <include>org.restcomm.media.server.standalone:media-server-standalone-bootstrap</include>
             </includes>
         </dependencySet>
         <dependencySet>

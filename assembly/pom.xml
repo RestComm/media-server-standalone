@@ -10,67 +10,67 @@
     </parent>
 
     <groupId>org.restcomm.media.server.standalone</groupId>
-    <artifactId>assembly</artifactId>
+    <artifactId>media-server-standalone-assembly</artifactId>
     <name>media-server-standalone-assembly</name>
     <packaging>pom</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.restcomm.media.server.standalone</groupId>
-            <artifactId>bootstrap</artifactId>
+            <artifactId>media-server-standalone-bootstrap</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <!-- Modules -->
         <dependency>
             <groupId>org.restcomm.media.core</groupId>
-            <artifactId>spi</artifactId>
+            <artifactId>media-core-spi</artifactId>
         </dependency>
         <dependency>
             <groupId>org.restcomm.media.core</groupId>
-            <artifactId>rtp</artifactId>
+            <artifactId>media-core-rtp</artifactId>
         </dependency>
         <dependency>
             <groupId>org.restcomm.media.core.resource</groupId>
-            <artifactId>dtmf</artifactId>
+            <artifactId>media-core-resource-dtmf</artifactId>
         </dependency>
         <dependency>
             <groupId>org.restcomm.media.core.resource</groupId>
-            <artifactId>player</artifactId>
+            <artifactId>media-core-resource-player</artifactId>
         </dependency>
         <dependency>
             <groupId>org.restcomm.media.core.resource</groupId>
-            <artifactId>recorder</artifactId>
+            <artifactId>media-core-resource-recorder</artifactId>
         </dependency>
         <dependency>
             <groupId>org.restcomm.media.core.asr</groupId>
-            <artifactId>asr-engine</artifactId>
+            <artifactId>media-core-asr-engine</artifactId>
         </dependency>
 
         <!-- codecs -->
         <dependency>
             <groupId>org.restcomm.media.core.codec</groupId>
-            <artifactId>l16</artifactId>
+            <artifactId>media-core-codec-l16</artifactId>
         </dependency>
         <dependency>
             <groupId>org.restcomm.media.core.codec</groupId>
-            <artifactId>g711</artifactId>
+            <artifactId>media-core-codec-g711</artifactId>
         </dependency>
         <dependency>
             <groupId>org.restcomm.media.core.codec</groupId>
-            <artifactId>gsm</artifactId>
+            <artifactId>media-core-codec-gsm</artifactId>
         </dependency>
         <dependency>
             <groupId>org.restcomm.media.core.codec</groupId>
-            <artifactId>g729</artifactId>
+            <artifactId>media-core-codec-g729</artifactId>
         </dependency>
         <dependency>
             <groupId>org.restcomm.media.core.codec</groupId>
-            <artifactId>ilbc</artifactId>
+            <artifactId>media-core-codec-ilbc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.restcomm.media.core.codec.opus</groupId>
-            <artifactId>opus-java</artifactId>
+            <artifactId>media-core-codec-opus-java</artifactId>
         </dependency>
     </dependencies>
 
