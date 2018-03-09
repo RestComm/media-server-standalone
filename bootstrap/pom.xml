@@ -13,11 +13,6 @@
     <artifactId>media-server-standalone-bootstrap</artifactId>
     <name>media-server-standalone-bootstrap</name>
 
-    <properties>
-        <google.guice.version>4.0</google.guice.version>
-        <google.guice.grapher.version>4.1.0</google.guice.grapher.version>
-    </properties>
-
     <dependencies>
         <!-- Modules -->
         <dependency>
@@ -29,6 +24,16 @@
         <dependency>
             <groupId>org.restcomm.media.plugin.vad</groupId>
             <artifactId>media-plugin-vad-noise-threshold</artifactId>
+        </dependency>
+
+        <!-- YAML -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
         <!-- Dependency Injection - Spring -->
