@@ -23,12 +23,12 @@ package org.restcomm.media.server.standalone.bootstrap.spring.di.module;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.restcomm.media.asr.AsrEngineProvider;
-import org.restcomm.media.asr.AsrEngineProviderImpl;
-import org.restcomm.media.asr.driver.AsrDriverManagerImpl;
+import org.restcomm.media.core.asr.AsrEngineProvider;
+import org.restcomm.media.core.asr.AsrEngineProviderImpl;
+import org.restcomm.media.core.asr.driver.AsrDriverManagerImpl;
+import org.restcomm.media.core.drivers.asr.AsrDriverManager;
 import org.restcomm.media.core.resource.vad.VoiceActivityDetectorProvider;
-import org.restcomm.media.drivers.asr.AsrDriverManager;
-import org.restcomm.media.scheduler.PriorityQueueScheduler;
+import org.restcomm.media.core.scheduler.PriorityQueueScheduler;
 import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.DriversConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

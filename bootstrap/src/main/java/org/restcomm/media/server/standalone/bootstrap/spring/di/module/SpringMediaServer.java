@@ -24,12 +24,12 @@ package org.restcomm.media.server.standalone.bootstrap.spring.di.module;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
-import org.restcomm.media.network.deprecated.UdpManager;
-import org.restcomm.media.scheduler.PriorityQueueScheduler;
-import org.restcomm.media.scheduler.Scheduler;
+import org.restcomm.media.core.network.deprecated.UdpManager;
+import org.restcomm.media.core.scheduler.PriorityQueueScheduler;
+import org.restcomm.media.core.scheduler.Scheduler;
 import org.restcomm.media.server.standalone.bootstrap.StandaloneMediaServer;
 import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.*;
-import org.restcomm.media.spi.ServerManager;
+import org.restcomm.media.core.spi.ServerManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

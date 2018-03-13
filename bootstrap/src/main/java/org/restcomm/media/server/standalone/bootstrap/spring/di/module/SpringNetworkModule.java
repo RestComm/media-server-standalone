@@ -21,13 +21,13 @@
 
 package org.restcomm.media.server.standalone.bootstrap.spring.di.module;
 
-import org.restcomm.media.network.deprecated.PortManager;
-import org.restcomm.media.network.deprecated.RtpPortManager;
-import org.restcomm.media.network.deprecated.UdpManager;
-import org.restcomm.media.network.netty.filter.LocalNetworkGuard;
-import org.restcomm.media.network.netty.filter.NetworkGuard;
-import org.restcomm.media.network.netty.handler.NetworkFilter;
-import org.restcomm.media.scheduler.Scheduler;
+import org.restcomm.media.core.network.deprecated.PortManager;
+import org.restcomm.media.core.network.deprecated.RtpPortManager;
+import org.restcomm.media.core.network.deprecated.UdpManager;
+import org.restcomm.media.core.network.netty.filter.LocalNetworkGuard;
+import org.restcomm.media.core.network.netty.filter.NetworkGuard;
+import org.restcomm.media.core.network.netty.handler.NetworkFilter;
+import org.restcomm.media.core.scheduler.Scheduler;
 import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.MediaConfiguration;
 import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.MgcpConfiguration;
 import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.NetworkConfiguration;

@@ -23,13 +23,13 @@ package org.restcomm.media.server.standalone.bootstrap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.restcomm.media.network.deprecated.UdpManager;
-import org.restcomm.media.scheduler.PriorityQueueScheduler;
-import org.restcomm.media.scheduler.Scheduler;
-import org.restcomm.media.scheduler.Task;
-import org.restcomm.media.spi.ControlProtocol;
-import org.restcomm.media.spi.MediaServer;
-import org.restcomm.media.spi.ServerManager;
+import org.restcomm.media.core.network.deprecated.UdpManager;
+import org.restcomm.media.core.scheduler.PriorityQueueScheduler;
+import org.restcomm.media.core.scheduler.Scheduler;
+import org.restcomm.media.core.scheduler.Task;
+import org.restcomm.media.core.spi.ControlProtocol;
+import org.restcomm.media.core.spi.MediaServer;
+import org.restcomm.media.core.spi.ServerManager;
 
 import java.util.HashMap;
 import java.util.Map;
