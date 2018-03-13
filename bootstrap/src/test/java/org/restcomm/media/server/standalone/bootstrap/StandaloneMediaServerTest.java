@@ -23,13 +23,13 @@ package org.restcomm.media.server.standalone.bootstrap;
 
 import org.junit.After;
 import org.junit.Test;
-import org.restcomm.media.control.mgcp.controller.MgcpController;
-import org.restcomm.media.network.deprecated.UdpManager;
-import org.restcomm.media.scheduler.PriorityQueueScheduler;
-import org.restcomm.media.scheduler.Scheduler;
-import org.restcomm.media.scheduler.ServiceScheduler;
-import org.restcomm.media.spi.MediaServer;
-import org.restcomm.media.spi.ServerManager;
+import org.restcomm.media.core.control.mgcp.controller.MgcpController;
+import org.restcomm.media.core.network.deprecated.UdpManager;
+import org.restcomm.media.core.scheduler.PriorityQueueScheduler;
+import org.restcomm.media.core.scheduler.Scheduler;
+import org.restcomm.media.core.scheduler.ServiceScheduler;
+import org.restcomm.media.core.spi.MediaServer;
+import org.restcomm.media.core.spi.ServerManager;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

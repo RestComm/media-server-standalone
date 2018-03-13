@@ -24,12 +24,7 @@ package org.restcomm.media.server.standalone.bootstrap.spring.di.module;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.restcomm.media.network.deprecated.PortManager;
-import org.restcomm.media.network.deprecated.RtpPortManager;
-import org.restcomm.media.network.deprecated.UdpManager;
-import org.restcomm.media.scheduler.*;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import org.restcomm.media.core.scheduler.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
