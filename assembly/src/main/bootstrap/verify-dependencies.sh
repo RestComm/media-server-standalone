@@ -9,7 +9,7 @@ verifyJava() {
         exit 1
     else
         local java_version=$(java -version 2>&1 | head -n 1 | cut -d'"' -f2 | cut -d'.' -f2)
-        if [[ $(java -version) -lt "8" ]]; then
+        if [[ $java_version -lt "8" ]]; then
             printJavaInstallation
             exit 1
         fi

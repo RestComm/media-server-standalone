@@ -23,17 +23,15 @@ Ensure that the following requirements have been met before continuing with the 
 Sufficient Disk Space::
 Once unzipped, the {this-platform} {this-application} binary release requires _at least_	36Mb of free disk space. Keep in mind that disk space requirements may change in future iterations.
 
-Anything Java Itself Will Run On::
-The JBoss embedded Media Server and its bundled servers, JBoss, are 100% Java. The {this-platform} {this-application} will run on the same hardware that the JBoss Application Server runs on.
 
 .Software Requirements
 Java Development Kit::
-A working installation of JDK 5 or higher is required for {this-platform} {this-application} to run.
+A working installation of JDK 8 is required for {this-platform} {this-application} to run.
 
 [[_itms_binary_standalone_media_server_downloading]]
 === Downloading
 
-The latest version of the {this-platform} {this-application} is available from the project's https://github.com/RestComm/mediaserver/releases/latest[github release page].
+The latest version of the {this-platform} {this-application} is available from the project's https://github.com/RestComm/media-server-standalone/releases/latest[github release page].
 Select the link named _restcomm-media-server-<version>.zip_ to start downloading the latest stable binary release from community.
 
 [[_itms_binary_standalone_media_server_installing]]
@@ -99,20 +97,37 @@ restcomm-media-server-<version>]$ chmod +x bin/run.sh
 restcomm-media-server-<version>]$ ./bin/run.sh
 ----
 
-[NOTE]
-====
-Instead of executing the shell script, the [path]_run.jar_ executable Java archive can be executed from the [path]_bin_ directory: 
-
-----
-restcomm-media-server-<version>]$ java -jar bin/run.jar
-----
-====
-
 You can verify that {this-platform} {this-application} has started successfully if the last line of output in the Linux Terminal window is similar to 
 
 [source]
 ----
-15:35:16,897 INFO  [MainDeployer] [[[[[[[[[ RestComm Media Server: release.version=5.0.0-SNAPSHOT Started ]]]]]]]]]
+  _____           _    _____
+ |  __ \         | |  / ____|
+ | |__) |___  ___| |_| |     ___  _ __ ___  _ __ ___
+ |  _  // _ \/ __| __| |    / _ \| '_ ` _ \| '_ ` _ \
+ | | \ \  __/\__ \ |_| |___| (_) | | | | | | | | | | |
+ |_|  \_\___||___/\__|\_____\___/|_| |_| |_|_| |_| |_|
+ |  \/  |        | (_)        / ____|
+ | \  / | ___  __| |_  __ _  | (___   ___ _ ____   _____ _ __
+ | |\/| |/ _ \/ _` | |/ _` |  \___ \ / _ \ '__\ \ / / _ \ '__|
+ | |  | |  __/ (_| | | (_| |  ____) |  __/ |   \ V /  __/ |
+ |_|  |_|\___|\__,_|_|\__,_| |_____/ \___|_|    \_/ \___|_|
+
+ :: Version 8.0.0-SNAPSHOT ::
+
+
+09:36:43,666 INFO  [SpringApplication] (main) Starting application with PID 55792
+09:36:43,668 INFO  [SpringApplication] (main) No active profile set, falling back to default profiles: default
+09:36:43,709 INFO  [AnnotationConfigApplicationContext] (main) Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@4716be8b: startup date [Thu Mar 15 09:36:43 WET 2018]; root of context hierarchy
+09:36:44,580 INFO  [MgcpEndpointManager] (main) Installed MGCP Endpoint Provider for namespace restcomm/bridge/
+09:36:44,580 INFO  [MgcpEndpointManager] (main) Installed MGCP Endpoint Provider for namespace restcomm/ivr/
+09:36:44,580 INFO  [MgcpEndpointManager] (main) Installed MGCP Endpoint Provider for namespace restcomm/cnf/
+09:36:44,601 INFO  [PriorityQueueScheduler] (main) Starting
+09:36:44,603 INFO  [PriorityQueueScheduler] (main) Started
+09:36:44,604 INFO  [ServiceScheduler] (main) Started scheduler!
+09:36:44,604 INFO  [UdpManager] (main) Starting UDP Manager
+09:36:44,605 INFO  [UdpManager] (main) Initialized UDP interface[unknown]: bind address=127.0.0.1
+09:36:44,683 INFO  [StandaloneMediaServer] (main) Media Server started
 ----
 
 [[_itms-binary-standalone_media_server-stopping]]
@@ -126,9 +141,69 @@ To stop the execution of an active {this-platform} {this-application} process, w
 +
 ----
 ~]$ ps aux | grep java
-hrosa            10947  16.8 22.4  6603132 3755516 s005  S+    3:51PM   0:07.51 /opt/.jenv/versions/oracle64-1.7.0.79/bin/java -Dprogram.name=run.sh -classpath /opt/restcomm-media-server/bin/run.jar org.mobicents.media.server.bootstrap.Main
+hrosa            10947  16.8 22.4  6603132 3755516 s005  S+    3:51PM   0:07.51 /opt/.jenv/versions/1.8/bin/java -Dprogram.name=run.sh -classpath /opt/restcomm-media-server/bin/run.jar org.mobicents.media.server.bootstrap.Main
 ~]$ kill 10947
 ----
+
+[[_itms_binary_standalone_media_server_running_session]]
+== Running with Session Management
+
+The RestComm Media Server allows users to bootstrap the project using https://tmux.github.io[TMux], a terminal multiplexer that lets users switch easily between several programs in one terminal, detach them (they keep running in the background) and reattach them to a different terminal.
+
+.Tmux installation
+----
+# CentOS/RHEL
+yum install tmux
+
+# Ubuntu/Debian
+apt-get install tmux
+
+# macOS
+homebrew install tmux
+----
+
+=== Starting
+The run the project via Tmux, users simply need to execute the `MS_HOME/bin/start-media-server.sh` script.
+
+[source,shell]
+----
+bash-3.2# ./start-mediaserver.sh
+Starting RestComm Media Server...
+...RestComm Media Server started running on session named "mediaserver"!
+----
+
+From the Terminal output, we see the script created a tmux session named `mediaserver` where the Media Server process will be running.
+
+[source,shell]
+----
+bash-3.2# tmux ls
+mediaserver: 1 windows (created Wed Nov  2 22:05:14 2016) [160x35]
+----
+
+To access the _mediaserver_ session we just need to run the following command:
+
+[source,shell]
+----
+bash-3.2# tmux attach -t mediaserver
+----
+
+To detach from tmux session, just press `ctrl+b d` from within tmux console.
+
+[[_ctms_configuring_the_media_server_automatic_stopping]]
+=== Stopping
+
+To stop the Media Server process and kill the tmux session, the user simply needs to execute the stop-mediaserver.sh script.
+
+[source,shell]
+----
+bash-3.2# ./stop-mediaserver.sh
+Stopping RestComm Media Server...
+...stopped RestComm Media Server instance running on session "mediaserver".
+
+bash-3.2# tmux ls
+no server running on /private/tmp/tmux-501/default
+----
+
 
 [[_itms_standalone_server_structure]]
 === Server Structure
@@ -146,12 +221,11 @@ The directory structure in the {this-platform} {this-application} installation d
 | Directory Name | Description
 | bin | Contains the entry point JARs and start-up scripts included with the Media Server distribution.
 | conf | Contains the core services that are required for the server. This includes the bootstrap descriptor, log files, and the default media server configuration file.
-| deploy | Contains the dynamic deployment content required by the hot deployment service. The deploy location can be overridden by specifying a location in the URL attribute of the URLDeploymentScanner configuration item.
 | lib | Contains the dependency files required by the server.
 | log | Contains the logs from the bootstrap logging service. The log directory is the default directory into which the bootstrap logging service places its logs, however, the location can be overridden by altering the log4j.xml configuration file. This file is located in the _conf_ directory.					
 |===
 
-The standalone Media Server uses a number of XML configuration
+The standalone Media Server uses a number of YAML configuration
 files that control various aspects of the server.
 <xref linkend="tab-mms-standalone_core_configuration_file_set" />
 describes the location of the key configuration files,
@@ -163,11 +237,10 @@ and provides a description of the
 [cols="1,1", frame="all", options="header"]
 |===
 | File Name and Location | Description
-| conf/bootstrap-beans.xml | Specifies which additional microcontainer deployments are loaded as part of the bootstrap phase. For a standard configuration, the bootstrap configuration files require no alteration.
-| conf/mediaserver.xml | Main configuration file responsible for configure all aspects of the Media Server core. For in-depth details of this file please see chapter 3.
-| conf/mgcp-conf.xml | Specifies the configuration for the MGCP controller.
-| conf/log4j.properties | Specifies the Apache log4j framework category priorities and appenders used by the Media Server.
-| deploy/server-beans.xml | Specified list of Java Beans necessary for bootstrapping the Media Server. For a standard configuration, the bootstrap configuration files require no alteration.
+| conf/media-server.yml | Main configuration file responsible for configure all aspects of the Media Server core. For in-depth details of this file please see chapter 3.
+| conf/media-plugin-*.yml | Configuration file for plugins. Each plugin will feature its own configuration file.
+| conf/media-extra.yml | Utility file to override required configuration parameters without changing default values established in media-server.yml or plugin configuration files.
+| conf/log4j2.yml| Specifies the Apache Log4j2 framework category priorities and appenders used by the Media Server.
 |===
 
 [[_itms_writing_and_running_tests_against_the_media_server]]
