@@ -468,11 +468,11 @@ User can set KeyStore and TrustStor to relative or absolute URL. If relative URL
 
 To make life easier for users, the RestComm Media Server offers a simple mechanism for overriding the default configuration parameters.
 
-By editing the `MS_HOME/conf/media-server-extra.yml` file users can override the configuration parameters they need without having to go through every aspect of the Media Server configuration.
+By editing the `MS_HOME/conf/media-extra.yml` file users can override the configuration parameters they need without having to go through every aspect of the Media Server configuration.
 
 The following example shows how users can override configuration of the Network by enabling SBC mode and how to enable caching for the Audio Player resource.
 
-.media-server-extra.yml
+.media-extra.yml
 ====
 [source,yml]
 ----
