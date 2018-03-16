@@ -26,6 +26,8 @@ def buildMedia() {
 def deployMediaCXS() {
 	if (env.PUBLISH_TO_CXS_NEXUS == 'true') {
 		sh "mvn clean install package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests=true -DskipNexusStagingDeployMojo=true -DaltDeploymentRepository=nexus::default::$CXS_NEXUS2_URL"
+        } else if(env.SNAPSHOT == 'true') {
+		sh "mvn clean install package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests=true -DskipNexusStagingDeployMojo=true -DaltDeploymentRepository=nexus::default::$CXS_NEXUS_SNAPSHOTS_URL"
 	} else {
 	    sh 'echo skipping CXS deployment'
 	}
@@ -78,9 +80,15 @@ node("cxs-slave-master") {
    }
 
    stage ('Versioning') {
-    setMediaBomVersion()
-    updateParentVersion()
-    setVersions()
+        if(env.SNAPSHOT == 'false') {
+	   echo '>>> Update versions'
+	   setMediaBomVersion()
+	   updateParentVersion()
+	   setVersions()
+	}
+	else {
+	   echo '>>> Using SNAPSHOT versions'
+	}
    }
 
    stage ('Build') {
