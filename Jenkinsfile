@@ -34,15 +34,29 @@ def deployMediaCXS() {
 }
 
 def zipAndArchiveAssembly() {
-    zip archive: true, dir: "./assembly/target/media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}", zipFile: "media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+	if(env.SNAPSHOT == 'true') {
+	    zip archive: true, dir: "./assembly/target/media-server-standalone-*", zipFile: "media-server-standalone-8-SNAPSHOT.zip"
+	} else {
+	    zip archive: true, dir: "./assembly/target/media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}", zipFile: "media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+	}
 }
 
 def zipAndArchiveDocsPdf() {
-    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+	if(env.SNAPSHOT == 'true') {
+	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-8-docs-pdf-SNAPSHOT.zip"
+	}
+	else{
+	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+	}
 }
 
 def zipAndArchiveDocsHtml() {
-    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+	if(env.SNAPSHOT == 'true') {
+	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-8-docs-html-SNAPSHOT.zip"
+	}
+	else{
+	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+	}
 }
 
 def publishResults() {
