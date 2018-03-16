@@ -20,12 +20,6 @@
             <artifactId>media-core-control-mgcp</artifactId>
         </dependency>
 
-        <!-- Plugins -->
-        <dependency>
-            <groupId>org.restcomm.media.plugin.vad</groupId>
-            <artifactId>media-plugin-vad-noise-threshold</artifactId>
-        </dependency>
-
         <!-- YAML -->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>

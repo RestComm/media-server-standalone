@@ -72,6 +72,12 @@
             <groupId>org.restcomm.media.core.codec.opus</groupId>
             <artifactId>media-core-codec-opus-java</artifactId>
         </dependency>
+
+        <!-- Plugins -->
+        <dependency>
+            <groupId>org.restcomm.media.plugin.vad</groupId>
+            <artifactId>media-plugin-vad-noise-threshold</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
