@@ -35,7 +35,8 @@ def deployMediaCXS() {
 
 def zipAndArchiveAssembly() {
 	if(env.SNAPSHOT == 'true') {
-	    zip archive: true, dir: "./assembly/target/media-server-standalone-*", zipFile: "media-server-standalone-8-SNAPSHOT.zip"
+	    // TODO - what version to assume here ??? We don't pass any versions params here... or use some regexp
+	    zip archive: true, dir: "./assembly/target/media-server-standalone-8.0.0-SNAPSHOT", zipFile: "media-server-standalone-8-SNAPSHOT.zip"
 	} else {
 	    zip archive: true, dir: "./assembly/target/media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}", zipFile: "media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
 	}
