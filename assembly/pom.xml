@@ -20,6 +20,11 @@
             <artifactId>media-server-standalone-bootstrap</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.restcomm.media.server.standalone</groupId>
+            <artifactId>media-server-standalone-banner</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Modules -->
         <dependency>

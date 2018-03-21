@@ -130,6 +130,7 @@
     </dependencies>
 
     <modules>
+        <module>banner</module>
         <module>bootstrap</module>
         <module>docs</module>
         <module>assembly</module>
