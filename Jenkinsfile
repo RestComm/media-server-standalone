@@ -26,21 +26,38 @@ def buildMedia() {
 def deployMediaCXS() {
 	if (env.PUBLISH_TO_CXS_NEXUS == 'true') {
 		sh "mvn clean install package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests=true -DskipNexusStagingDeployMojo=true -DaltDeploymentRepository=nexus::default::$CXS_NEXUS2_URL"
+        } else if(env.SNAPSHOT == 'true') {
+		sh "mvn clean install package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests=true -DskipNexusStagingDeployMojo=true -DaltDeploymentRepository=nexus::default::$CXS_NEXUS_SNAPSHOTS_URL"
 	} else {
 	    sh 'echo skipping CXS deployment'
 	}
 }
 
 def zipAndArchiveAssembly() {
-    zip archive: true, dir: "./assembly/target/media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}", zipFile: "media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+	if(env.SNAPSHOT == 'true') {
+	    // TODO - what version to assume here ??? We don't pass any versions params here... or use some regexp
+	    zip archive: true, dir: "./assembly/target/media-server-standalone-8.0.0-SNAPSHOT", zipFile: "media-server-standalone-8-SNAPSHOT.zip"
+	} else {
+	    zip archive: true, dir: "./assembly/target/media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}", zipFile: "media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+	}
 }
 
 def zipAndArchiveDocsPdf() {
-    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+	if(env.SNAPSHOT == 'true') {
+	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-8-docs-pdf-SNAPSHOT.zip"
+	}
+	else{
+	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+	}
 }
 
 def zipAndArchiveDocsHtml() {
-    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+	if(env.SNAPSHOT == 'true') {
+	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-8-docs-html-SNAPSHOT.zip"
+	}
+	else{
+	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+	}
 }
 
 def publishResults() {
@@ -78,9 +95,15 @@ node("cxs-slave-master") {
    }
 
    stage ('Versioning') {
-    setMediaBomVersion()
-    updateParentVersion()
-    setVersions()
+        if(env.SNAPSHOT == 'false') {
+	   echo '>>> Update versions'
+	   setMediaBomVersion()
+	   updateParentVersion()
+	   setVersions()
+	}
+	else {
+	   echo '>>> Using SNAPSHOT versions'
+	}
    }
 
    stage ('Build') {
