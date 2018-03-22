@@ -15,10 +15,6 @@ def setVersions() {
     sh "mvn versions:set -DnewVersion=$MAJOR_VERSION_NUMBER-$BUILD_NUMBER -DprocessDependencies=false -DprocessParent=true -Dmaven.test.skip=true"
 }
 
-def setMediaBomVersion() {
-    sh "mvn versions:set-property -Dproperty=restcomm.media.bom.version -DnewVersion=${env.MEDIA_BOM_VERSION}"
-}
-
 def buildMedia() {
     sh "mvn clean install -DskipTests=true "
 }
@@ -36,7 +32,7 @@ def deployMediaCXS() {
 def zipAndArchiveAssembly() {
 	if(env.SNAPSHOT == 'true') {
 	    // TODO - what version to assume here ??? We don't pass any versions params here... or use some regexp
-	    zip archive: true, dir: "./assembly/target/media-server-standalone-8.0.0-SNAPSHOT", zipFile: "media-server-standalone-8-SNAPSHOT.zip"
+	    zip archive: true, dir: "./assembly/target/media-server-standalone-8.0.0-SNAPSHOT", zipFile: "media-server-standalone-8.0.0-SNAPSHOT.zip"
 	} else {
 	    zip archive: true, dir: "./assembly/target/media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}", zipFile: "media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
 	}
@@ -44,7 +40,7 @@ def zipAndArchiveAssembly() {
 
 def zipAndArchiveDocsPdf() {
 	if(env.SNAPSHOT == 'true') {
-	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-8-docs-pdf-SNAPSHOT.zip"
+	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-8.0.0-SNAPSHOT.zip"
 	}
 	else{
 	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
@@ -53,7 +49,7 @@ def zipAndArchiveDocsPdf() {
 
 def zipAndArchiveDocsHtml() {
 	if(env.SNAPSHOT == 'true') {
-	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-8-docs-html-SNAPSHOT.zip"
+	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-8.0.0-SNAPSHOT.zip"
 	}
 	else{
 	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
@@ -95,14 +91,12 @@ node("cxs-slave-master") {
    }
 
    stage ('Versioning') {
-        if(env.SNAPSHOT == 'false') {
-	   echo '>>> Update versions'
-	   setMediaBomVersion()
-	   updateParentVersion()
-	   setVersions()
-	}
-	else {
-	   echo '>>> Using SNAPSHOT versions'
+    if(env.SNAPSHOT == 'false') {
+	 echo '>>> Update versions'
+	 updateParentVersion()
+	 setVersions()
+	} else {
+	 echo '>>> Using SNAPSHOT versions'
 	}
    }
 
