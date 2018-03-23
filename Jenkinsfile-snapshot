@@ -9,7 +9,7 @@ node("cxs-slave-master") {
         checkout scm
 
         // Get project version from POM
-        pom = readMavenPom
+        def pom = readMavenPom file: 'pom.xml'
         env.MAJOR_VERSION_NUMBER = pom.version
     }
 
