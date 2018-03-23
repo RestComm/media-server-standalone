@@ -10,7 +10,7 @@ node("cxs-slave-master") {
 
         // Get project version from POM
         pom = readMavenPom
-        env.VERSION = pom.version
+        env.MAJOR_VERSION_NUMBER = pom.version
     }
 
     stage ('Build') {
