@@ -3,12 +3,12 @@ def runUnitTests() {
 }
 
 def updateParentVersion() {
-        if(env.UPDATE_PARENT == 'true') {
-            sh "mvn versions:update-parent"
-            echo 'Align parent to latest'
-        } else {
-            echo 'Using default parent version'
-        }
+    if(env.UPDATE_PARENT == 'true') {
+        sh "mvn versions:update-parent"
+        echo 'Align parent to latest'
+    } else {
+        echo 'Using default parent version'
+    }
 }
 
 def setVersions() {
@@ -20,13 +20,11 @@ def buildMedia() {
 }
 
 def deployMediaCXS() {
-	if (env.PUBLISH_TO_CXS_NEXUS == 'true') {
-		sh "mvn clean install package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests=true -DskipNexusStagingDeployMojo=true -DaltDeploymentRepository=nexus::default::$CXS_NEXUS2_URL"
-        } else if(env.SNAPSHOT == 'true') {
-		sh "mvn clean install package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests=true -DskipNexusStagingDeployMojo=true -DaltDeploymentRepository=nexus::default::$CXS_NEXUS_SNAPSHOTS_URL"
-	} else {
-	    sh 'echo skipping CXS deployment'
-	}
+    if(env.SNAPSHOT == 'true') {
+        sh "mvn clean install package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests=true -DskipNexusStagingDeployMojo=true -DaltDeploymentRepository=nexus::default::$CXS_NEXUS_SNAPSHOTS_URL"
+    } else {
+        sh "mvn clean install package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests=true -DskipNexusStagingDeployMojo=true -DaltDeploymentRepository=nexus::default::$CXS_NEXUS2_URL"
+    }
 }
 
 def zipAndArchiveAssembly() {
@@ -41,8 +39,7 @@ def zipAndArchiveAssembly() {
 def zipAndArchiveDocsPdf() {
 	if(env.SNAPSHOT == 'true') {
 	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-8.0.0-SNAPSHOT.zip"
-	}
-	else{
+	} else {
 	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
 	}
 }
@@ -50,8 +47,7 @@ def zipAndArchiveDocsPdf() {
 def zipAndArchiveDocsHtml() {
 	if(env.SNAPSHOT == 'true') {
 	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-8.0.0-SNAPSHOT.zip"
-	}
-	else{
+	} else {
 	    zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
 	}
 }
@@ -79,47 +75,47 @@ def publishResults() {
 
 node("cxs-slave-master") {
 
-   echo sh(returnStdout: true, script: 'env')
+    echo sh(returnStdout: true, script: 'env')
 
     configFileProvider(
         [configFile(fileId: '37cb206e-6498-4d8a-9b3d-379cd0ccd99b',  targetLocation: 'settings.xml')]) {
 	    sh 'mkdir -p ~/.m2 && sed -i "s|@LOCAL_REPO_PATH@|$WORKSPACE/M2_REPO|g" $WORKSPACE/settings.xml && cp $WORKSPACE/settings.xml -f ~/.m2/settings.xml'
     }
 
-   stage ('Checkout') {
-    checkout scm
-   }
+    stage ('Checkout') {
+        checkout scm
+    }
 
-   stage ('Versioning') {
-    if(env.SNAPSHOT == 'false') {
-	 echo '>>> Update versions'
-	 updateParentVersion()
-	 setVersions()
-	} else {
-	 echo '>>> Using SNAPSHOT versions'
-	}
-   }
+    stage ('Versioning') {
+        if(env.SNAPSHOT == 'false') {
+	        echo '>>> Update versions'
+	        updateParentVersion()
+	        setVersions()
+	    } else {
+	        echo '>>> Using SNAPSHOT versions'
+	    }
+    }
 
-   stage ('Build') {
-    buildMedia()
-   }
+    stage ('Build') {
+        buildMedia()
+    }
 
-   stage ('Test') {
-    runUnitTests()
-   }
+    stage ('Test') {
+        runUnitTests()
+    }
 
-   stage('PublishResults') {
-    publishResults()
-   }
+    stage('PublishResults') {
+        publishResults()
+    }
 
-   stage ('Deploy') {
-    deployMediaCXS()
-   }
+    stage ('Deploy') {
+        deployMediaCXS()
+    }
 
-   stage ('Archive') {
-    zipAndArchiveAssembly()
-    zipAndArchiveDocsPdf()
-    zipAndArchiveDocsHtml()
-   }
+    stage ('Archive') {
+        zipAndArchiveAssembly()
+        zipAndArchiveDocsPdf()
+        zipAndArchiveDocsHtml()
+    }
 
 }
