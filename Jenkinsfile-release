@@ -1,0 +1,78 @@
+node("cxs-slave-master") {
+
+    configFileProvider(
+        [configFile(fileId: '37cb206e-6498-4d8a-9b3d-379cd0ccd99b',  targetLocation: 'settings.xml')]) {
+	    sh 'mkdir -p ~/.m2 && sed -i "s|@LOCAL_REPO_PATH@|$WORKSPACE/M2_REPO|g" $WORKSPACE/settings.xml && cp $WORKSPACE/settings.xml -f ~/.m2/settings.xml'
+    }
+
+    stage ('Checkout') {
+        checkout scm
+    }
+
+    stage ('Versioning') {
+        sh "mvn versions:update-parent -DparentVersion=[${env.MAJOR_VERSION_NUMBER}]"
+        sh "mvn versions:set-property -Dproperty=restcomm.media.core.version -DnewVersion=${env.MEDIA_CORE_VERSION}"
+        sh "mvn versions:set-property -Dproperty=restcomm.media.plugin.vad.version -DnewVersion=${env.MEDIA_PLUGIN_VAD_VERSION}"
+        sh "mvn versions:set -DnewVersion=$MAJOR_VERSION_NUMBER-$BUILD_NUMBER -DprocessDependencies=false -DprocessParent=true -Dmaven.test.skip=true"
+    }
+
+    stage ('Build') {
+        sh "mvn clean install -DskipTests=true"
+    }
+
+    stage ('Test') {
+        sh "mvn test"
+    }
+
+    stage('PublishResults') {
+        junit testResults: '**/target/surefire-reports/*.xml', testDataPublishers: [[$class: 'StabilityTestDataPublisher']]
+        // checkstyle canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '**/checkstyle-result.xml', unHealthy: ''
+        junit '**/target/surefire-reports/*.xml'
+
+        // step( [ $class: 'JacocoPublisher' ] )
+
+        // if ((env.BRANCH_NAME == 'master') && (currentBuild.currentResult != 'SUCCESS') ) {
+        //    slackSend "Build unstable - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+        // }
+
+        // if (env.BRANCH_NAME ==~ /^PR-\d+$/) {
+        //     //step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: emailextrecipients([[$class: 'FailingTestSuspectsRecipientProvider']])])
+        //     /*if (currentBuild.currentResult != 'SUCCESS' ) { // Other values: SUCCESS, UNSTABLE, FAILURE
+        //         setGitHubPullRequestStatus (context:'CI', message:'IT unstable', state:'FAILURE')
+        //     } else {
+        //        setGitHubPullRequestStatus (context:'CI', message:'IT passed', state:'SUCCESS')
+        //     }*/
+        // }
+    }
+
+    stage ('Deploy') {
+        sh "mvn clean install package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests=true -DskipNexusStagingDeployMojo=true -DaltDeploymentRepository=nexus::default::$CXS_NEXUS2_URL"
+    }
+
+    stage('Tag') {
+        if(env.RELEASE == 'true') {
+            withCredentials([usernamePassword(credentialsId: 'CXSGithub', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                sh 'git commit -a -m "New release candidate"'
+                sh "git tag ${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}"
+                sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/RestComm/media-server-standalone.git --tags')
+            }
+        } else {
+            echo 'Skipped code tagging'
+        }
+    }
+
+    stage ('Release') {
+        if(env.RELEASE == 'true') {
+            sh "mvn clean deploy -DskipTests=true -Dgpg.passphrase=${env.GPG_PASSPHRASE} -Pattach-sources,generate-javadoc,release-sign-artifacts,cxs-oss-release"
+        } else {
+            echo 'Skipped deployment to Sonatype'
+        }
+    }
+
+    stage ('Archive') {
+        zip archive: true, dir: "./assembly/target/media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}", zipFile: "media-server-standalone-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+        zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+        zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-${env.MAJOR_VERSION_NUMBER}-${env.BUILD_NUMBER}.zip"
+    }
+
+}
