@@ -7,6 +7,10 @@ node("cxs-slave-master") {
 
     stage ('Checkout') {
         checkout scm
+
+        // Get project version from POM
+        pom = readMavenPom
+        env.VERSION = pom.version
     }
 
     stage ('Build') {
@@ -43,9 +47,9 @@ node("cxs-slave-master") {
     }
 
     stage ('Archive') {
-        zip archive: true, dir: "./assembly/target/media-server-standalone-*", zipFile: "media-server-standalone-latest-SNAPSHOT.zip"
-        zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-latest-SNAPSHOT.zip"
-        zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-latest-SNAPSHOT.zip"
+        zip archive: true, dir: "./assembly/target/media-server-standalone-${env.MAJOR_VERSION_NUMBER}", zipFile: "media-server-standalone-latest-${env.MAJOR_VERSION_NUMBER}.zip"
+        zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-latest-${env.MAJOR_VERSION_NUMBER}.zip"
+        zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-latest-${env.MAJOR_VERSION_NUMBER}.zip"
     }
 
 }
