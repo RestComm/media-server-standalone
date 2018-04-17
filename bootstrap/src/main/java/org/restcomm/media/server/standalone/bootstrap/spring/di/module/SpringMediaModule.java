@@ -23,10 +23,13 @@ package org.restcomm.media.server.standalone.bootstrap.spring.di.module;
 
 import org.bouncycastle.crypto.tls.ProtocolVersion;
 import org.restcomm.media.core.asr.AsrEngineProvider;
+import org.restcomm.media.core.component.audio.AudioOutput;
 import org.restcomm.media.core.component.dsp.DspFactoryImpl;
+import org.restcomm.media.core.component.oob.OOBOutput;
 import org.restcomm.media.core.control.mgcp.endpoint.provider.MediaGroupProvider;
 import org.restcomm.media.core.network.deprecated.UdpManager;
-import org.restcomm.media.core.resource.dtmf.DetectorProvider;
+import org.restcomm.media.core.resource.dtmf.DtmfDetectorProvider;
+import org.restcomm.media.core.resource.dtmf.DtmfSinkFacadeProvider;
 import org.restcomm.media.core.resource.player.audio.AudioPlayerProvider;
 import org.restcomm.media.core.resource.player.audio.CachedRemoteStreamProvider;
 import org.restcomm.media.core.resource.player.audio.DirectRemoteStreamProvider;
@@ -43,7 +46,6 @@ import org.restcomm.media.core.sdp.format.AVProfile;
 import org.restcomm.media.core.sdp.format.RTPFormat;
 import org.restcomm.media.core.sdp.format.RTPFormats;
 import org.restcomm.media.core.spi.dsp.DspFactory;
-import org.restcomm.media.core.spi.dtmf.DtmfDetectorProvider;
 import org.restcomm.media.core.spi.player.PlayerProvider;
 import org.restcomm.media.core.spi.recorder.RecorderProvider;
 import org.restcomm.media.server.standalone.bootstrap.spring.di.configuration.*;
@@ -131,8 +133,8 @@ public class SpringMediaModule {
     }
 
     @Bean
-    public DtmfDetectorProvider dtmfDetectorProvider(PriorityQueueScheduler scheduler, DtmfDetectorConfiguration dtmfDetectorConfiguration) {
-        return new DetectorProvider(scheduler, dtmfDetectorConfiguration.getDbi(), dtmfDetectorConfiguration.getToneDuration(), dtmfDetectorConfiguration.getToneInterval());
+    public DtmfSinkFacadeProvider dtmfSinkFacadeProvider(PriorityQueueScheduler scheduler, DtmfDetectorProvider detectorProvider) {
+        return new DtmfSinkFacadeProvider(scheduler, detectorProvider);
     }
 
     @Bean
@@ -165,7 +167,7 @@ public class SpringMediaModule {
     }
 
     @Bean
-    public MediaGroupProvider mediaGroupProvider(PlayerProvider players, DtmfDetectorProvider detectors, RecorderProvider recorders, AsrEngineProvider asrEngines) {
+    public MediaGroupProvider mediaGroupProvider(PlayerProvider players, DtmfSinkFacadeProvider detectors, RecorderProvider recorders, AsrEngineProvider asrEngines) {
         return new MediaGroupProvider(players, detectors, recorders, asrEngines);
     }
 
