@@ -1,0 +1,175 @@
+version: '3.3'
+services:
+  restcomm_mediaserver:
+    build:
+      context: .
+    image:
+      restcomm/media-server:latest
+#    configs:
+#      - source: media_server_10
+#        target: /opt/mediaserver/conf/media-server.yml
+#      - source: media_server_logging
+#        target: /opt/mediaserver/conf/log4j2.yml
+#      - source: media-plugin-vad-noise-threshold
+#        target: /opt/mediaserver/conf/media-plugin-vad-noise-threshold.yml
+    volumes:
+      - ./bootstrap/src/main/resources/media-server.yml:/opt/mediaserver/conf/media-server.yml
+      - ./assembly/src/main/config/log4j2.yml:/opt/mediaserver/conf/log4j2.yml
+      - ./assembly/target/media-server-standalone-8.0.0-SNAPSHOT/conf/media-plugin-vad-noise-threshold.yml:/opt/mediaserver/conf/media-plugin-vad-noise-threshold.yml
+
+    ports:
+      - "2427:2427"
+      - "65000-65050:65000-65050/udp" # RTP/UDP
+
+    network_mode: host # works only in docker-compose
+    restart: on-failure # works only in docker-compose
+
+    environment:
+      - LD_LIBRARY_PATH=/opt/mediaserver/lib/native
+
+#   number of open files
+    ulimits:
+      nofile:
+        soft: 90000
+        hard: 90000
+
+    command: [
+      "/usr/bin/java",
+      "-Dprogram.name=mediaserver",
+      "-Xms3400m",
+      "-Xmx3400m",
+      "-XX:+UseG1GC",
+      "-XX:ParallelGCThreads=8",
+      "-XX:ConcGCThreads=8",
+      "-XX:G1RSetUpdatingPauseTimePercent=10",
+      "-XX:+ParallelRefProcEnabled",
+      "-XX:G1HeapRegionSize=4m",
+      "-XX:G1HeapWastePercent=5",
+      "-XX:InitiatingHeapOccupancyPercent=85",
+      "-XX:+UnlockExperimentalVMOptions",
+      "-XX:G1MixedGCLiveThresholdPercent=85",
+      "-XX:+AlwaysPreTouch",
+      "-XX:+UseCompressedOops",
+      "-Dhttp.keepAlive=false",
+      "-Djava.library.path=/usr/lib/x86_64-linux-gnu:/opt/mediaserver/lib/native",
+#      "-Drestcomm.opus.library=opus_jni_linux",
+      "-Drestcomm.opus.library=libopus",
+      "-Dspring.output.ansi.enabled=DETECT",
+      "-Dlogging.config=/opt/mediaserver/conf/log4j2.yml",
+      "-Djava.ext.dirs=/opt/mediaserver/lib:/docker-java-home/jre/lib/ext",
+      "-Dmbrola.base=/opt/mediaserver/mbrola",
+      "-Dspring.config.location=/opt/mediaserver/conf/",
+      "-Dspring.config.name=media-server,media-plugin-vad-noise-threshold,media-extra",
+      "-classpath",
+      "/opt/mediaserver/bin/media-server-standalone-bootstrap.jar:/opt/mediaserver/lib/*",
+      "org.restcomm.media.server.standalone.bootstrap.spring.SpringBootstrapper"
+      ]
+
+
+  restcomm:
+    image: restcomm/restcomm:latest
+    restart: on-failure # works only in docker-compose
+
+    volumes:
+      - restcomm_logs:/var/log/restcomm
+      - recordings:/opt/Restcomm-JBoss-AS7/standalone/deployments/restcomm.war/recordings
+      - cache:/opt/Restcomm-JBoss-AS7/standalone/deployments/restcomm.war/cache
+      - hsql_data:/var/restcomm/data
+      - rvd_workspace:/opt/Restcomm-JBoss-AS7/standalone/deployments/restcomm-rvd
+
+    environment:
+      ## =============================== IMPORTANT!!    While most of the below defaults should be fine, YOU PROBABLY NEED TO CHANGE THIS!!
+      RCBCONF_STATIC_ADDRESS: 192.168.33.10
+
+      RCBCONF_HOSTNAME: 192.168.33.10
+      RCBCONF_RESTCOMM_HOSTNAME: 192.168.33.10
+
+
+      RCBCONF_MGCP_LOCAL_ADDRESS: 192.168.33.10 # The ip restcomm will bind on, to talk MGCP with RMS
+      RCBCONF_MS_ADDRESS: 192.168.33.10 # The address where restcomm expects to find RMS
+      RCBCONF_MEDIASERVER_EXTERNAL_ADDRESS: 192.168.33.10
+      RCBCONF_MS_EXTERNAL: "true"
+      RCBCONF_MGCP_RESPONSE_TIMEOUT: 3000
+
+      RCBCONF_NETWORK: 192.168.33.0
+      RCBCONF_SUBNET_MASK: 255.255.255.0
+      RCBCONF_PRIVATE_IP: 192.168.33.10
+      RCBCONF_BROADCAST_ADDRESS: 192.168.33.255
+      RCBCONF_NET_INTERFACE: eth1
+
+      ## =============================== IMPORTANT ========================================================================================
+
+      EXTCONF_RESTCOMM_LOGS: /var/log/restcomm
+      EXTCONF_CORE_LOGS_LOCATION: restcomm_core
+      EXTCONF_RESTCOMM_TRACE_LOG: restcomm_trace
+      EXTCONF_MEDIASERVER_LOGS_LOCATION: media_server
+
+      RCADVCONF_SECURESSL: "FALSE" # don't worry about HTTPS in local env
+      RCADVCONF_SSL_MODE: allowall
+      RCADVCONF_TRUSTSTORE_PASSWORD: changeme
+      RCADVCONF_TRUSTSTORE_ALIAS: restcomm
+
+      #RestComm Port configuration. Make sure these match the published ports in the `ports` section below.
+      RCBCONF_SIP_PORT_UDP: 5080
+      RCBCONF_SIP_PORT_TCP: 5080
+      RCBCONF_SIP_PORT_TLS: 5081
+      RCBCONF_SIP_PORT_WS: 5082
+      RCBCONF_SIP_PORT_WSS: 5083
+
+      #Log
+      RCBCONF_LOG_LEVEL: DEBUG
+      RCBCONF_AKKA_LOG_LEVEL: INFO
+      RCBCONF_LOG_LEVEL_COMPONENT_GOVNIST: INFO
+      RCBCONF_LOG_LEVEL_COMPONENT_SIPSERVLET: INFO
+      RCBCONF_LOG_LEVEL_COMPONENT_SIPRESTCOMM: INFO
+      RCBCONF_LOG_LEVEL_COMPONENT_RESTCOMM: INFO
+
+      #SMS
+      RCBCONF_SMS_PREFIX: ''
+
+      #TTS - Text To Speech
+      RCBCONF_VOICERSS_KEY: VOICERSS_KEY_HERE #FIXME: You may get a free VoiceRSS API key from http://www.voicerss.org/from
+
+      #RVD_LOCATION
+      RCADVCONF_RVD_LOCATION: /var/restcomm/rvd/workspace
+
+      #HSQL-persist data
+      RCADVCONF_HSQL_DIR: /var/restcomm/data # Defines path where HSQL data will be persisted.
+
+
+    ports:
+      - "8080:8080"                   # RestComm Console HTTP Port. Disabled by default, so you get used to HTTPS  ; )
+      - "8443:8443"                   # RestComm Console HTTPS Port
+      - "9990:9990"                   # RestComm Console Management Port
+      - "5080:5080/udp"               # SIP/UDP
+      - "5080:5080"                   # SIP/TCP
+      - "5081:5081"                   # SIP/TLS
+      - "5082:5082"                   # SIP/WS (Used for WebRTC - SIP Over WebSockets)
+      - "5083:5083"                   # SIP/WSS (Used for WebRTC - Secure SIP Over WebSockets)
+
+    logging:
+      driver: "json-file"
+    network_mode: host # works only in docker-compose
+
+
+#configs:
+#  media_server_10:
+#    file: ./bootstrap/src/main/resources/media-server.yml
+#  media_server_logging:
+#    file: ./assembly/src/main/config/log4j2.yml
+#  media-plugin-vad-noise-threshold:
+#    file: ./assembly/target/media-server-standalone-8.0.0-SNAPSHOT/conf/media-plugin-vad-noise-threshold.yml # FIXME: should be different path
+#  restcomm_xml:
+#    file: # to $BASEDIR/standalone/deployments/restcomm.war/WEB-INF/conf/restcomm.xml
+#  standalone-sip_xml:
+#    file: # to $BASEDIR/standalone/configuration/standalone-sip.xml
+
+volumes:
+# You can persist the logs, database, recordings, text-to-speech cache and RVD workspace using shared filesystem, so even if you stop and remove
+# your container, your work won't be lost. Download the https://github.com/restcomm/Restcomm-Docker/blob/master/restcomm_workspace.zip?raw=true[*restcomm_workspace*]
+# that contains the default database, default RVD workspace and the required folders and unzip it to a folder in your filesystem.
+  restcomm_logs:
+  recordings:
+  cache:
+  hsql_data:
+  rvd_workspace:
