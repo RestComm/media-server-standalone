@@ -43,6 +43,6 @@ CMD [ \
 
 
 # Add Maven dependencies (not shaded into the artifact; Docker-cached)
-ADD assembly/target/media-server-standalone-${VERSION}/lib           /opt/mediaserver/lib
-ADD assembly/target/media-server-standalone-${VERSION}/conf           /opt/mediaserver/conf
-ADD assembly/target/media-server-standalone-${VERSION}/bin           /opt/mediaserver/bin
+ADD target/media-server-standalone-${VERSION}/lib           /opt/mediaserver/lib
+ADD target/media-server-standalone-${VERSION}/conf           /opt/mediaserver/conf
+ADD target/media-server-standalone-${VERSION}/bin           /opt/mediaserver/bin
