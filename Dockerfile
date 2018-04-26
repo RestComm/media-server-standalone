@@ -1,6 +1,6 @@
 FROM openjdk:8-jre-slim
 
-ARG MAJOR_VERSION_NUMBER=8.0.0-SNAPSHOT
+ARG VERSION
 
 # Installs libopus on Debian
 RUN apt-get update && apt-get install -y libopus0
@@ -43,6 +43,6 @@ CMD [ \
 
 
 # Add Maven dependencies (not shaded into the artifact; Docker-cached)
-ADD assembly/target/media-server-standalone-${MAJOR_VERSION_NUMBER}/lib           /opt/mediaserver/lib
-ADD assembly/target/media-server-standalone-${MAJOR_VERSION_NUMBER}/conf           /opt/mediaserver/conf
-ADD assembly/target/media-server-standalone-${MAJOR_VERSION_NUMBER}/bin           /opt/mediaserver/bin
+ADD assembly/target/media-server-standalone-${VERSION}/lib           /opt/mediaserver/lib
+ADD assembly/target/media-server-standalone-${VERSION}/conf           /opt/mediaserver/conf
+ADD assembly/target/media-server-standalone-${VERSION}/bin           /opt/mediaserver/bin
