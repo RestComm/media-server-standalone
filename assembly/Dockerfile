@@ -23,10 +23,6 @@ CMD [ \
   "-XX:G1MixedGCLiveThresholdPercent=85", \
   "-XX:+AlwaysPreTouch", \
   "-XX:+UseCompressedOops", \
-
-# TODO: ask @hrosa -- Force IPv4 on Linux systems since IPv6 doesn't work correctly with jdk5 and lower
-  "-Djava.net.preferIPv4Stack=true", \
-
   "-Dhttp.keepAlive=false", \
   "-Djava.library.path=/usr/lib/x86_64-linux-gnu:/opt/mediaserver/lib/native", \
   "-Drestcomm.opus.library=opus_jni_linux", \
