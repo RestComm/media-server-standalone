@@ -1,0 +1,74 @@
+#!/usr/bin/env groovy
+
+def releaseVersion
+
+node("cxs-slave-master") {
+
+    configFileProvider(
+        [configFile(fileId: '37cb206e-6498-4d8a-9b3d-379cd0ccd99b',  targetLocation: 'settings.xml')]) {
+	    sh 'mkdir -p ~/.m2 && sed -i "s|@LOCAL_REPO_PATH@|$WORKSPACE/M2_REPO|g" $WORKSPACE/settings.xml && cp $WORKSPACE/settings.xml -f ~/.m2/settings.xml'
+    }
+
+    stage ('Checkout') {
+        // Print environment
+        echo sh(returnStdout: true, script: 'env')
+
+        // Checkout code
+        checkout scm
+    }
+
+    stage ('Versioning') {
+        // Drop -SNAPSHOT qualifier
+        sh 'mvn versions:set -DremoveSnapshot versions:commit'
+
+        // Save release version
+        def pom = readMavenPom file: 'pom.xml'
+        releaseVersion = "${pom.version}"
+        echo "Set release version to ${releaseVersion}"
+    }
+
+    stage('Branch') {
+        // Verify if branch exists
+        def versionTokens = ${releaseVersion}.split('.')
+        def releaseBranch = "stable-${versionTokens[0]}-${versionTokens[1]}"
+        def branchExists = sh(script: "git ls-remote --heads git@github.com:RestComm/media-server-standalone.git ${releaseBranch} | wc -l", returnStdout: true)
+
+        if(${branchExists} == 1) {
+            echo "Branch ${releaseBranch} already exists. Aborting job."
+            currentBuild.result = 'FAILURE'
+            return
+        } else {
+            echo "Branch ${releaseBranch} does not exist. Proceeding to next stage."
+        }
+
+        // Create stable branch
+        withCredentials([usernamePassword(credentialsId: 'CXSGithub', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            sh "git checkout -b ${releaseBranch}"
+            sh "git commit -a -m \"New stable release ${releaseVersion}\""
+            env.RELEASE_BRANCH = "${releaseBranch}"
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/RestComm/media-standalone.git ${RELEASE_BRANCH}')
+        }
+    }
+
+    stage('Tag') {
+        withCredentials([usernamePassword(credentialsId: 'CXSGithub', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            sh "git tag ${releaseVersion}"
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/RestComm/media-server-standalone.git --tags')
+        }
+    }
+
+    stage ('Deploy') {
+        sh 'mvn package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests -DskipNexusStagingDeployMojo -DaltDeploymentRepository=nexus::default::$CXS_NEXUS2_URL'
+    }
+
+    stage ('Release') {
+        sh 'mvn clean deploy -DskipTests -Dgpg.passphrase=${env.GPG_PASSPHRASE} -Pattach-sources,generate-javadoc,release-sign-artifacts,cxs-oss-release'
+    }
+
+    stage('Archive') {
+        zip archive: true, dir: "./assembly/target/media-server-standalone-${releaseVersion}", zipFile: "media-server-standalone-${releaseVersion}.zip"
+        zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-${releaseVersion}.zip"
+        zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-${releaseVersion}.zip"
+    }
+
+}
