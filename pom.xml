@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.restcomm.media</groupId>
         <artifactId>media-parent</artifactId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.0.0-32</version>
     </parent>
 
     <groupId>org.restcomm.media.server</groupId>
@@ -25,8 +25,8 @@
     </issueManagement>
 
     <properties>
-        <restcomm.media.core.version>8.0.0-SNAPSHOT</restcomm.media.core.version>
-        <restcomm.media.plugin.vad.version>1.0.0-SNAPSHOT</restcomm.media.plugin.vad.version>
+        <restcomm.media.core.version>[8.0.0-SNAPSHOT,9.0.0-!)</restcomm.media.core.version>
+        <restcomm.media.plugin.vad.version>[1.1.0-SNAPSHOT,2.0.0-!)</restcomm.media.plugin.vad.version>
     </properties>
 
     <dependencyManagement>
