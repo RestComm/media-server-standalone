@@ -15,9 +15,17 @@ node("cxs-slave-master") {
         checkout scm
     }
 
-    stage('ResolveDependencies') {
+    stage('Versioning') {
+        // Drop -SNAPSHOT qualifier
+        sh 'mvn versions:set -DremoveSnapshot versions:commit'
+
+        // Save release version
+        def pom = readMavenPom file: 'pom.xml'
+        releaseVersion = pom.version
+        echo "Set release version to ${releaseVersion}"
+
         // Resolve version ranges of dependencies. Stable branches must work with concrete versions only.
-        sh 'mvn versions:versions:resolve-ranges -DallowSnapshots=false -DprocessProperties=true'
+        sh 'mvn versions:resolve-ranges -DallowSnapshots=false -DprocessProperties=true versions:commit'
     }
 
     stage('Build') {
@@ -32,14 +40,6 @@ node("cxs-slave-master") {
     }
 
     stage('Branch') {
-        // Drop -SNAPSHOT qualifier
-        sh 'mvn versions:set -DremoveSnapshot versions:commit'
-
-        // Save release version
-        def pom = readMavenPom file: 'pom.xml'
-        releaseVersion = pom.version
-        echo "Set release version to ${releaseVersion}"
-
         // Verify if branch exists
         def versionTokens = releaseVersion.split('\\.')
         releaseBranch = "stable-${versionTokens[0]}-${versionTokens[1]}"
