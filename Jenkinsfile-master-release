@@ -62,22 +62,22 @@ node("cxs-slave-master") {
             sh "git checkout -b ${releaseBranch}"
             sh "git commit -a -m \"New stable release ${releaseVersion}\""
             env.RELEASE_BRANCH = "${releaseBranch}"
-            // TODO sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/RestComm/media-server-standalone.git ${RELEASE_BRANCH}')
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/RestComm/media-server-standalone.git ${RELEASE_BRANCH}')
         }
     }
 
     stage('Release') {
         // Tag code
         withCredentials([usernamePassword(credentialsId: 'CXSGithub', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-            // TODO sh "git tag ${releaseVersion}"
-            // TODO sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/RestComm/media-server-standalone.git --tags')
+            sh "git tag ${releaseVersion}"
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/RestComm/media-server-standalone.git --tags')
         }
 
         // Deploy to CXS Nexus
-        // TODO sh 'mvn package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests -DskipNexusStagingDeployMojo -DaltDeploymentRepository=nexus::default::$CXS_NEXUS2_URL'
+        sh 'mvn package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests -DskipNexusStagingDeployMojo -DaltDeploymentRepository=nexus::default::$CXS_NEXUS2_URL'
 
         // Release to Sonatype
-        // TODO sh "mvn clean deploy -DskipTests -Dgpg.passphrase=${env.GPG_PASSPHRASE} -Pattach-sources,generate-javadoc,release-sign-artifacts,cxs-oss-release"
+        sh "mvn clean deploy -DskipTests -Dgpg.passphrase=${env.GPG_PASSPHRASE} -Pattach-sources,generate-javadoc,release-sign-artifacts,cxs-oss-release"
     }
 
     stage('Archive') {
@@ -88,9 +88,9 @@ node("cxs-slave-master") {
 
     stage('Upload') {
         // Upload to Amazon S3
-        def media_upload_s3_job = build(job: "S3UploadCommercial", parameters: [string(name: 'PULL_ARTIFACT_JOB_NAME', value: "$JOB_NAME"), string(name: 'PULL_ARTIFACT_BUILD_NUMBER', value: "${BUILD_NUMBER}"), string(name: 'S3_TARGET_BUCKET', value: "media-server-standalone-${versionTokens[0]}-${versionTokens[1]}")])
+        def media_upload_s3_job = build(job: "S3UploadCommunity", parameters: [string(name: 'PULL_ARTIFACT_JOB_NAME', value: "$JOB_NAME"), string(name: 'PULL_ARTIFACT_BUILD_NUMBER', value: "${BUILD_NUMBER}"), string(name: 'S3_TARGET_BUCKET', value: "media-server-standalone-${versionTokens[0]}-${versionTokens[1]}")])
 
         // Upload to Box.com
-        def media_upload_box_job = build(job: "BoxUploadCommunity", parameters: [string(name: 'PULL_ARTIFACT_JOB_NAME', value: "$JOB_NAME"), string(name: 'PULL_ARTIFACT_BUILD_NUMBER', value: "${BUILD_NUMBER}"), string(name: 'MAJOR_VERSION_NUMBER', value: "${releaseVersion}"), string(name: 'BOX_TARGET_PROJECT_FOLDER_NAME', value: "media-server-standalone-${versionTokens[0]}-${versionTokens[1]}")])
+        def media_upload_box_job = build(job: "BoxUploadCommunity", parameters: [string(name: 'PULL_ARTIFACT_JOB_NAME', value: "$JOB_NAME"), string(name: 'PULL_ARTIFACT_BUILD_NUMBER', value: "${BUILD_NUMBER}"), string(name: 'MAJOR_VERSION_NUMBER', value: "${releaseVersion}"), string(name: 'BOX_TARGET_PROJECT_FOLDER_NAME', value: "media-server-standalone")])
     }
 }
