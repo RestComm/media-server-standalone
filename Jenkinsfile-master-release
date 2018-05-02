@@ -1,6 +1,7 @@
 #!/usr/bin/env groovy
 
 def releaseVersion
+def versionTokens
 
 node("cxs-slave-master") {
 
@@ -41,7 +42,7 @@ node("cxs-slave-master") {
 
     stage('Branch') {
         // Verify if branch exists
-        def versionTokens = releaseVersion.split('\\.')
+        versionTokens = releaseVersion.split('\\.')
         releaseBranch = "stable-${versionTokens[0]}-${versionTokens[1]}"
         echo "Release branch name is ${releaseBranch}"
 
@@ -83,5 +84,13 @@ node("cxs-slave-master") {
         zip archive: true, dir: "./assembly/target/media-server-standalone-${releaseVersion}", zipFile: "media-server-standalone-${releaseVersion}.zip"
         zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-${releaseVersion}.zip"
         zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-${releaseVersion}.zip"
+    }
+
+    stage('Upload') {
+        // Upload to Amazon S3
+        def media_upload_s3_job = build(job: "S3UploadCommunity", parameters: [string(name: 'PULL_ARTIFACT_JOB_NAME', value: "$JOB_NAME"), string(name: 'PULL_ARTIFACT_BUILD_NUMBER', value: "${BUILD_NUMBER}"), string(name: 'S3_TARGET_BUCKET', value: "media-server-standalone-${versionTokens[0]}-${versionTokens[1]}")])
+
+        // Upload to Box.com
+        def media_upload_box_job = build(job: "BoxUploadCommunity", parameters: [string(name: 'PULL_ARTIFACT_JOB_NAME', value: "$JOB_NAME"), string(name: 'PULL_ARTIFACT_BUILD_NUMBER', value: "${BUILD_NUMBER}"), string(name: 'MAJOR_VERSION_NUMBER', value: "${releaseVersion}"), string(name: 'BOX_TARGET_PROJECT_FOLDER_NAME', value: "media-server-standalone")])
     }
 }
