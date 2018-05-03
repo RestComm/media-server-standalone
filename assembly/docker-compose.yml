@@ -13,9 +13,9 @@ services:
 #      - source: media-plugin-vad-noise-threshold
 #        target: /opt/mediaserver/conf/media-plugin-vad-noise-threshold.yml
     volumes:
-      - ./assembly/src/main/resources/media-server.yml:/opt/mediaserver/conf/media-server.yml
-      - ./assembly/src/main/config/log4j2.yml:/opt/mediaserver/conf/log4j2.yml
-      - ./assembly/target/media-server-standalone-8.0.0-SNAPSHOT/conf/media-plugin-vad-noise-threshold.yml:/opt/mediaserver/conf/media-plugin-vad-noise-threshold.yml
+      - ./src/main/resources/media-server.yml:/opt/mediaserver/conf/media-server.yml
+      - ./src/main/config/log4j2.yml:/opt/mediaserver/conf/log4j2.yml
+      - ./target/media-server-standalone-8.0.0-SNAPSHOT/conf/media-plugin-vad-noise-threshold.yml:/opt/mediaserver/conf/media-plugin-vad-noise-threshold.yml
 
     ports:
       - "2427:2427"
