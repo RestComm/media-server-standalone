@@ -65,7 +65,7 @@ services:
 
 
   restcomm:
-    image: restcomm/restcomm:latest
+    image: restcomm/connect:latest
     restart: on-failure # works only in docker-compose
 
     volumes:
