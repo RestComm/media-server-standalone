@@ -43,10 +43,6 @@ mediaserver:
       cache:
         enabled: false
         size: 100
-    dtmfDetector:
-      dbi: -35
-      toneDuration: 100
-      toneInterval: 20
     dtmfGenerator:
       toneVolume: -20
       toneDuration: 100
