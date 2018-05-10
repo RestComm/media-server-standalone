@@ -15,6 +15,7 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 5081, host: 5081, guest_ip: vm_static_ip_address
   config.vm.network "forwarded_port", guest: 5082, host: 5082, guest_ip: vm_static_ip_address
   config.vm.network "forwarded_port", guest: 5083, host: 5083, guest_ip: vm_static_ip_address
+  config.vm.network "forwarded_port", guest: 2376, host: 2376, guest_ip: vm_static_ip_address
   for i in 65000..65050
       config.vm.network :forwarded_port, guest: i, host: i, guest_ip: vm_static_ip_address
   end
@@ -70,8 +71,11 @@ Vagrant.configure("2") do |config|
     # 8. Start Docker daemon
     service docker start
 
-    # 9. Start 
-    cd /vagrant 
+    # 9 Build RMS image
+    cd /vagrant
+    docker build -f Dockerfile --build-arg VERSION=8.3.0-SNAPSHOT -t mediaserver-dev ../../../assembly
+
+    # 9. Start
     docker-compose up -d
 
   SHELL
