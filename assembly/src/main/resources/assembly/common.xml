@@ -1,0 +1,30 @@
+<component>
+    <fileSets>
+        <!-- Bootstrap -->
+        <fileSet>
+            <directory>src/main/resources/bootstrap</directory>
+            <outputDirectory>bin/</outputDirectory>
+        </fileSet>
+
+        <!-- Configuration -->
+        <fileSet>
+            <directory>target/conf-tmp</directory>
+            <outputDirectory>conf/</outputDirectory>
+            <includes>
+                <include>*.yml</include>
+            </includes>
+        </fileSet>
+
+        <!-- DTLS -->
+        <fileSet>
+            <directory>src/main/resources/dtls</directory>
+            <outputDirectory>conf/dtls</outputDirectory>
+        </fileSet>
+
+        <!-- Logger -->
+        <fileSet>
+            <directory>src/main/resources/logger</directory>
+            <outputDirectory>conf/</outputDirectory>
+        </fileSet>
+    </fileSets>
+</component>

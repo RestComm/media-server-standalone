@@ -52,11 +52,11 @@ services:
 #      "-Drestcomm.opus.library=opus_jni_linux",
       "-Drestcomm.opus.library=libopus",
       "-Dspring.output.ansi.enabled=DETECT",
-      "-Dlogging.config=/opt/mediaserver/conf/log4j2.yml",
+      "-Dlogging.logger=/opt/mediaserver/conf/log4j2.yml",
       "-Djava.ext.dirs=/opt/mediaserver/lib:/docker-java-home/jre/lib/ext",
       "-Dmbrola.base=/opt/mediaserver/mbrola",
-      "-Dspring.config.location=/opt/mediaserver/conf/",
-      "-Dspring.config.name=media-server,media-plugin-vad-noise-threshold,media-extra",
+      "-Dspring.logger.location=/opt/mediaserver/conf/",
+      "-Dspring.logger.name=media-server,media-plugin-vad-noise-threshold,media-extra",
       "-classpath",
       "/opt/mediaserver/bin/media-server-standalone-bootstrap.jar:/opt/mediaserver/lib/*",
       "org.restcomm.media.server.standalone.bootstrap.spring.SpringBootstrapper"
@@ -153,7 +153,7 @@ services:
 #  media_server_10:
 #    file: ./bootstrap/src/main/resources/media-server.yml
 #  media_server_logging:
-#    file: ./assembly/src/main/config/log4j2.yml
+#    file: ./assembly/src/main/logger/log4j2.yml
 #  media-plugin-vad-noise-threshold:
 #    file: ./assembly/target/media-server-standalone-8.0.0-SNAPSHOT/conf/media-plugin-vad-noise-threshold.yml # FIXME: should be different path
 #  restcomm_xml:

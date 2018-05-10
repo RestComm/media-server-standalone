@@ -42,7 +42,7 @@
                             <outputDirectory>${output.directory}/media-server-standalone-${project.version}/</outputDirectory>
                             <includeArtifactIds>media-server-standalone-assembly</includeArtifactIds>
                             <includeGroupIds>${project.groupId}</includeGroupIds>
-                            <excludeTransitive>true</excludeTransitive>
+                            <excludeTransitive>false</excludeTransitive>
                             <excludeTypes>pom</excludeTypes>
                         </configuration>
                     </execution>

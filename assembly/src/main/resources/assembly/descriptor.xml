@@ -40,7 +40,7 @@
     </dependencySets>
     <componentDescriptors>
         <componentDescriptor>
-            src/main/assembly/common.xml
+            src/main/resources/assembly/common.xml
         </componentDescriptor>
     </componentDescriptors>
 </assembly>
