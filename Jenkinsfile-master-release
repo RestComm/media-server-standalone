@@ -1,0 +1,96 @@
+#!/usr/bin/env groovy
+
+def releaseVersion
+def versionTokens
+
+node("cxs-slave-master") {
+
+    stage('Checkout') {
+        // Get maven settings
+        configFileProvider(
+                [configFile(fileId: '37cb206e-6498-4d8a-9b3d-379cd0ccd99b', targetLocation: 'settings.xml')]) {
+            sh 'mkdir -p ~/.m2 && sed -i "s|@LOCAL_REPO_PATH@|$WORKSPACE/M2_REPO|g" $WORKSPACE/settings.xml && cp $WORKSPACE/settings.xml -f ~/.m2/settings.xml'
+        }
+
+        // Checkout code
+        checkout scm
+    }
+
+    stage('Versioning') {
+        // Drop -SNAPSHOT qualifier
+        sh 'mvn versions:set -DremoveSnapshot versions:commit'
+
+        // Save release version
+        def pom = readMavenPom file: 'pom.xml'
+        releaseVersion = pom.version
+        echo "Set release version to ${releaseVersion}"
+
+        // Resolve version ranges of dependencies. Stable branches must work with concrete versions only.
+        sh 'mvn versions:resolve-ranges -DallowSnapshots=false -DprocessProperties=true versions:commit'
+    }
+
+    stage('Build') {
+        // Make sure that project compiles with concrete set of dependencies
+        sh "mvn clean install -DskipTests"
+    }
+
+    stage('Test') {
+        // Make sure tests are still successful with concrete set of dependencies
+        sh 'mvn test'
+        junit testResults: '**/target/surefire-reports/*.xml', testDataPublishers: [[$class: 'StabilityTestDataPublisher']]
+    }
+
+    stage('Branch') {
+        // Verify if branch exists
+        versionTokens = releaseVersion.split('\\.')
+        releaseBranch = "stable-${versionTokens[0]}-${versionTokens[1]}"
+        echo "Release branch name is ${releaseBranch}"
+
+        withCredentials([usernamePassword(credentialsId: 'CXSGithub', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            env.RELEASE_BRANCH = releaseBranch
+            def branchExists = sh(script: 'git ls-remote --heads https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com:RestComm/media-server-standalone.git $RELEASE_BRANCH | wc -l', returnStdout: true)
+
+            if (branchExists == 1) {
+                echo "Branch ${releaseBranch} already exists. Aborting job."
+                currentBuild.result = 'FAILURE'
+                return
+            } else {
+                echo "Branch ${releaseBranch} does not exist. Proceeding to next stage."
+            }
+
+            // Create stable branch
+            sh "git checkout -b ${releaseBranch}"
+            sh "git commit -a -m \"New stable release ${releaseVersion}\""
+            env.RELEASE_BRANCH = "${releaseBranch}"
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/RestComm/media-server-standalone.git ${RELEASE_BRANCH}')
+        }
+    }
+
+    stage('Release') {
+        // Tag code
+        withCredentials([usernamePassword(credentialsId: 'CXSGithub', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            sh "git tag ${releaseVersion}"
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/RestComm/media-server-standalone.git --tags')
+        }
+
+        // Deploy to CXS Nexus
+        sh 'mvn package deploy:deploy -Pattach-sources,generate-javadoc,maven-release -DskipTests -DskipNexusStagingDeployMojo -DaltDeploymentRepository=nexus::default::$CXS_NEXUS2_URL'
+
+        // Release to Sonatype
+        sh "mvn clean deploy -DskipTests -Dgpg.passphrase=${env.GPG_PASSPHRASE} -Pattach-sources,generate-javadoc,release-sign-artifacts,cxs-oss-release"
+    }
+
+    stage('Archive') {
+        zip archive: true, dir: "./assembly/target/media-server-standalone-${releaseVersion}", zipFile: "media-server-standalone-${releaseVersion}.zip"
+        zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/pdf", zipFile: "media-server-standalone-docs-pdf-${releaseVersion}.zip"
+        zip archive: true, dir: "./docs/sources-asciidoc/target/generated-docs/html-book", zipFile: "media-server-standalone-docs-html-${releaseVersion}.zip"
+    }
+
+    stage('Upload') {
+        // Upload to Amazon S3
+        def media_upload_s3_job = build(job: "S3UploadCommunity", parameters: [string(name: 'PULL_ARTIFACT_JOB_NAME', value: "$JOB_NAME"), string(name: 'PULL_ARTIFACT_BUILD_NUMBER', value: "${BUILD_NUMBER}"), string(name: 'S3_TARGET_BUCKET', value: "media-server-standalone-${versionTokens[0]}-${versionTokens[1]}")])
+
+        // Upload to Box.com
+        def media_upload_box_job = build(job: "BoxUploadCommunity", parameters: [string(name: 'PULL_ARTIFACT_JOB_NAME', value: "$JOB_NAME"), string(name: 'PULL_ARTIFACT_BUILD_NUMBER', value: "${BUILD_NUMBER}"), string(name: 'MAJOR_VERSION_NUMBER', value: "${releaseVersion}"), string(name: 'BOX_TARGET_PROJECT_FOLDER_NAME', value: "media-server-standalone")])
+    }
+}

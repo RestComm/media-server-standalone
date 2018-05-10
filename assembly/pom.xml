@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.restcomm.media.server</groupId>
         <artifactId>media-server-standalone</artifactId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>8.3.0-SNAPSHOT</version>
     </parent>
 
     <groupId>org.restcomm.media.server.standalone</groupId>
@@ -82,6 +82,10 @@
         <dependency>
             <groupId>org.restcomm.media.plugin.vad</groupId>
             <artifactId>media-plugin-vad-noise-threshold</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.restcomm.media.plugin.dtmf</groupId>
+            <artifactId>media-plugin-dtmf-detector-goertzel</artifactId>
         </dependency>
     </dependencies>
 
