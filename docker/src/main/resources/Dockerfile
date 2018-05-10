@@ -37,4 +37,4 @@ CMD [ \
 ]
 
 # Add Maven dependencies (not shaded into the artifact; Docker-cached)
-ADD ../assembly/target/media-server-standalone-${VERSION} /opt/mediaserver
+ADD ./media-server-standalone-${VERSION} /opt/mediaserver

@@ -2,7 +2,7 @@ version: '3.3'
 services:
   restcomm_mediaserver:
     image:
-      restcomm/media-server:latest
+      mediaserver-dev:latest
 #    configs:
 #      - source: media_server_10
 #        target: /opt/mediaserver/conf/media-server.yml
