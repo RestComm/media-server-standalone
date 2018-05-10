@@ -1,0 +1,38 @@
+mediaserver:
+
+  network:
+    address: 127.0.0.1
+    externalAddress: 127.0.0.1
+    network: 127.0.0.1
+    subnet: 255.255.255.255
+
+  controller:
+    mgcp:
+      address: 192.168.33.10
+      port: 2427
+
+  media:
+    lowPort: 65000
+    highPort: 65050
+    codecs: pcmu,pcma,l16,gsm,g729,telephone-event
+
+  dtls:
+    cipherSuites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+    certificate:
+      path: "../conf/dtls/x509-server-ecdsa.pem"
+      key: "../conf/dtls/x509-server-key-ecdsa.pem"
+      algorithm: ecdsa
+
+  ssl:
+    keyStore: null
+    keyStorePassword: null
+    trustStore: null
+    trustStorePassword: null
+
+media-plugin-dtmf-detector-goertzel:
+  toneVolume: -30
+  toneDuration: 80
+  toneInterval: 20
+
+media-plugin-vad-noise-threshold:
+  silenceLevel: 10

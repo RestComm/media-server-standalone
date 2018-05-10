@@ -5,7 +5,6 @@ ARG VERSION
 # Installs libopus on Debian
 RUN apt-get update && apt-get install -y libopus0
 
-
 CMD [ \
   "/usr/bin/java", \
   "-Dprogram.name=mediaserver", \
@@ -37,8 +36,5 @@ CMD [ \
   "org.restcomm.media.server.standalone.bootstrap.spring.SpringBootstrapper" \
 ]
 
-
 # Add Maven dependencies (not shaded into the artifact; Docker-cached)
-ADD target/media-server-standalone-${VERSION}/lib           /opt/mediaserver/lib
-ADD target/media-server-standalone-${VERSION}/conf           /opt/mediaserver/conf
-ADD target/media-server-standalone-${VERSION}/bin           /opt/mediaserver/bin
+ADD ../assembly/target/media-server-standalone-${VERSION} /opt/mediaserver

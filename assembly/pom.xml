@@ -14,10 +14,6 @@
     <name>media-server-standalone-assembly</name>
     <packaging>pom</packaging>
 
-    <properties>
-        <dockerfile-maven-version>1.3.6</dockerfile-maven-version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.restcomm.media.server.standalone</groupId>
@@ -130,27 +126,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-              <groupId>com.spotify</groupId>
-              <artifactId>dockerfile-maven-plugin</artifactId>
-              <version>${dockerfile-maven-version}</version>
-              <executions>
-                <execution>
-                  <id>default</id>
-                  <goals>
-                    <goal>build</goal>
-                    <goal>push</goal>
-                  </goals>
-                </execution>
-              </executions>
-              <configuration>
-                <repository>restcomm/media-server</repository>
-                <tag>${project.version}</tag>
-                <buildArgs>
-                  <VERSION>${project.version}</VERSION>
-                </buildArgs>
-              </configuration>
             </plugin>
         </plugins>
     </build>
