@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.restcomm.media.server</groupId>
+        <artifactId>media-server-standalone</artifactId>
+        <version>8.4.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>media-server-standalone-docker</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <output.directory>${project.build.directory}/media-server-standalone-docker-${project.version}</output.directory>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.restcomm.media.server.standalone</groupId>
+            <artifactId>media-server-standalone-assembly</artifactId>
+            <version>${project.version}</version>
+            <type>zip</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>upack-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${output.directory}/media-server-standalone-${project.version}/</outputDirectory>
+                            <includeArtifactIds>media-server-standalone-assembly</includeArtifactIds>
+                            <includeGroupIds>${project.groupId}</includeGroupIds>
+                            <excludeTransitive>false</excludeTransitive>
+                            <excludeTypes>pom</excludeTypes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${output.directory}/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
