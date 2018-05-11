@@ -75,7 +75,7 @@ Vagrant.configure("2") do |config|
     cd /vagrant
 
     # 10 Build RMS image
-    docker build -f Dockerfile --build-arg VERSION=8.3.0-SNAPSHOT -t mediaserver-dev .
+    docker build -f Dockerfile --build-arg VERSION=${project.parent.version} -t restcomm/${project.parent.artifactId}:${project.parent.version} .
 
     # 11. Start
     docker-compose up -d

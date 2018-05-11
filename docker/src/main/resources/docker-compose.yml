@@ -2,7 +2,7 @@ version: '3.3'
 services:
   restcomm_mediaserver:
     image:
-      mediaserver-dev:latest
+      restcomm/${project.parent.artifactId}:${project.parent.version}
 
     volumes:
       - ./media-extra.yml:/opt/mediaserver/conf/media-extra.yml
