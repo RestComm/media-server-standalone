@@ -140,6 +140,7 @@
         <module>bootstrap</module>
         <module>docs</module>
         <module>assembly</module>
+        <module>docker</module>
     </modules>
 
     <scm>

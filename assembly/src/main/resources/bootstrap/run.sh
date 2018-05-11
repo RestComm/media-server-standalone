@@ -180,7 +180,7 @@ echo ""
 echo "=============================================================================="
 
 # Discover configuration files
-MS_CONF_FILES=$(find $MMS_HOME/conf -name 'media-*.yml' -exec basename {} \; | xargs echo | tr ' ' ',' | sed 's|.yml||g')
+MS_CONF_FILES=$(find $MMS_HOME/conf \( -name 'media-*.yml' ! -name "media-extra.yml" \) -exec basename {} \; | xargs echo | tr ' ' ',' | sed 's|.yml||g')
 
 "$JAVA" $JAVA_OPTS \
     -Dspring.output.ansi.enabled="DETECT" \
