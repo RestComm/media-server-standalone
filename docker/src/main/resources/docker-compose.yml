@@ -3,20 +3,17 @@ services:
   restcomm_mediaserver:
     image:
       mediaserver-dev:latest
-#    configs:
-#      - source: media_server_10
-#        target: /opt/mediaserver/conf/media-server.yml
-#      - source: media_server_logging
-#        target: /opt/mediaserver/conf/log4j2.yml
-#      - source: media-plugin-vad-noise-threshold
-#        target: /opt/mediaserver/conf/media-plugin-vad-noise-threshold.yml
+
     volumes:
       - ./media-extra.yml:/opt/mediaserver/conf/media-extra.yml
       - ./log4j2.yml:/opt/mediaserver/conf/log4j2.yml
 
     ports:
-      - "2427:2427"
+      - "2427:2427/udp"
       - "65000-65050:65000-65050/udp" # RTP/UDP
+      
+    #sysctls:
+    #  - net.ipv6.conf.all.disable_ipv6=1
 
     network_mode: host # works only in docker-compose
     restart: on-failure # works only in docker-compose
@@ -49,19 +46,18 @@ services:
       "-XX:+UseCompressedOops",
       "-Dhttp.keepAlive=false",
       "-Djava.library.path=/usr/lib/x86_64-linux-gnu:/opt/mediaserver/lib/native",
-#      "-Drestcomm.opus.library=opus_jni_linux",
-      "-Drestcomm.opus.library=libopus",
+      # "-Drestcomm.opus.library=opus_jni_linux",
+      # "-Drestcomm.opus.library=libopus",
       "-Dspring.output.ansi.enabled=DETECT",
-      "-Dlogging.logger=/opt/mediaserver/conf/log4j2.yml",
+      "-Dspring.config.location=/opt/mediaserver/conf/",
+      "-Dspring.config.name=media-plugin-dtmf-detector-goertzel,media-plugin-vad-noise-threshold,media-server,media-extra",
+      "-Dlogging.config=/opt/mediaserver/conf/log4j2.yml",
       "-Djava.ext.dirs=/opt/mediaserver/lib:/docker-java-home/jre/lib/ext",
       "-Dmbrola.base=/opt/mediaserver/mbrola",
-      "-Dspring.logger.location=/opt/mediaserver/conf/",
-      "-Dspring.logger.name=media-server,media-plugin-vad-noise-threshold,media-plugin-dtmf-detector-goertzel,media-extra",
       "-classpath",
-      "/opt/mediaserver/bin/media-server-standalone-bootstrap.jar:/opt/mediaserver/lib/*",
+      "/opt/mediaserver/bin/media-server-standalone-bootstrap.jar",
       "org.restcomm.media.server.standalone.bootstrap.spring.SpringBootstrapper"
       ]
-
 
   restcomm:
     image: restcomm/connect:latest
@@ -84,7 +80,7 @@ services:
 
       RCBCONF_MGCP_LOCAL_ADDRESS: 192.168.33.10 # The ip restcomm will bind on, to talk MGCP with RMS
       RCBCONF_MS_ADDRESS: 192.168.33.10 # The address where restcomm expects to find RMS
-      RCBCONF_MEDIASERVER_EXTERNAL_ADDRESS: 192.168.33.10
+      # RCBCONF_MEDIASERVER_EXTERNAL_ADDRESS: 192.168.33.10
       RCBCONF_MS_EXTERNAL: "true"
       RCBCONF_MGCP_RESPONSE_TIMEOUT: 3000
 
