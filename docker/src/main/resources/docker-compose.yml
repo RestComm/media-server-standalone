@@ -56,7 +56,7 @@ services:
       "-Djava.ext.dirs=/opt/mediaserver/lib:/docker-java-home/jre/lib/ext",
       "-Dmbrola.base=/opt/mediaserver/mbrola",
       "-Dspring.logger.location=/opt/mediaserver/conf/",
-      "-Dspring.logger.name=media-server,media-plugin-vad-noise-threshold,media-extra",
+      "-Dspring.logger.name=media-server,media-plugin-vad-noise-threshold,media-plugin-dtmf-detector-goertzel,media-extra",
       "-classpath",
       "/opt/mediaserver/bin/media-server-standalone-bootstrap.jar:/opt/mediaserver/lib/*",
       "org.restcomm.media.server.standalone.bootstrap.spring.SpringBootstrapper"

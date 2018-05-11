@@ -27,7 +27,7 @@ CMD [ \
   "-Drestcomm.opus.library=opus_jni_linux", \
   "-Dspring.output.ansi.enabled=DETECT", \
   "-Dspring.config.location=/opt/mediaserver/conf/", \
-  "-Dspring.config.name=media-server,media-plugin-vad-noise-threshold,media-extra", \
+  "-Dspring.config.name=media-server,media-plugin-vad-noise-threshold,media-plugin-dtmf-detector-goertzel,media-extra", \
   "-Dlogging.config=/opt/mediaserver/conf/log4j2.yml", \
   "-Djava.ext.dirs=/opt/mediaserver/lib:/docker-java-home/jre/lib/ext", \
   "-Dmbrola.base=/opt/mediaserver/mbrola", \
